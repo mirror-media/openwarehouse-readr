@@ -13,7 +13,6 @@ pipeline:
     when:
       event: [push]
       branch: [dev, master]
-
   restoreCache:
     image: drillster/drone-volume-cache
     restore: true
