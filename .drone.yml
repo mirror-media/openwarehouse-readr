@@ -29,9 +29,9 @@ pipeline:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-      - git clone https://github.com/mirror-media/openwarehouse.git .
+      - git clone https://github.com/mirror-media/openwarehouse.git
       - rm -r ./openwarehouse/lists
-      - mv ./openwarehouse ../
+      - mv ./openwarehouse/* .
       - gcloud source repos clone configs ../configs
       - cp ../configs/openwarehouse/dev/readr/config.js ./configs/config.js
       - cp ../configs/openwarehouse/dev/gcskeyfile.json ./configs/gcskeyfile.json
