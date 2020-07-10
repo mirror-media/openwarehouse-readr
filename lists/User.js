@@ -1,6 +1,7 @@
 const { Text, Checkbox, Password, Select, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const access = require('../../helpers/access');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
+const access = require('../helpers/access');
 
 module.exports = {
     fields: {
@@ -27,19 +28,14 @@ module.exports = {
             defaultValue: 'contributor',
             isRequired: true,
             access: {
-                update: access.userIsAdminOrModerator,
+                update: allowRoles(admin, moderator),
             }
-        },
-        company: {
-            label: '公司',
-            type: Relationship,
-            ref: 'Company.users',
         },
         isProtected: {
             label: '受保護',
             type: Checkbox,
             access: {
-                update: access.userIsAdmin,
+                update: allowRoles(admin),
             }
         }
     },
@@ -48,11 +44,9 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        read: access.userIsAdminOrModeratorOrOwner,
-        update: access.userIsAdminOrModeratorOrOwner,
-        create: access.userIsAdminOrModerator,
-        delete: access.userIsAdminOrModerator,
-        auth: true,
+        update: allowRoles(admin, moderator, editor, owner),
+        create: allowRoles(admin, moderator, editor, contributor),
+        delete: allowRoles(admin),
     },
     hooks: {
         resolveInput: async ({ operation, existingItem, resolvedData }) => {

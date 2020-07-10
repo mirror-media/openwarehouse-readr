@@ -1,6 +1,7 @@
-const { Slug, Text, DateTime, Select, Relationship, Url, Checkbox } = require('@keystonejs/fields');
+const { Text, DateTime, Select, Relationship, Url, Checkbox } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const access = require('../../helpers/access');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
+const publishStateExaminer = require('../hooks/publishStateExaminer');
 
 module.exports = {
     fields: {
@@ -100,9 +101,12 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: access.userIsAdminOrModeratorOrOwner,
-        create: access.userIsAboveAuthor,
-        delete: access.userIsAdminOrModeratorOrOwner,
+        update: allowRoles(admin, moderator, editor, owner),
+        create: allowRoles(admin, moderator, editor, contributor),
+        delete: allowRoles(admin),
+    },
+    hooks: {
+        resolveInput: publishStateExaminer,
     },
     adminConfig: {
         defaultColumns: 'name, eventType, state, startTime, endTime',

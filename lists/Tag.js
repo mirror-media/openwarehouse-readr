@@ -1,7 +1,8 @@
 const { Slug, Text, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { uuid } = require('uuidv4');
-const access = require('../../helpers/access');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
+const publishStateExaminer = require('../hooks/publishStateExaminer');
 
 module.exports = {
     fields: {
@@ -42,9 +43,12 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: access.userIsAboveAuthorOrOwner,
-        create: access.userIsNotContributor,
-        delete: access.userIsAboveAuthorOrOwner,
+        update: allowRoles(admin, moderator, editor, owner),
+        create: allowRoles(admin, moderator, editor, contributor),
+        delete: allowRoles(admin),
+    },
+    hooks: {
+        resolveInput: publishStateExaminer,
     },
     adminConfig: {
         defaultColumns: 'slug, name, createdAt',
