@@ -42,6 +42,7 @@ for (var name in lists) {
   keystone.createList(name, lists[name]);
 }
 
+
 const authStrategy = keystone.createAuthStrategy({
   type: PasswordAuthStrategy,
   list: app.authList,
