@@ -30,15 +30,12 @@ pipeline:
     image: gcr.io/mirror-tv-275709/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
-      # - git clone https://github.com/mirror-media/openwarehouse.git
-      # - rm -r ./openwarehouse/lists
-      # - mv ./openwarehouse ../
       - gcloud source repos clone configs ../configs
       - cp ../configs/mirror-tv/dev/config.js ./configs/config.js
       - cp ../configs/mirror-tv/dev/mirror-tv-gcskeyfile.json ./configs/gcskeyfile.json
     when:
       event: [push]
-      branch: [dev]
+      branch: [master, dev]
 
   buildThenPublish:
     image: plugins/gcr
