@@ -1,7 +1,7 @@
 const { Slug, Text, Relationship, Select } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { uuid } = require('uuidv4');
-const { admin, moderator, editor, allowRoles } = require('../../helpers/readrAccess');
+const { admin, moderator, editor, allowRoles } = require('../helpers/readrAccess');
 
 module.exports = {
     fields: {

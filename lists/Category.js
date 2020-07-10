@@ -1,6 +1,6 @@
 const { Slug, Text, Checkbox, Relationship, Select } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, allowRoles } = require('../../helpers/readrAccess');
+const { admin, moderator, allowRoles } = require('../helpers/readrAccess');
 
 module.exports = {
     fields: {
