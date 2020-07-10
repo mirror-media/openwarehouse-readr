@@ -27,7 +27,7 @@ pipeline:
       branch: [dev, master]
 
   getDevConfig:
-    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+    image: gcr.io/mirror-tv-275709/drone-cloud-sdk:latest
     secrets: [google_credentials]
     commands:
       # - git clone https://github.com/mirror-media/openwarehouse.git
