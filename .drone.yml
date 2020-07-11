@@ -28,7 +28,7 @@ pipeline:
 
   getDevConfig:
     image: gcr.io/mirror-tv-275709/drone-cloud-sdk:latest
-    secrets: [google_credentials]
+    # secrets: [google_credentials]
     commands:
       - gcloud source repos clone configs ../configs
       - cp ../configs/mirror-tv/dev/config.js ./configs/config.js
