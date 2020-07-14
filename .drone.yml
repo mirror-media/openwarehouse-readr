@@ -58,12 +58,12 @@ pipeline:
       - source: google_credentials
         target: token
     vars:
-      image: gcr.io/mirrormedia-1470651750304/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}
+      image: gcr.io/mirror-tv-275709/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}
       app: ${DRONE_REPO_NAME}
       tier: backend
     when:
       event: [push]
-      branch: [dev]
+      branch: [dev, master]
 
   rebuildCache:
     image: drillster/drone-volume-cache
