@@ -67,14 +67,21 @@ const graphQLOptions = app.isRedisCacheRequired ? {
     plugins: [responseCachePlugin()],
   },
 } : {};
+
+let optionalApps = []
+
+if (app.isAdminAppRequired) {
+  optionalApps.push(new AdminUIApp({
+    enableDefaultRoute: true,
+    hooks: require.resolve(`./hooks/${app.project}`),
+    authStrategy,
+  }));
+}
+
 module.exports = {
   keystone,
   apps: [
     new GraphQLApp(graphQLOptions),
-    new AdminUIApp({
-      enableDefaultRoute: true,
-      hooks: require.resolve(`./hooks/${app.project}`),
-      authStrategy,
-    }),
+    ...optionalApps,
   ],
 };
