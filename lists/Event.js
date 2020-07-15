@@ -2,6 +2,7 @@ const { Text, DateTime, Select, Relationship, Url, Checkbox } = require('@keysto
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
 const publishStateExaminer = require('../hooks/publishStateExaminer');
+const cacheHint = require('../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -112,4 +113,5 @@ module.exports = {
         defaultColumns: 'name, eventType, state, startTime, endTime',
         defaultSort: '-startTime',
     },
+    cacheHint: cacheHint,
 }
