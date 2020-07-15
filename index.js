@@ -11,6 +11,8 @@ const createDefaultAdmin = require('./helpers/createDefaultAdmin')
 const redis = require('redis');
 const expressSession = require('express-session');
 const RedisStore = require('connect-redis')(expressSession);
+const { RedisCache } = require('apollo-server-cache-redis');
+const responseCachePlugin = require('apollo-server-plugin-response-cache');
 
 const adapterConfig = {
   dropDatabase: app.dropDatabase,
@@ -52,13 +54,23 @@ const authStrategy = keystone.createAuthStrategy({
   list: app.authList,
 });
 
+
+const graphQLOptions = app.isRedisCacheRequired ? {
+  apollo: {
+    cache: new RedisCache({
+      // Default ttl is 300. Change it to tweek performance
+      host: redisConf.host,
+      port: redisConf.port,
+      password: redisConf.authPass,
+      keyPrefix: `${app.uuid}-cache:`,
+    }),
+    plugins: [responseCachePlugin()],
+  },
+} : {};
 module.exports = {
   keystone,
   apps: [
-    new GraphQLApp({
-      enableDefaultRoute: true,
-      authStrategy,
-    }),
+    new GraphQLApp(graphQLOptions),
     new AdminUIApp({
       enableDefaultRoute: true,
       hooks: require.resolve(`./hooks/${app.project}`),
