@@ -39,6 +39,10 @@ const keystone = new Keystone({
 });
 
 for (var name in lists) {
+  // Remove cacheHint if we want users to reach realtime data
+  if (!app.isRedisCacheRequired) {
+    delete lists[name].cacheHint;
+  }
   keystone.createList(name, lists[name]);
 }
 
