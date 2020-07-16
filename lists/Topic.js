@@ -4,6 +4,7 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { uuid } = require('uuidv4');
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
 const publishStateExaminer = require('../hooks/publishStateExaminer');
+const cacheHint = require('../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -171,5 +172,6 @@ module.exports = {
         defaultColumns: 'slug, title, state, tags, isFeatured, createdAt',
         defaultSort: '-createdAt',
     },
-    labelField: 'title'
+    labelField: 'title',
+    cacheHint: cacheHint,
 }

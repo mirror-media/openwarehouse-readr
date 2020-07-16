@@ -2,6 +2,7 @@ const { Slug, Text, Url, Checkbox } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
 const publishStateExaminer = require('../hooks/publishStateExaminer');
+const cacheHint = require('../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -43,4 +44,5 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     labelField: 'display',
+    cacheHint: cacheHint,
 }
