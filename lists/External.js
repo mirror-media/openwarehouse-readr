@@ -2,6 +2,7 @@ const { Slug, Text, Relationship, Select, DateTime, Url } = require('@keystonejs
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
 const publishStateExaminer = require('../hooks/publishStateExaminer');
+const cacheHint = require('../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -30,7 +31,7 @@ module.exports = {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled, archived, invisible',
-            defaultValue: 'draft'
+            defaultValue: 'draft',
         },
         publishTime: {
             label: '發佈時間',
@@ -48,11 +49,11 @@ module.exports = {
         },
         byline: {
             label: '作者',
-            type: Text
+            type: Text,
         },
         thumbnail: {
             label: '縮圖',
-            type: Url
+            type: Url,
         },
         brief: {
             label: '前言',
@@ -66,7 +67,7 @@ module.exports = {
         },
         source: {
             label: '原文網址',
-            type: Url
+            type: Url,
         },
     },
     plugins: [
@@ -86,4 +87,5 @@ module.exports = {
         defaultSort: '-publishTime',
     },
     labelField: 'title',
+    cacheHint: cacheHint,
 }

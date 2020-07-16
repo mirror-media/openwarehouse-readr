@@ -3,7 +3,8 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
 const publishStateExaminer = require('../hooks/publishStateExaminer');
-const gcsDir = 'assets/videos/'
+const cacheHint = require('../helpers/cacheHint');
+const gcsDir = 'assets/videos/';
 
 
 module.exports = {
@@ -123,5 +124,6 @@ module.exports = {
             return resolvedData
         },
     },
-    labelField: 'title'
+    labelField: 'title',
+    cacheHint: cacheHint,
 }
