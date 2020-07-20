@@ -2,8 +2,9 @@ const { Text, Checkbox, Select, Relationship, File, DateTime, Url } = require('@
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
 const { admin, moderator, editor, allowRoles } = require('../helpers/readrAccess');
-const gcsDir = 'assets/videos/'
+const cacheHint = require('../helpers/cacheHint');
 
+const gcsDir = 'assets/videos/'
 
 module.exports = {
     fields: {
@@ -119,5 +120,6 @@ module.exports = {
             return resolvedData
         },
     },
-    labelField: 'title'
+    labelField: 'title',
+    cacheHint: cacheHint,
 }

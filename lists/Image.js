@@ -2,7 +2,8 @@ const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { ImageAdapter } = require('../lib/ImageAdapter');
 const { admin, moderator, editor, allowRoles } = require('../helpers/readrAccess');
-const gcsDir = 'assets/images/'
+const cacheHint = require('../helpers/cacheHint');
+const gcsDir = 'assets/images/';
 
 module.exports = {
     fields: {
@@ -24,11 +25,6 @@ module.exports = {
             options: 'Creative-Commons, Copyrighted',
             defaultValue: 'Copyrighted'
         },
-        /*topic: {
-            label: '專題',
-            type: Relationship,
-            ref: 'Topic'
-        },*/
         tags: {
             label: '標籤',
             type: Relationship,
@@ -104,4 +100,5 @@ module.exports = {
         },
     },
     labelField: 'title',
+    cacheHint: cacheHint,
 }

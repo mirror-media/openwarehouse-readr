@@ -1,6 +1,7 @@
 const { Text, Checkbox, Password, Select, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { admin, moderator, editor, owner, allowRoles } = require('../helpers/readrAccess');
+const cacheHint = require('../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -64,4 +65,5 @@ module.exports = {
         defaultColumns: 'name, email, role, isProtected, createdAt',
         defaultSort: '-createdAt'
     },
+    cacheHint: cacheHint,
 }

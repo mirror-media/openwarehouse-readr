@@ -1,6 +1,7 @@
 const { Integer, Text, Select, Relationship, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { admin, moderator, allowRoles } = require('../helpers/readrAccess');
+const cacheHint = require('../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -33,4 +34,5 @@ module.exports = {
         defaultColumns: 'choice, state, createdAt',
         defaultSort: '-createdAt',
     },
+    cacheHint: cacheHint,
 }

@@ -3,6 +3,7 @@ const { Markdown } = require('@keystonejs/fields-markdown');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { uuid } = require('uuidv4');
 const { admin, moderator, allowRoles } = require('../helpers/readrAccess');
+const cacheHint = require('../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -66,4 +67,5 @@ module.exports = {
         defaultColumns: 'slug, name, email, homepage, createdAt',
         defaultSort: '-createdAt',
     },
+    cacheHint: cacheHint,
 }
