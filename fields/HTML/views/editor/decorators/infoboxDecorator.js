@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Type } from '../controls/Infobox';
+import { InfoboxType } from '../controls/Infobox';
 import classNames from 'classnames';
 
 function strategy(contentBlock, callback, contentState) {
@@ -7,7 +7,7 @@ function strategy(contentBlock, callback, contentState) {
         const entityKey = character.getEntity();
         return (
             entityKey !== null &&
-            contentState.getEntity(entityKey).getType() === Type
+            contentState.getEntity(entityKey).getType() === InfoboxType
         );
     }, callback);
 }
