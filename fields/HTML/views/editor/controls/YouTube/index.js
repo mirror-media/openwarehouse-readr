@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { EditorState, Modifier } from 'draft-js';
-import { getEntityRange, getSelectionEntity } from 'draftjs-utils';
+import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
+import { getSelectionEntity } from 'draftjs-utils';
 
 import TwoInputs from '../../components/TwoInputs';
 
@@ -43,44 +43,20 @@ class YouTube extends Component {
     onChange = (id, description) => {
         const { editorState, onChange } = this.props;
         const { currentEntity } = this.state;
-        let selection = editorState.getSelection();
-
-        if (currentEntity) {
-            const entityRange = getEntityRange(editorState, currentEntity);
-            const isBackward = selection.getIsBackward();
-            if (isBackward) {
-                selection = selection.merge({
-                    anchorOffset: entityRange.end,
-                    focusOffset: entityRange.start,
-                });
-            } else {
-                selection = selection.merge({
-                    anchorOffset: entityRange.start,
-                    focusOffset: entityRange.end,
-                });
-            }
-        }
-
-        let contentState = editorState.getCurrentContent();
-        contentState = Modifier.splitBlock(contentState, selection);
-        contentState = contentState.createEntity('YOUTUBE', 'IMMUTABLE', {
-            id: id,
-            description: description,
-        });
-        const entityKey = contentState.getLastCreatedEntityKey();
-
-        contentState = Modifier.replaceText(
-            contentState,
-            selection,
-            ' ',
-            undefined,
-            entityKey
-        );
-
-        let newEditorState = EditorState.push(
+        const contentState = editorState.getCurrentContent();
+        const entityKey = editorState
+            .getCurrentContent()
+            .createEntity('YOUTUBE', 'IMMUTABLE',
+                {
+                    id: id,
+                    description: description,
+                }
+            )
+            .getLastCreatedEntityKey();
+        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
             editorState,
-            contentState,
-            'insert-characters'
+            entityKey,
+            ' ',
         );
 
         onChange(newEditorState);
@@ -88,24 +64,8 @@ class YouTube extends Component {
     };
 
     getCurrentValues = () => {
-        const { editorState } = this.props;
-        const { currentEntity } = this.state;
-        const contentState = editorState.getCurrentContent();
-        const currentValues = {};
-        if (
-            currentEntity &&
-            contentState.getEntity(currentEntity).get('type') === 'YOUTUBE'
-        ) {
-            currentValues.youtube = {};
-            const entityRange =
-                currentEntity && getEntityRange(editorState, currentEntity);
-            currentValues.youtube.id =
-                currentEntity && contentState.getEntity(currentEntity).get('data').id;
-            currentValues.youtube.description =
-                currentEntity &&
-                contentState.getEntity(currentEntity).get('data').description;
-        }
-        return currentValues;
+        // Do nothing. Don't collect selection.
+        return {};
     };
 
     doExpand = () => {
