@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { EditorState, Modifier } from 'draft-js';
+import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
 import { getEntityRange, getSelectionEntity } from 'draftjs-utils';
 
 import TwoInputs from '../../components/TwoInputs';
@@ -43,45 +43,18 @@ class BlockQuote extends Component {
 
     onChange = (quotedBy, quote) => {
         const { editorState, onChange } = this.props;
-        const { currentEntity } = this.state;
-        let selection = editorState.getSelection();
-
-        if (currentEntity) {
-            const entityRange = getEntityRange(editorState, currentEntity);
-            const isBackward = selection.getIsBackward();
-            if (isBackward) {
-                selection = selection.merge({
-                    anchorOffset: entityRange.end,
-                    focusOffset: entityRange.start,
-                });
-            } else {
-                selection = selection.merge({
-                    anchorOffset: entityRange.start,
-                    focusOffset: entityRange.end,
-                });
-            }
-        }
-
-        let contentState = editorState.getCurrentContent();
-        contentState = Modifier.splitBlock(contentState, selection);
-        contentState = contentState.createEntity('BLOCKQUOTE', 'IMMUTABLE', {
-            quotedBy: quotedBy,
-            quote: quote,
-        });
-        const entityKey = contentState.getLastCreatedEntityKey();
-
-        contentState = Modifier.replaceText(
-            contentState,
-            selection,
-            ' ',
-            undefined,
-            entityKey
-        );
-
-        let newEditorState = EditorState.push(
+        const contentState = editorState.getCurrentContent();
+        const entityKey = editorState
+            .getCurrentContent()
+            .createEntity('BLOCKQUOTE', 'IMMUTABLE', {
+                quotedBy: quotedBy,
+                quote: quote,
+            })
+            .getLastCreatedEntityKey();
+        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
             editorState,
-            contentState,
-            'insert-characters'
+            entityKey,
+            ' ',
         );
 
         onChange(newEditorState);
