@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { EditorState, Modifier } from 'draft-js';
-import { getEntityRange, getSelectionEntity } from 'draftjs-utils';
+import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
 import { Videocam } from '@material-ui/icons';
 
 import GridSelector from '../../components/GridSelector'
@@ -30,42 +29,15 @@ const Video = (props) => {
     }, [searchText, pageNumbers, page])
 
     const saveData = selectedData => {
-        const currentEntity = getSelectionEntity(editorState);
-        let selection = editorState.getSelection();
-
-        if (currentEntity) {
-            const entityRange = getEntityRange(editorState, currentEntity);
-            const isBackward = selection.getIsBackward();
-            if (isBackward) {
-                selection = selection.merge({
-                    anchorOffset: entityRange.end,
-                    focusOffset: entityRange.start,
-                });
-            } else {
-                selection = selection.merge({
-                    anchorOffset: entityRange.start,
-                    focusOffset: entityRange.end,
-                });
-            }
-        }
-
-        let contentState = editorState.getCurrentContent();
-        contentState = Modifier.splitBlock(contentState, selection);
-        contentState = contentState.createEntity('VIDEO', 'IMMUTABLE', selectedData);
-        const entityKey = contentState.getLastCreatedEntityKey();
-
-        contentState = Modifier.replaceText(
-            contentState,
-            selection,
-            ' ',
-            undefined,
-            entityKey
-        );
-
-        const newEditorState = EditorState.push(
+        const contentState = editorState.getCurrentContent();
+        const entityKey = editorState
+            .getCurrentContent()
+            .createEntity('VIDEO', 'IMMUTABLE', selectedData)
+            .getLastCreatedEntityKey();
+        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
             editorState,
-            contentState,
-            'insert-characters'
+            entityKey,
+            ' ',
         );
 
         onChange(newEditorState);
