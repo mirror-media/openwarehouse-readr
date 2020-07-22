@@ -39,7 +39,6 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                             onChange(newState)
                             return 'handled';
                         } else {
-                            console.log("editor key command not handled");
                             // Upon receiving 'not-handled', Editor will fallback to the default behavior.
                             return 'not-handled';
                         }
