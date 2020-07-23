@@ -14,7 +14,7 @@ function strategy(contentBlock, callback, contentState) {
 const component = (props) => {
     const { id, description } = props.contentState.getEntity(props.entityKey).getData();
     return (
-        <div style={{ backgroundColor: "GhostWhite" }}>
+        <figure style={{ backgroundColor: "GhostWhite" }}>
             <iframe
                 width="560"
                 alt={description}
@@ -23,8 +23,8 @@ const component = (props) => {
                 frameBorder="0"
                 allowFullScreen
             />
-            <h6>{description}</h6>
-        </div>
+            <figcaption>{description}</figcaption>
+        </figure>
     );
 }
 
