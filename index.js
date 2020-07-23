@@ -54,9 +54,14 @@ const authStrategy = keystone.createAuthStrategy({
   list: app.authList,
 });
 
+// Default apollo options
+const apolloDftOptions = {
+  introspection: true,
+}
 
 const graphQLOptions = app.isRedisCacheRequired ? {
   apollo: {
+    ...apolloDftOptions,
     cache: new RedisCache({
       // Default ttl is 300. Change it to tweek performance
       host: redisConf.host,
@@ -66,7 +71,9 @@ const graphQLOptions = app.isRedisCacheRequired ? {
     }),
     plugins: [responseCachePlugin()],
   },
-} : {};
+} : {
+    apollo: apolloDftOptions,
+  };
 
 let optionalApps = []
 
