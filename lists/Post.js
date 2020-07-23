@@ -68,10 +68,10 @@ module.exports = {
             ref: 'Author',
             many: true,
         },
-        data: {
+        dataAnalysts: {
             label: '數據分析',
             type: Relationship,
-            ref: 'Data',
+            ref: 'Author',
             many: true,
         },
         otherByline: {
@@ -125,10 +125,11 @@ module.exports = {
             ref: 'Tag',
             many: true,
         },
-        relatedPost: {
-            label: '標籤',
+        relatedPosts: {
+            label: '相關文章',
             type: Relationship,
             ref: 'Post',
+            many: true,
         },
         ogTitle: {
             label: 'FB 分享標題',

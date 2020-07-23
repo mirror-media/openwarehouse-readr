@@ -2,7 +2,6 @@ const { Integer, Slug, Text, DateTime, Relationship, Select } = require('@keysto
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { admin, moderator, allowRoles } = require('../helpers/readrAccess');
 const cacheHint = require('../helpers/cacheHint');
-const HTML = require('../fields/HTML');
 
 module.exports = {
     fields: {
@@ -32,10 +31,11 @@ module.exports = {
             ref: 'Author',
             many: true,
         },
-        relatedPost: {
+        relatedPosts: {
             label: '相關文章',
             type: Relationship,
             ref: 'Post',
+            many: true,
         },
         state: {
             label: '狀態',

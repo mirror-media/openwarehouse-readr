@@ -1,4 +1,4 @@
-const { Text, Checkbox, Select, Relationship, File, DateTime, Url } = require('@keystonejs/fields');
+const { Text, Relationship, File, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
 const { admin, moderator, editor, allowRoles } = require('../helpers/readrAccess');
@@ -19,12 +19,6 @@ module.exports = {
             adapter: new GCSAdapter(gcsDir),
             isRequired: true,
         },
-        categories: {
-            label: '分類',
-            type: Relationship,
-            ref: 'Category',
-            many: true,
-        },
         coverPhoto: {
             label: '封面照片',
             type: Relationship,
@@ -40,37 +34,6 @@ module.exports = {
             type: Relationship,
             ref: 'Tag',
             many: true,
-        },
-        state: {
-            label: '狀態',
-            type: Select,
-            options: 'draft, published, scheduled',
-            defaultValue: 'draft',
-        },
-        publishTime: {
-            label: '發佈時間',
-            type: DateTime,
-            format: 'MM/dd/yyyy HH:mm',
-            defaultValue: new Date().toISOString(),
-            /*dependsOn: {
-                '$or': {
-                    state: [
-                        'published',
-                        'scheduled'
-                    ]
-                }
-            }*/
-        },
-        relatedPosts: {
-            label: '相關文章',
-            type: Relationship,
-            ref: 'Post',
-            many: true,
-        },
-        isFeed: {
-            label: '供稿',
-            type: Checkbox,
-            defaultValue: true,
         },
         meta: {
             label: '中繼資料',
@@ -94,7 +57,7 @@ module.exports = {
             access: {
                 create: false,
                 update: false,
-            }
+            },
         }
     },
     plugins: [
@@ -107,7 +70,7 @@ module.exports = {
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'title, video, tags, state, publishTime, createdAt',
+        defaultColumns: 'title, tags, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
     hooks: {

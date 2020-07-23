@@ -1,6 +1,5 @@
 const { Slug, Text, Relationship, Select } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { uuid } = require('uuidv4');
 const { admin, moderator, editor, allowRoles } = require('../helpers/readrAccess');
 const cacheHint = require('../helpers/cacheHint');
 
@@ -9,14 +8,8 @@ module.exports = {
         slug: {
             label: 'Slug',
             type: Slug,
-            generate: uuid,
-            makeUnique: uuid,
+            isRequired: true,
             isUnique: true,
-            regenerateOnUpdate: false,
-            access: {
-                create: false,
-                update: false,
-            },
         },
         name: {
             label: '名稱',
