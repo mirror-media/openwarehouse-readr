@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import { Dialog, DialogContent, DialogContentText, DialogTitle, DialogActions, TextField, Button, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import { ContentState, EditorState, convertToRaw } from 'draft-js';
+import { ContentState, convertToRaw, EditorState, RichUtils } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import classNames from 'classnames';
 import Option from '../Option';
@@ -147,6 +147,18 @@ const MiniEditor = (props) => {
                         toolbarClassName="toolbar-class"
                         toolbar={builtInButtons}
                         onEditorStateChange={onEditorStateChange}
+                        handleKeyCommand={(command) => {
+                            // RichUtils.handleKeyCommand will handle blocks in different cases which the default behavior of Editor does not handle.
+                            const newState = RichUtils.handleKeyCommand(editorState, command)
+
+                            if (newState) {
+                                onChange(newState)
+                                return 'handled';
+                            } else {
+                                // Upon receiving 'not-handled', Editor will fallback to the default behavior.
+                                return 'not-handled';
+                            }
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
