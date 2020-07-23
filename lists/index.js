@@ -1,5 +1,5 @@
 module.exports = {
-    //Audio: require('./Audio'),
+    Audio: require('./Audio'),
     Author: require('./Author'),
     Category: require('./Category'),
     Collaboration: require('./Collaboration'),
@@ -8,7 +8,8 @@ module.exports = {
     Gallery: require('./Gallery'),
     Image: require('./Image'),
     Quote: require('./Quote'),
+    Post: require('./Post'),
     Tag: require('./Tag'),
     User: require('./User'),
-    //Video: require('./Video'),
+    Video: require('./Video'),
 }
