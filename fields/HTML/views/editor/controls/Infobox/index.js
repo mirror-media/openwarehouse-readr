@@ -1,56 +1,29 @@
 import React, { useState } from 'react';
-import { EditorState, Modifier } from 'draft-js';
-import { getSelectedBlock, getSelectionEntity, getEntityRange } from 'draftjs-utils';
+import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
+import { getSelectionText } from 'draftjs-utils';
 
 import MiniEditor from '../../components/MiniEditor';
 import '../../css/main.css';
 
-export const Type = 'INFOBOX';
+export const InfoboxType = 'INFOBOX';
 export default (props) => {
     const { editorState, onChange } = props;
 
-    const getPreSelectedText = () => getSelectedBlock(editorState).getText();;
+    const getPreSelectedText = () => getSelectionText(editorState);;
 
     const onSave = (title, html) => {
-        const currentEntity = editorState ? getSelectionEntity(editorState) : undefined;
-        let selection = editorState.getSelection();
-
-        if (currentEntity) {
-            const entityRange = getEntityRange(editorState, currentEntity);
-            const isBackward = selection.getIsBackward();
-            if (isBackward) {
-                selection = selection.merge({
-                    anchorOffset: entityRange.end,
-                    focusOffset: entityRange.start,
-                });
-            } else {
-                selection = selection.merge({
-                    anchorOffset: entityRange.start,
-                    focusOffset: entityRange.end,
-                });
-            }
-        }
-
-        let contentState = editorState.getCurrentContent();
-        contentState = Modifier.splitBlock(contentState, selection);
-        contentState = contentState.createEntity(Type, 'IMMUTABLE', {
-            title: title,
-            body: html,
-        });
-        const entityKey = contentState.getLastCreatedEntityKey();
-
-        contentState = Modifier.replaceText(
-            contentState,
-            selection,
-            ' ',
-            undefined,
-            entityKey
-        );
-
-        const newEditorState = EditorState.push(
+        const contentState = editorState.getCurrentContent();
+        const entityKey = editorState
+            .getCurrentContent()
+            .createEntity(InfoboxType, 'IMMUTABLE', {
+                title: title,
+                body: html,
+            })
+            .getLastCreatedEntityKey();
+        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
             editorState,
-            contentState,
-            'insert-characters'
+            entityKey,
+            ' ',
         );
 
         onChange(newEditorState);

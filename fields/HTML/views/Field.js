@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields';
-import { EditorState } from 'draft-js';
+import { EditorState, RichUtils } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { handleDraftEditorPastedText } from "draftjs-conductor";
 import { builtInButtons, customButtons } from './customToolbar';
@@ -31,6 +31,18 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                     toolbar={builtInButtons}
                     toolbarCustomButtons={customButtons}
                     customDecorators={decorators}
+                    handleKeyCommand={(command) => {
+                        // RichUtils.handleKeyCommand will handle blocks in different cases which the default behavior of Editor does not handle.
+                        const newState = RichUtils.handleKeyCommand(editorState, command)
+
+                        if (newState) {
+                            onChange(newState)
+                            return 'handled';
+                        } else {
+                            // Upon receiving 'not-handled', Editor will fallback to the default behavior.
+                            return 'not-handled';
+                        }
+                    }}
                 />
             </div>
         </FieldContainer>

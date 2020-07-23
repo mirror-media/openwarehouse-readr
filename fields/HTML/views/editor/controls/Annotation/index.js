@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { EditorState, Modifier } from 'draft-js';
-import { getSelectedBlock, getSelectionEntity, getEntityRange } from "draftjs-utils";
+import { getSelectionText, getSelectionEntity, getEntityRange } from "draftjs-utils";
 
 import MiniEditor from '../../components/MiniEditor';
 import '../../css/main.css';
@@ -9,19 +9,7 @@ export const AnnotationType = "ANNOTATION";
 export default (props) => {
     const { editorState, onChange } = props;
 
-    // TODO
-    const generateContentBlock = () => {
-        const selectedType = getSelectedBlocksType(editorState);
-
-        switch (selectedType) {
-            case AnnotationType:
-            // extract text and content block
-            default:
-            // use as text and generate a content block
-        }
-    }
-
-    const getPreSelectedText = () => getSelectedBlock(editorState).getText();;
+    const getPreSelectedText = () => getSelectionText(editorState);;
 
     const onSave = (text, html) => {
         const currentEntity = editorState ? getSelectionEntity(editorState) : undefined;
@@ -44,7 +32,6 @@ export default (props) => {
         }
 
         let contentState = editorState.getCurrentContent();
-        contentState = Modifier.splitBlock(contentState, selection);
         contentState = contentState.createEntity(AnnotationType, 'IMMUTABLE', {
             text: text,
             body: html,
