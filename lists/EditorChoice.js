@@ -15,11 +15,11 @@ module.exports = {
             type: Text,
             isRequired: true
         },
-        /*choice: {
+        choice: {
             label: '精選文章',
             type: Relationship,
             ref: 'Post'
-        },*/
+        },
         link: {
             label: '連結',
             type: Url,

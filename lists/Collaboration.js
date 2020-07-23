@@ -19,6 +19,12 @@ module.exports = {
             label: '描述',
             type: Text
         },
+        requireTime: {
+            label: '需要時間',
+            type: DateTime,
+            format: 'MM/dd/yyyy HH:mm',
+            defaultValue: new Date().toISOString(),
+        },
         heroImage: {
             label: '首圖',
             type: Relationship,

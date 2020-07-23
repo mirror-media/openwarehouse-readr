@@ -23,12 +23,12 @@ module.exports = {
             label: '連結',
             type: Url,
         },
-        /*relatedPosts: {
+        relatedPosts: {
             label: '相關文章',
             type: Relationship,
             ref: 'Post',
             many: true
-        },*/
+        },
         relatedGallery: {
             label: '相關作品',
             type: Relationship,
