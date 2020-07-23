@@ -1,7 +1,7 @@
 const { Integer, Text, DateTime, Relationship, Url, Select } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, allowRoles } = require('../helpers/readrAccess');
-const cacheHint = require('../helpers/cacheHint');
+const { admin, moderator, allowRoles } = require('../../helpers/readrAccess');
+const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {
     fields: {

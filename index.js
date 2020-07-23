@@ -5,7 +5,7 @@ const { KnexAdapter: Adapter } = require('@keystonejs/adapter-knex');
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 
 const { app, database, session, redis: redisConf } = require('./configs/config.js')
-const lists = require(`./lists/index.js`);
+const lists = require(`./lists/${app.project}`);
 const createDefaultAdmin = require('./helpers/createDefaultAdmin')
 
 const redis = require('redis');

@@ -1,7 +1,7 @@
-const { Integer, Text, Select, Relationship, DateTime } = require('@keystonejs/fields');
+const { Integer, Text, Select, Relationship, Url, DateTime } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, allowRoles } = require('../helpers/readrAccess');
-const cacheHint = require('../helpers/cacheHint');
+const { admin, moderator, allowRoles } = require('../../helpers/readrAccess');
+const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {
     fields: {
@@ -15,22 +15,31 @@ module.exports = {
             type: Text,
             isRequired: true,
         },
-        writer: {
-            label: '作者',
+        choice: {
+            label: '精選文章',
             type: Relationship,
-            ref: 'Author',
+            ref: 'Post',
         },
-        byline: {
-            label: '引自',
-            type: Text,
+        link: {
+            label: '連結',
+            type: Url,
         },
         state: {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled, archived, invisible',
-            defaultValue: 'draft',
+            defaultValue: 'draft'
         },
-        publishedTime: {
+        description: {
+            label: '描述',
+            type: Text,
+        },
+        heroImage: {
+            label: '首圖',
+            type: Relationship,
+            ref: 'Image'
+        },
+        publishTime: {
             label: '發佈時間',
             type: DateTime,
             format: 'MM/dd/yyyy HH:mm',
@@ -55,7 +64,7 @@ module.exports = {
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'title, writer, byline, state, publishedTime, createdAt',
+        defaultColumns: 'choice, state, createdAt',
         defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,
