@@ -14,11 +14,11 @@ module.exports = {
             label: 'Email',
             type: Text,
             isRequired: true,
-            isUnique: true
+            isUnique: true,
         },
         password: {
             label: '密碼',
-            type: Password
+            type: Password,
         },
         role: {
             label: '角色權限',
@@ -29,14 +29,14 @@ module.exports = {
             isRequired: true,
             access: {
                 update: allowRoles(admin, moderator),
-            }
+            },
         },
         isProtected: {
             label: '受保護',
             type: Checkbox,
             access: {
                 update: allowRoles(admin),
-            }
+            },
         }
     },
     plugins: [

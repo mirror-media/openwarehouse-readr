@@ -8,16 +8,16 @@ module.exports = {
         sortOrder: {
             label: '排序順位',
             type: Integer,
-            isUnique: true
+            isUnique: true,
         },
         title: {
             label: '標題',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         description: {
             label: '描述',
-            type: Text
+            type: Text,
         },
         requireTime: {
             label: '需要時間',
@@ -28,7 +28,7 @@ module.exports = {
         heroImage: {
             label: '首圖',
             type: Relationship,
-            ref: 'Image'
+            ref: 'Image',
         },
         startTime: {
             label: '開始時間',
@@ -36,7 +36,7 @@ module.exports = {
             format: 'MM/dd/yyyy HH:mm',
             defaultValue: new Date().toISOString(),
             isRequired: true,
-            yearPickerType: 'select' // this option seems not work
+            yearPickerType: 'select', // this option seems not work
         },
         endTime: {
             label: '結束時間',
@@ -59,7 +59,7 @@ module.exports = {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled, archived',
-            defaultValue: 'draft'
+            defaultValue: 'draft',
         },
         publishTime: {
             label: '發佈時間',

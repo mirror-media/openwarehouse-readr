@@ -16,32 +16,32 @@ module.exports = {
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         name: {
             label: '名稱',
             type: Text,
             isRequired: true,
-            isUnique: true
+            isUnique: true,
         },
         state: {
             label: '狀態',
             type: Select,
             options: 'inactive, active, archived',
-            defaultValue: 'inactive'
+            defaultValue: 'inactive',
         },
         ogTitle: {
             label: 'FB 分享標題',
-            type: Text
+            type: Text,
         },
         ogDescription: {
             label: 'FB 分享說明',
-            type: Text
+            type: Text,
         },
         ogImage: {
             label: 'FB 分享縮圖',
             type: Relationship,
-            ref: 'Image'
+            ref: 'Image',
         },
     },
     plugins: [

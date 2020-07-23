@@ -8,12 +8,12 @@ module.exports = {
         sortOrder: {
             label: '排序順位',
             type: Integer,
-            isUnique: true
+            isUnique: true,
         },
         title: {
             label: '標題',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         description: {
             label: '描述',
@@ -33,13 +33,13 @@ module.exports = {
             label: '相關作品',
             type: Relationship,
             ref: 'Gallery',
-            many: true
+            many: true,
         },
         state: {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled, archived, invisible',
-            defaultValue: 'draft'
+            defaultValue: 'draft',
         },
         publishTime: {
             label: '發佈時間',

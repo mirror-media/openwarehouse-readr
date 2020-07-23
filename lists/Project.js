@@ -23,7 +23,7 @@ module.exports = {
             isRequired: true,
         },
         description: {
-            label: '敘述',
+            label: '描述',
             type: Text,
         },
         writers: {

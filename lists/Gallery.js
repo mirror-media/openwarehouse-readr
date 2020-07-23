@@ -1,4 +1,4 @@
-const { Integer, Text, Select, Relationship, Url } = require('@keystonejs/fields');
+const { Relationship, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { admin, moderator, allowRoles } = require('../helpers/readrAccess');
 const cacheHint = require('../helpers/cacheHint');
@@ -8,7 +8,7 @@ module.exports = {
         data: {
             label: '所使用 Data',
             type: Relationship,
-            ref: 'Data'
+            ref: 'Data',
         },
         link: {
             label: '連結',
@@ -18,7 +18,12 @@ module.exports = {
             label: '作者',
             type: Relationship,
             ref: 'Author',
-            many: true
+            many: true,
+        },
+        heroImage: {
+            label: '首圖',
+            type: Relationship,
+            ref: 'Image',
         },
     },
     plugins: [

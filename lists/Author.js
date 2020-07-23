@@ -17,41 +17,41 @@ module.exports = {
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         name: {
             label: '姓名',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         email: {
             label: 'Email',
-            type: Text
+            type: Text,
         },
         image: {
             label: '圖片',
             type: Relationship,
-            ref: 'Image'
+            ref: 'Image',
         },
         homepage: {
             label: '個人首頁',
-            type: Url
+            type: Url,
         },
         facebook: {
             label: 'Facebook',
-            type: Url
+            type: Url,
         },
         twitter: {
             label: 'Twitter',
-            type: Url
+            type: Url,
         },
         instatgram: {
             label: 'Instatgram',
-            type: Url
+            type: Url,
         },
         bio: {
             label: '個人簡介',
-            type: Markdown
+            type: Markdown,
         },
     },
     plugins: [

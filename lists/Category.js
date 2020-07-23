@@ -14,30 +14,30 @@ module.exports = {
         name: {
             label: "名稱",
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         state: {
             label: '狀態',
             type: Select,
             options: 'inactive, active, archived',
-            defaultValue: 'inactive'
+            defaultValue: 'inactive',
         },
         ogTitle: {
             label: 'FB 分享標題',
-            type: Text
+            type: Text,
         },
         ogDescription: {
             label: 'FB 分享說明',
-            type: Text
+            type: Text,
         },
         ogImage: {
             label: 'FB 分享縮圖',
             type: Relationship,
-            ref: 'Image'
+            ref: 'Image',
         },
         isFeatured: {
             label: '置頂',
-            type: Checkbox
+            type: Checkbox,
         },
     },
     plugins: [

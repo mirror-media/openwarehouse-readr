@@ -11,7 +11,7 @@ module.exports = {
         title: {
             label: '標題',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         file: {
             label: '檔案',
@@ -24,17 +24,17 @@ module.exports = {
             type: Select,
             dataType: 'string',
             options: 'Creative-Commons, Copyrighted',
-            defaultValue: 'Copyrighted'
+            defaultValue: 'Copyrighted',
         },
         tags: {
             label: '標籤',
             type: Relationship,
             ref: 'Tag',
-            many: true
+            many: true,
         },
         keywords: {
             label: '關鍵字',
-            type: Text
+            type: Text,
         },
         urlOriginal: {
             type: Url,
@@ -48,28 +48,28 @@ module.exports = {
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         urlMobileSized: {
             type: Url,
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         urlTabletSized: {
             type: Url,
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         urlTinySized: {
             type: Url,
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
     },
     plugins: [

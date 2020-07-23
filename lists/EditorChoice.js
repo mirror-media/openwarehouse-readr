@@ -8,17 +8,17 @@ module.exports = {
         sortOrder: {
             label: '排序順位',
             type: Integer,
-            isUnique: true
+            isUnique: true,
         },
         title: {
             label: '標題',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         choice: {
             label: '精選文章',
             type: Relationship,
-            ref: 'Post'
+            ref: 'Post',
         },
         link: {
             label: '連結',

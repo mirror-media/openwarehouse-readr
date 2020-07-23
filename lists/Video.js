@@ -11,7 +11,7 @@ module.exports = {
         title: {
             label: '標題',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         file: {
             label: '檔案',
@@ -23,29 +23,29 @@ module.exports = {
             label: '分類',
             type: Relationship,
             ref: 'Category',
-            many: true
+            many: true,
         },
         coverPhoto: {
             label: '封面照片',
             type: Relationship,
-            ref: 'Image'
+            ref: 'Image',
         },
         description: {
-            label: '敘述',
+            label: '描述',
             type: Text,
-            isMultiline: true
+            isMultiline: true,
         },
         tags: {
             label: '標籤',
             type: Relationship,
             ref: 'Tag',
-            many: true
+            many: true,
         },
         state: {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled',
-            defaultValue: 'draft'
+            defaultValue: 'draft',
         },
         publishTime: {
             label: '發佈時間',
@@ -65,12 +65,12 @@ module.exports = {
             label: '相關文章',
             type: Relationship,
             ref: 'Post',
-            many: true
+            many: true,
         },
         isFeed: {
             label: '供稿',
             type: Checkbox,
-            defaultValue: true
+            defaultValue: true,
         },
         meta: {
             label: '中繼資料',
@@ -78,7 +78,7 @@ module.exports = {
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         url: {
             label: '檔案網址',
@@ -86,7 +86,7 @@ module.exports = {
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         duration: {
             label: '影片長度（秒）',

@@ -8,17 +8,17 @@ module.exports = {
         sortOrder: {
             label: '排序順位',
             type: Integer,
-            isUnique: true
+            isUnique: true,
         },
         title: {
             label: '標題',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         writer: {
             label: '作者',
             type: Relationship,
-            ref: 'Author'
+            ref: 'Author',
         },
         byline: {
             label: '引自',
@@ -28,7 +28,7 @@ module.exports = {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled, archived, invisible',
-            defaultValue: 'draft'
+            defaultValue: 'draft',
         },
         publishedTime: {
             label: '發佈時間',
