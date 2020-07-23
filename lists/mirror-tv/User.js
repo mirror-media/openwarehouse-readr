@@ -1,7 +1,7 @@
 const { Text, Checkbox, Password, Select, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
-const access = require('../helpers/access');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const access = require('../../helpers/access');
 
 module.exports = {
     fields: {

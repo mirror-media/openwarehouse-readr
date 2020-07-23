@@ -1,9 +1,9 @@
 const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { ImageAdapter } = require('../lib/ImageAdapter');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
-const publishStateExaminer = require('../hooks/publishStateExaminer');
-const cacheHint = require('../helpers/cacheHint');
+const { ImageAdapter } = require('../../lib/ImageAdapter');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const publishStateExaminer = require('../../hooks/publishStateExaminer');
+const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/images/'
 
 module.exports = {

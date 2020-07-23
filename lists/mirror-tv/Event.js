@@ -1,8 +1,8 @@
 const { Text, DateTime, Select, Relationship, Url, Checkbox } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
-const publishStateExaminer = require('../hooks/publishStateExaminer');
-const cacheHint = require('../helpers/cacheHint');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const publishStateExaminer = require('../../hooks/publishStateExaminer');
+const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {
     fields: {

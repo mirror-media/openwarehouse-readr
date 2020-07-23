@@ -1,29 +1,21 @@
-const { Slug, Text, Relationship } = require('@keystonejs/fields');
+const { Slug, Text, Checkbox, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { uuid } = require('uuidv4');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../helpers/mirrormediaAccess');
-const publishStateExaminer = require('../hooks/publishStateExaminer');
-const cacheHint = require('../helpers/cacheHint');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const publishStateExaminer = require('../../hooks/publishStateExaminer');
+const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {
     fields: {
         slug: {
-            label: 'Slug',
+            label: "Slug",
             type: Slug,
-            generate: uuid,
-            makeUnique: uuid,
-            isUnique: true,
-            regenerateOnUpdate: false,
-            access: {
-                create: false,
-                update: false,
-            }
-        },
-        name: {
-            label: '名稱',
-            type: Text,
             isRequired: true,
-            isUnique: true
+            isUnique: true,
+        },
+        title: {
+            label: "名稱",
+            type: Text,
+            isRequired: true
         },
         ogTitle: {
             label: 'FB 分享標題',
@@ -37,6 +29,10 @@ module.exports = {
             label: 'FB 分享縮圖',
             type: Relationship,
             ref: 'Image'
+        },
+        isFeatured: {
+            label: '置頂',
+            type: Checkbox
         },
     },
     plugins: [
@@ -52,7 +48,7 @@ module.exports = {
         resolveInput: publishStateExaminer,
     },
     adminConfig: {
-        defaultColumns: 'slug, name, createdAt',
+        defaultColumns: 'slug, title, isFeatured, createdAt',
         defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,
