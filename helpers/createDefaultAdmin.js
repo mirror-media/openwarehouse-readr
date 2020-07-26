@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { gql } = require('apollo-server-express');
 const randomString = () => crypto.randomBytes(6).hexSlice();
 
 module.exports = project => async keystone => {
@@ -7,12 +8,14 @@ module.exports = project => async keystone => {
         data: {
             _allUsersMeta: { count },
         },
-    } = await keystone.executeQuery(
-        `query {
-            _allUsersMeta {
-                count
-            }
-        }`
+    } = await keystone.executeGraphQL(
+        {
+            query: gql`query {
+                        _allUsersMeta {
+                            count
+                        }
+                    }`,
+        }
     );
 
     const projectAdminRole = project === 'readr' ? 'role: "admin"' : 'role: "moderator", isAdmin: true';
@@ -21,18 +24,17 @@ module.exports = project => async keystone => {
         const password = (process.env.NODE_ENV === 'development') ? 'mirrormedia' : randomString();
         const email = 'admin@mirrormedia.mg';
 
-        await keystone.executeQuery(
-            `mutation initialUser($password: String, $email: String) {
+        await keystone.executeGraphQL({
+            query: gql`mutation initialUser($password: String, $email: String) {
                 createUser(data: {name: "admin", email: $email, password: $password, ${projectAdminRole}}) {
                 id
                 }
             }`,
-            {
-                variables: {
-                    password,
-                    email,
-                },
-            }
+            variables: {
+                password,
+                email,
+            },
+        }
         );
 
         console.log(`
