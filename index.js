@@ -61,7 +61,7 @@ const keystone = new Keystone({
 
 for (var name in lists) {
   // Remove cacheHint if we want users to reach realtime data
-  if (!app.isRedisCacheRequired) {
+  if (!app.isGraphQLCached) {
     delete lists[name].cacheHint;
   }
   keystone.createList(name, lists[name]);
@@ -79,7 +79,7 @@ const apolloDftOptions = {
 
 // apollo Redis cache options
 const apolloRedisCacheOptions = {};
-if (app.isRedisCacheRequired) {
+if (app.isGraphQLCached) {
   const { options } = redisConf;
   const keyPrefix = `${app.uuid}-cache:`;
   switch (redisConf.type) {
