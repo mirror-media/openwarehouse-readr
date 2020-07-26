@@ -30,7 +30,8 @@ const newRedisClient = (redisConf) => {
       return new ioredis({
         port: redisConf.nodes[0].port, // First Redis port
         host: redisConf.nodes[0].host, // First Redis host
-        password: redisConf.authPass,
+      }, {
+        password: options.authPass,
       });
     case 'cluster':
       return new ioredis.Cluster(
