@@ -11,7 +11,7 @@ const createDefaultAdmin = require('./helpers/createDefaultAdmin')
 const redis = require('redis');
 const expressSession = require('express-session');
 const RedisStore = require('connect-redis')(expressSession);
-const { RedisCache } = require('apollo-server-cache-redis');
+const { RedisCache, RedisClusterCache } = require('apollo-server-cache-redis');
 const responseCachePlugin = require('apollo-server-plugin-response-cache');
 const ioredis = require("ioredis");
 
@@ -77,21 +77,46 @@ const apolloDftOptions = {
   introspection: true,
 }
 
-const graphQLOptions = app.isRedisCacheRequired ? {
+// apollo Redis cache options
+const apolloRedisCacheOptions = {};
+if (app.isRedisCacheRequired) {
+  const { options } = redisConf;
+  const keyPrefix = `${app.uuid}-cache:`;
+  switch (redisConf.type) {
+    case 'single':
+      apolloRedisCacheOptions.plugins = [responseCachePlugin()];
+      apolloRedisCacheOptions.cache = new RedisCache({
+        host: redisConf.nodes[0].host,
+        port: redisConf.nodes[0].port,
+        password: options.authPass,
+        keyPrefix: keyPrefix,
+      });
+      break;
+    case 'cluster':
+      apolloRedisCacheOptions.plugins = [responseCachePlugin()];
+      apolloRedisCacheOptions.cache = new RedisClusterCache(
+        redisConf.nodes,
+        {
+          scaleReads: options.scaleReads,
+          redisOptions: {
+            password: options.authPass,
+            prefix: keyPrefix,
+          },
+        },
+      );
+      break;
+    default:
+      throw 'wrong redis type'
+  }
+}
+
+
+const graphQLOptions = {
   apollo: {
     ...apolloDftOptions,
-    cache: new RedisCache({
-      // Default ttl is 300. Change it to tweek performance
-      host: redisConf.host,
-      port: redisConf.port,
-      password: redisConf.authPass,
-      keyPrefix: `${app.uuid}-cache:`,
-    }),
-    plugins: [responseCachePlugin()],
+    ...apolloRedisCacheOptions,
   },
-} : {
-    apollo: apolloDftOptions,
-  };
+};
 
 let optionalApps = []
 
