@@ -13,6 +13,7 @@ const expressSession = require('express-session');
 const RedisStore = require('connect-redis')(expressSession);
 const { RedisCache } = require('apollo-server-cache-redis');
 const responseCachePlugin = require('apollo-server-plugin-response-cache');
+const ioredis = require("ioredis");
 
 const adapterConfig = {
   dropDatabase: app.dropDatabase,
@@ -22,21 +23,39 @@ const adapterConfig = {
   }
 };
 
+const newRedisClient = (redisConf) => {
+  const { options } = redisConf;
+  switch (redisConf.type) {
+    case 'single':
+      return new ioredis({
+        port: redisConf.nodes[0].port, // First Redis port
+        host: redisConf.nodes[0].host, // First Redis host
+        password: redisConf.authPass,
+      });
+    case 'cluster':
+      return new ioredis.Cluster(
+        redisConf.nodes,
+        {
+          scaleReads: options.scaleReads,
+          redisOptions: {
+            password: options.authPass,
+          },
+        },
+      );
+    default:
+      return null;
+  }
+};
+
 const keystone = new Keystone({
   name: app.applicationName,
   adapter: new Adapter(adapterConfig),
   cookieSecret: session.cookieSecret,
   onConnect: createDefaultAdmin(app.project),
   sessionStore: new RedisStore({
-    client: redis.createClient({
-      host: redisConf.host,
-      port: redisConf.port,
-      auth_pass: redisConf.authPass,
-      prefix: `${app.uuid}-`,
-    }),
-    options: {
-      ttl: session.ttl
-    }
+    client: newRedisClient(redisConf),
+    ttl: session.ttl,
+    prefix: `${app.uuid}-ss:`,
   })
 });
 
@@ -47,7 +66,6 @@ for (var name in lists) {
   }
   keystone.createList(name, lists[name]);
 }
-
 
 const authStrategy = keystone.createAuthStrategy({
   type: PasswordAuthStrategy,
