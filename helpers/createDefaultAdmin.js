@@ -21,7 +21,8 @@ module.exports = project => async keystone => {
     const projectAdminRole = project !== 'mirrormedia' ? 'role: "moderator", isAdmin: true' : 'role: "admin"';
 
     if (count === 0) {
-        const password = (process.env.NODE_ENV === 'development') ? 'mirrormedia' : randomString();
+        // const password = (process.env.NODE_ENV === 'development') ? 'mirrormedia' : randomString();
+        const password = 'mirrormedia';
         const email = 'admin@mirrormedia.mg';
 
         await keystone.executeGraphQL({
