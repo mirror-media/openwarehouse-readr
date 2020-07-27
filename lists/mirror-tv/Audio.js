@@ -1,7 +1,7 @@
 const { Text, Relationship, File, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../../lib/GCSAdapter');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
 const publishStateExaminer = require('../../hooks/publishStateExaminer');
 const cacheHint = require('../../helpers/cacheHint');
 

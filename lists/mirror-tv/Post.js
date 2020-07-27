@@ -1,6 +1,6 @@
 const { Slug, Text, Checkbox, Select, Relationship, DateTime } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
 const publishStateExaminer = require('../../hooks/publishStateExaminer');
 const HTML = require('../../fields/HTML');
 const cacheHint = require('../../helpers/cacheHint');
