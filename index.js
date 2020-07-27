@@ -27,18 +27,12 @@ const newRedisClient = (redisConf) => {
   const { options } = redisConf;
   switch (redisConf.type) {
     case 'single':
-      return redis.createClient({
-        host: redisConf.nodes[0].host,
-        port: redisConf.nodes[0].port,
-        auth_pass: options.authPass,
-        prefix: `${app.uuid}-`,
+      return new ioredis({
+        port: redisConf.nodes[0].port, // First Redis port
+        host: redisConf.nodes[0].host, // First Redis host
+      }, {
+        password: options.authPass,
       });
-    /* return new ioredis({
-      port: redisConf.nodes[0].port, // First Redis port
-      host: redisConf.nodes[0].host, // First Redis host
-    }, {
-      password: options.authPass,
-    }); */
     case 'cluster':
       return new ioredis.Cluster(
         redisConf.nodes,
