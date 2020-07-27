@@ -21,9 +21,7 @@ module.exports = {
         },
         requireTime: {
             label: '需要時間',
-            type: DateTime,
-            format: 'MM/dd/yyyy HH:mm',
-            defaultValue: new Date().toISOString(),
+            type: Integer,
         },
         heroImage: {
             label: '首圖',
