@@ -51,6 +51,9 @@ const newRedisClient = (redisConf) => {
 const keystone = new Keystone({
   name: app.applicationName,
   adapter: new Adapter(adapterConfig),
+  cookie: {
+    secure: session.secure,
+  },
   cookieSecret: session.cookieSecret,
   onConnect: createDefaultAdmin(app.project),
   sessionStore: new RedisStore({
