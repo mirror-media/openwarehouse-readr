@@ -1,4 +1,4 @@
-const admin = ({ authentication: { item: user } }) => Boolean(user && user.isAdmin);
+const admin = ({ authentication: { item: user } }) => Boolean(user && user.role == 'admin');
 const moderator = ({ authentication: { item: user } }) => Boolean(user && user.role == 'moderator');
 const editor = ({ authentication: { item: user } }) => Boolean(user && user.role == 'editor');
 const contributor = ({ authentication: { item: user } }) => Boolean(user && user.role == 'contributor');
