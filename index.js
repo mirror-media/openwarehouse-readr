@@ -52,7 +52,7 @@ const keystone = new Keystone({
   name: app.applicationName,
   adapter: new Adapter(adapterConfig),
   cookie: {
-    secure: session.secure,
+    secure: !!session.secure,
   },
   cookieSecret: session.cookieSecret,
   onConnect: createDefaultAdmin(app.project),
@@ -83,7 +83,7 @@ const apolloDftOptions = {
 
 // apollo Redis cache options
 const apolloRedisCacheOptions = {};
-if (app.isGraphQLCached) {
+if (!!app.isGraphQLCached) {
   const { options } = redisConf;
   const keyPrefix = `${app.uuid}-cache:`;
   switch (redisConf.type) {
@@ -124,7 +124,7 @@ const graphQLOptions = {
 
 let optionalApps = []
 
-if (app.isAdminAppRequired) {
+if (!!app.isAdminAppRequired) {
   optionalApps.push(new AdminUIApp({
     enableDefaultRoute: true,
     hooks: require.resolve(`./hooks/${app.project}`),
