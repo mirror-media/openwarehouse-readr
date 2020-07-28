@@ -158,5 +158,6 @@ module.exports = {
         defaultColumns: 'sortOrder,title, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
+    labelField: 'title',
     cacheHint: cacheHint,
 }
