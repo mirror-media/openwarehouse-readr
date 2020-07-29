@@ -41,6 +41,8 @@ let defaultEntityTagMap = {
 	[ENTITY.BLOCKQUOTE.type]: ['<blockquote class="center"><div><%= data.quote %></div><div><%= data.quotedBy %></div>', '<blockquote>'],
 	[ENTITY.EMBEDDEDCODE.type]: ['<div class="embedded <%= data.alignment %>" title="<%= data.caption %>"><%= data.code%>', '</div>'],
 	[ENTITY.INFOBOX.type]: ['<div class="info-box-container center"><div class="info-box-title"><%= data.title %></div><div class="info-box-body"><%= data.body %></div>', '</div>'],
+	// M_IMAGE is a custom key for k5
+	['M_IMAGE']: ['<img alt="<%= data.title %>" src="<%= data.urlOriginal %>" srcset="<%= data.urlMobileSized %> 800w,  <%= data.urlTabletSized %> 1280w, <%= data.urlDesktopSized %> 2400w" class="center">', '</img>'],
 	[ENTITY.IMAGE.type]: ['<img alt="<%= data.title %>" src="<%= data.urlOriginal %>" srcset="<%= data.urlMobileSized %> 800w,  <%= data.urlTabletSized %> 1280w, <%= data.urlDesktopSized %> 2400w" class="center">', '</img>'],
 	/*[ENTITY.IMAGEDIFF.type]: ['<!-- imageDiff component start --> <ol class="image-diff-container"> <% _.forEach(data, function(image, index) { if (index > 1) { return; } %><li class="image-diff-item"><img src="<%- image.url %>" /></li><% }); %>', '</ol><!-- imageDiff component end-->'],
 	[ENTITY.IMAGELINK.type]: ['<img alt="<%= data.description %>" src="<%= data.url %>" class="<%= data.alignment %>">', '</img>'],
