@@ -15,7 +15,7 @@ module.exports = project => async keystone => {
         }`
     );
 
-    const projectAdminRole = project === 'readr' ? 'role: "admin"' : 'role: "moderator", isAdmin: true';
+    const projectAdminRole = project === 'mirrormedia' ? 'role: "moderator", isAdmin: true' : 'role: "admin"';
 
     if (count === 0) {
         const password = (process.env.NODE_ENV === 'development') ? 'mirrormedia' : randomString();
