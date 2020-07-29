@@ -91,4 +91,7 @@ module.exports = {
     new GraphQLApp(graphQLOptions),
     ...optionalApps,
   ],
+  configureExpress: app => {
+    app.set('trust proxy', true);
+  },
 };
