@@ -6,7 +6,7 @@ function strategy(contentBlock, callback, contentState) {
         const entityKey = character.getEntity();
         return (
             entityKey !== null &&
-            contentState.getEntity(entityKey).getType() === 'IMAGE'
+            contentState.getEntity(entityKey).getType() === 'M_IMAGE'
         );
     }, callback);
 }

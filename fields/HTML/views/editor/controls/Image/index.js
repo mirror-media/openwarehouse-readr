@@ -31,7 +31,7 @@ const Image = (props) => {
         const contentState = editorState.getCurrentContent();
         const entityKey = editorState
             .getCurrentContent()
-            .createEntity('IMAGE', 'IMMUTABLE', selectedData)
+            .createEntity('M_IMAGE', 'IMMUTABLE', selectedData)
             .getLastCreatedEntityKey();
         const newEditorState = AtomicBlockUtils.insertAtomicBlock(
             editorState,
