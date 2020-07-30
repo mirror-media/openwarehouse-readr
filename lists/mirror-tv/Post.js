@@ -43,7 +43,7 @@ module.exports = {
                 }
             }*/
         },
-        Category: {
+        categories: {
             label: '分類',
             type: Relationship,
             ref: 'Category',
@@ -133,7 +133,7 @@ module.exports = {
             type: Relationship,
             ref: 'Topic',
         },
-        Tag: {
+        tags: {
             label: '標籤',
             type: Relationship,
             ref: 'Tag',
