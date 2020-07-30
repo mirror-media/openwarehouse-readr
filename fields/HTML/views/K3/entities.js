@@ -25,6 +25,9 @@ const ENTITY = {
 	IMAGE: {
 		type: 'IMAGE',
 	},
+	STOREDIMAGE: {
+		type: 'STOREDIMAGE',
+	},
 	IMAGEDIFF: {
 		type: 'IMAGEDIFF',
 	},
