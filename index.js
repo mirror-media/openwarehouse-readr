@@ -52,7 +52,9 @@ const keystone = new Keystone({
   name: app.applicationName,
   adapter: new Adapter(adapterConfig),
   cookie: {
-    secure: !!session.secure,
+    // If it's explicitly configured to use insecure cookies, overwrite the default setting.
+    // Anything else will be fallback to the default of true in production.
+    secure: session.secure === false ? false : process.env.NODE_ENV === 'production',
   },
   cookieSecret: session.cookieSecret,
   onConnect: createDefaultAdmin(app.project),
