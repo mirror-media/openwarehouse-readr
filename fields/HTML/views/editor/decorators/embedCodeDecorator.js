@@ -14,7 +14,7 @@ function strategy(contentBlock, callback, contentState) {
 
 const component = (props) => {
     const { caption, code, alignment } = props.contentState.getEntity(props.entityKey).getData();
-    const scripts = code.match(/<script.*\/script>/g);
+    const scripts = code.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gm);
     return (
         <div style={{ backgroundColor: "GhostWhite" }}>
             <div
