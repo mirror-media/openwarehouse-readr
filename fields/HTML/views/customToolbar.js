@@ -3,25 +3,24 @@ import { jsx } from '@emotion/core';
 import { Annotation, Audio, BlockQuote, EmbedCode, Image, Infobox, Slideshow, Video, YouTube } from './editor/controls';
 
 export const customButtons = [
-    <YouTube />,
-    <EmbedCode />,
-    <BlockQuote />,
     <Annotation />,
+    <BlockQuote />,
     <Infobox />,
+    <EmbedCode />,
+    <Audio />,
+    <Video />,
     <Image />,
     <Slideshow />,
-    <Video />,
-    <Audio />,
+    <YouTube />,
 ];
 
 export const builtInButtons = {
     options: [
-        "inline",
+        "history",
         "blockType",
         "list",
+        "inline",
         "link",
-        "image",
-        "history",
     ],
     inline: {
         options: [
@@ -36,10 +35,12 @@ export const builtInButtons = {
             "Normal",
             "H1",
             "H2",
-            "Blockquote",
         ],
     },
     list: {
-        options: ["unordered", "ordered"],
+        options: [
+            "ordered",
+            "unordered",
+        ],
     },
 };
