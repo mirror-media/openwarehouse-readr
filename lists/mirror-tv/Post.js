@@ -22,6 +22,7 @@ module.exports = {
         subtitle: {
             label: '副標',
             type: Text,
+            defaultValue: ''
         },
         state: {
             label: '狀態',
@@ -87,7 +88,8 @@ module.exports = {
         },
         otherbyline: {
             label: '作者（其他）',
-            type: Text
+            type: Text,
+            defaultValue: ''
         },
         heroVideo: {
             label: '影片',
@@ -101,7 +103,8 @@ module.exports = {
         },
         heroCaption: {
             label: '首圖圖說',
-            type: Text
+            type: Text,
+            defaultValue: ''
         },
         heroImageSize: {
             label: '首圖尺寸',
@@ -157,11 +160,13 @@ module.exports = {
         },
         ogTitle: {
             label: 'FB 分享標題',
-            type: Text
+            type: Text,
+            defaultValue: ''
         },
         ogDescription: {
             label: 'FB 分享說明',
-            type: Text
+            type: Text,
+            defaultValue: ''
         },
         ogImage: {
             label: 'FB 分享縮圖',
@@ -171,7 +176,8 @@ module.exports = {
         adTraceCode: {
             label: '追蹤代碼',
             type: Text,
-            isMultiline: true
+            isMultiline: true,
+            defaultValue: ''
         },
         isFeatured: {
             label: '置頂',

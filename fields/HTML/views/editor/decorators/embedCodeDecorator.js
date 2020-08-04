@@ -14,6 +14,7 @@ function strategy(contentBlock, callback, contentState) {
 
 const component = (props) => {
     const { caption, code, alignment } = props.contentState.getEntity(props.entityKey).getData();
+    const scripts = code.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gm);
     return (
         <div style={{ backgroundColor: "GhostWhite" }}>
             <div
@@ -21,11 +22,14 @@ const component = (props) => {
                 title={caption}
             >
                 {htmlParser(code)}
-                <Helmet>
-                    {code.match(/<script.*\/script>/g).map(script => {
-                        return htmlParser(script);
-                    })}
-                </Helmet>
+                {
+                    scripts &&
+                    <Helmet>
+                        {scripts.map(script => {
+                            return htmlParser(script);
+                        })}
+                    </Helmet>
+                }
             </div>
             <h6>{caption}</h6>
         </div>
