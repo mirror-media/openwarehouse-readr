@@ -1,6 +1,7 @@
-const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields');
+const { Text, Select, Relationship, File, Url, Checkbox} = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { ImageAdapter } = require('../../lib/ImageAdapter');
+const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const fs = require('fs')
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
 const publishStateExaminer = require('../../hooks/publishStateExaminer');
