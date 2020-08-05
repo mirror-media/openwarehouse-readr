@@ -35,7 +35,18 @@ pipeline:
       - cp ../configs/mirror-tv/dev/mirror-tv-gcskeyfile.json ./configs/gcskeyfile.json
     when:
       event: [push]
-      branch: [master, dev, newdev]
+      branch: [master, dev]
+
+  getCmsTVDevConfig:
+    image: gcr.io/mirror-tv-275709/drone-cloud-sdk:mirror-tv
+    secrets: [google_credentials]
+    commands:
+      - gcloud source repos clone configs ../configs
+      - cp ../configs/mirror-tv/tv-dev/config.cms.js ./configs/config.js
+      - cp ../configs/mirror-tv/tv-dev/mirror-tv-gcskeyfile.json ./configs/gcskeyfile.json
+    when:
+      event: [push]
+      branch: [newdev]
 
   buildCmsThenPublish:
     image: plugins/gcr
