@@ -22,7 +22,7 @@ module.exports = {
             label: '版權',
             type: Select,
             dataType: 'string',
-            options: 'Creative-Commons, Copyrighted',
+            options: 'Creative-Commons, Copyrighted, CC BY-SA 3.0',
             defaultValue: 'Copyrighted',
         },
         tags: {
