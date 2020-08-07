@@ -24,7 +24,7 @@ pipeline:
       - /tmp/cache:/cache
     when:
       event: [push]
-      branch: [dev, master, newdev]
+      branch: [dev, master]
 
   getCmsDevConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -37,17 +37,6 @@ pipeline:
       event: [push]
       branch: [master, dev]
 
-  getCmsTVDevConfig:
-    image: gcr.io/mirror-tv-275709/drone-cloud-sdk:mirror-tv
-    secrets: [google_credentials]
-    commands:
-      - gcloud source repos clone configs ../configs
-      - cp ../configs/mirror-tv/tv-dev/config.cms.js ./configs/config.js
-      - cp ../configs/mirror-tv/tv-dev/mirror-tv-gcskeyfile.json ./configs/gcskeyfile.json
-    when:
-      event: [push]
-      branch: [newdev]
-
   buildCmsThenPublish:
     image: plugins/gcr
     repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
@@ -57,24 +46,7 @@ pipeline:
     secrets: [google_credentials]
     when:
       event: [push]
-      branch: [dev, master, newdev]
-
-  deployCmsTVDev:
-    image: nytimes/drone-gke
-    zone: asia-east1-c
-    cluster: tv-dev
-    namespace: default
-    verbose: true
-    secrets:
-      - source: google_credentials
-        target: token
-    vars:
-      image: gcr.io/mirror-tv-275709/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_cms
-      app: ${DRONE_REPO_NAME}-cms
-      tier: backend
-    when:
-      event: [push]
-      branch: [newdev]
+      branch: [dev, master]
 
   deployCmsDev:
     image: nytimes/drone-gke
@@ -104,17 +76,6 @@ pipeline:
       event: [push]
       branch: [dev, master]
 
-  getGraphQLTVDevConfig:
-    image: gcr.io/mirror-tv-275709/drone-cloud-sdk:mirror-tv
-    secrets: [google_credentials]
-    commands:
-      # - gcloud source repos clone configs ../configs
-      - cp ../configs/mirror-tv/tv-dev/config.graphql.js ./configs/config.js
-      - cp ../configs/mirror-tv/tv-dev/mirror-tv-gcskeyfile.json ./configs/gcskeyfile.json
-    when:
-      event: [push]
-      branch: [newdev]
-
   buildGraphQLThenPublish:
     image: plugins/gcr
     repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
@@ -124,7 +85,7 @@ pipeline:
     secrets: [google_credentials]
     when:
       event: [push]
-      branch: [dev, master, newdev]
+      branch: [dev, master]
 
   deployGraphQLDev:
     image: nytimes/drone-gke
@@ -143,23 +104,6 @@ pipeline:
       event: [push]
       branch: [dev, master]    
 
-  deployGraphQLTVDev:
-    image: nytimes/drone-gke
-    zone: asia-east1-c
-    cluster: tv-dev
-    namespace: default
-    verbose: true
-    secrets:
-      - source: google_credentials
-        target: token
-    vars:
-      image: gcr.io/mirror-tv-275709/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_graphql
-      app: ${DRONE_REPO_NAME}-graphql
-      tier: backend
-    when:
-      event: [push]
-      branch: [newdev]
-
   rebuildCache:
     image: drillster/drone-volume-cache
     rebuild: true
@@ -169,7 +113,7 @@ pipeline:
     volumes:
       - /tmp/cache:/cache
     when:
-      branch: [dev, master, newdev]
+      branch: [dev, master]
 
   finishSlack:
     image: plugins/slack
@@ -180,11 +124,11 @@ pipeline:
     when:
       status: [success, failure]
       event: [push]
-      branch: [dev, master, newdev]
+      branch: [dev, master]
     template: >
       {{#success build.status}}
         *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
-        Check out our new <https://readr-dev.mirrormedia.mg/admin|Readrstone>.
+        Check out our new <https://ks-dev.readr.tw//admin|Readrstone>.
       {{else}}
         Houston, we have a problem. Build <${DRONE_BUILD_LINK}|#{{build.number}}> failed.
       {{/success}}
