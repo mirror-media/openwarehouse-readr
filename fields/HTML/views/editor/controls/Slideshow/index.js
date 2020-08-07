@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
-import SlideshowIcon from '@material-ui/icons/Slideshow'
+import { BurstMode } from '@material-ui/icons'
 
 import GridSelector from '../../components/GridSelector'
 import { setPages, setData } from '../../utils/fetchData';
@@ -85,7 +85,7 @@ const Slideshow = (props) => {
             onPageChange={setPage}
             onSearchTextChange={setSearchText}
             onChange={saveData}
-            ButtonIconComponent={SlideshowIcon}
+            ButtonIconComponent={BurstMode}
             TileComponent={ImageTile}
             EditingTileComponent={ImageEditingTile}
             isMultipleSelection={true}

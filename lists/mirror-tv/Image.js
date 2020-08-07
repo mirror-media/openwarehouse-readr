@@ -1,7 +1,9 @@
-const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields');
+const { Text, Select, Relationship, File, Url, Checkbox} = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { ImageAdapter } = require('../../lib/ImageAdapter');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const { LocalFileAdapter } = require('@keystonejs/file-adapters')
+const fs = require('fs')
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
 const publishStateExaminer = require('../../hooks/publishStateExaminer');
 const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/images/'
@@ -16,7 +18,8 @@ module.exports = {
         file: {
             label: '檔案',
             type: File,
-            adapter: new ImageAdapter(gcsDir),
+            adapter: new LocalFileAdapter({src:'./images',path:'/images', //function({id, }){}
+            }),
             isRequired: true,
         },
         copyright: {
@@ -37,8 +40,16 @@ module.exports = {
             ref: 'Tag',
             many: true
         },
+        needWatermark:{
+            label: 'Need watermark?',
+            type: Checkbox
+        },
         keywords: {
             label: '關鍵字',
+            type: Text
+        },
+        meta: {
+            label: '中繼資料',
             type: Text
         },
         urlOriginal: {
@@ -86,27 +97,47 @@ module.exports = {
         create: allowRoles(admin, moderator, editor, contributor),
         delete: allowRoles(admin),
     },
-    hooks: {
-        resolveInput: publishStateExaminer,
-    },
     adminConfig: {
         defaultColumns: 'title, image, createdAt',
         defaultSort: '-createdAt',
     },
     hooks: {
-        // Hooks for create and update operations
-        resolveInput: ({ operation, existingItem, resolvedData, originalInput }) => {
-            if (resolvedData.file) {
-                resolvedData.urlOriginal = resolvedData.file._meta.url.urlOriginal
-                resolvedData.urlDesktopSized = resolvedData.file._meta.url.urlDesktopSized
-                resolvedData.urlMobileSized = resolvedData.file._meta.url.urlMobileSized
-                resolvedData.urlTabletSized = resolvedData.file._meta.url.urlTabletSized
-                resolvedData.urlTinySized = resolvedData.file._meta.url.urlTinySized
+        resolveInput: publishStateExaminer,
+        beforeChange: async ({ existingItem, resolvedData}) => {
+            console.log("BEFORE CHANGE")
+            console.log("EXISTING ITEM", existingItem)
+            console.log("RESOLVED DATA", resolvedData)
+
+
+            if (typeof resolvedData.file != 'undefined'){
+                var stream = fs.createReadStream(`./images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`)
+                var id = resolvedData.file.id
+                if (resolvedData.needWatermark) {
+                    stream = await addWatermark(stream, resolvedData.file.id, resolvedData.file.originalFilename)
+                }
+
+            } else if (typeof existingItem.file != 'undefined'){
+
+                var stream = fs.createReadStream(`./images/${existingItem.file.id}-${existingItem.file.originalFilename}`)
+                var id = existingItem.file.id
+                if (existingItem.needWatermark) {
+                    stream = await addWatermark(stream, existingItem.file.id, existingItem.file.originalFilename)
+                }
             }
 
-            console.log("resolveInput RESOLVED DATA", resolvedData)
-            return resolvedData
-        },
+            const image_adapter = new ImageAdapter(gcsDir)
+
+            let _meta = image_adapter.sync_save(stream, id)
+            if (resolvedData.file) {
+                resolvedData.urlOriginal = _meta.url.urlOriginal
+                resolvedData.urlDesktopSized = _meta.url.urlDesktopSized
+                resolvedData.urlMobileSized = _meta.url.urlMobileSized
+                resolvedData.urlTabletSized = _meta.url.urlTabletSized
+                resolvedData.urlTinySized = _meta.url.urlTinySized
+            } 
+
+            return {existingItem, resolvedData}
+        }
     },
     labelField: 'title',
     cacheHint: cacheHint,

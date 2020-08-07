@@ -1,6 +1,6 @@
 const { Text, Checkbox, Password, Select, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/mirrormediaAccess');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
 const access = require('../../helpers/access');
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
             label: '角色權限',
             type: Select,
             dataType: 'string',
-            options: 'contributor, author, editor, moderator',
+            options: 'contributor, author, editor, moderator, admin',
             defaultValue: 'contributor',
             isRequired: true,
             access: {

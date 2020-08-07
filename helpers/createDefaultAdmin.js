@@ -15,11 +15,13 @@ module.exports = project => async keystone => {
         }`
     );
 
-    const projectAdminRole = project === 'mirrormedia' ? 'role: "moderator", isAdmin: true' : 'role: "admin"';
-
     if (count === 0) {
-        const password = (process.env.NODE_ENV === 'development') ? 'mirrormedia' : randomString();
+        const context = keystone.createContext({ skipAccessControl: true });
+        const projectAdminRole = project === 'mirrormedia' ? 'role: "moderator", isAdmin: true' : 'role: "admin"';
         const email = 'admin@mirrormedia.mg';
+        const password = 'mirrormedia';
+        // const password = (process.env.NODE_ENV === 'development') ? 'mirrormedia' : randomString();
+
 
         await keystone.executeQuery(
             `mutation initialUser($password: String, $email: String) {

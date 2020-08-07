@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
-import { GraphicEq } from '@material-ui/icons';
+import { Audiotrack } from '@material-ui/icons';
 import GridSelector from '../../components/GridSelector'
 import { setPages, setData } from '../../utils/fetchData';
 import { getUrlExtension } from '../../utils/common';
@@ -114,7 +114,7 @@ const Audio = (props) => {
             onPageChange={setPage}
             onSearchTextChange={setSearchText}
             onChange={saveData}
-            ButtonIconComponent={GraphicEq}
+            ButtonIconComponent={Audiotrack}
             TileComponent={AudioTile}
             ratio={4}
             spacing={4}
