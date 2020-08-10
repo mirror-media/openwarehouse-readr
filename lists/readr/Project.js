@@ -8,7 +8,7 @@ module.exports = {
         sortOrder: {
             label: '排序順位',
             type: Integer,
-            isUnique: true,
+            // isUnique: true,
         },
         slug: {
             label: 'Slug',
@@ -40,8 +40,8 @@ module.exports = {
         state: {
             label: '狀態',
             type: Select,
-            options: 'active, inactive, archived',
-            defaultValue: 'inactive',
+            options: 'draft, published, scheduled, archived',
+            defaultValue: 'draft',
         },
         publishTime: {
             label: '發佈時間',
