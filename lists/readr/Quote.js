@@ -30,7 +30,7 @@ module.exports = {
             options: 'draft, published, scheduled, archived, invisible',
             defaultValue: 'draft',
         },
-        publishedTime: {
+        publishTime: {
             label: '發佈時間',
             type: DateTime,
             format: 'MM/dd/yyyy HH:mm',
