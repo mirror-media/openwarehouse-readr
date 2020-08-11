@@ -9,7 +9,7 @@ module.exports = {
         sortOrder: {
             label: '排序順位',
             type: Integer,
-            isUnique: true,
+            // isUnique: true,
         },
         title: {
             label: '標題',
