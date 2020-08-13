@@ -13,8 +13,8 @@ const ENTITY = {
 	INFOBOX: {
 		type: 'INFOBOX',
 	},
-	EMBEDDEDCODE: {
-		type: 'EMBEDDEDCODE',
+	EMBEDCODE: {
+		type: 'EMBEDCODE',
 	},
 	AUDIO: {
 		type: 'AUDIO',
