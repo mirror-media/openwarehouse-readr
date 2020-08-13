@@ -7,7 +7,7 @@ function strategy(contentBlock, callback, contentState) {
         const entityKey = character.getEntity();
         return (
             entityKey !== null &&
-            contentState.getEntity(entityKey).getType() === 'EMBEDCODE'
+            contentState.getEntity(entityKey).getType() === 'EMBEDDEDCODE'
         );
     }, callback);
 }

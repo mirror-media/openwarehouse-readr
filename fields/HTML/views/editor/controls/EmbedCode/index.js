@@ -45,7 +45,7 @@ class EmbedCode extends Component {
         const contentState = editorState.getCurrentContent();
         const entityKey = editorState
             .getCurrentContent()
-            .createEntity('EMBEDCODE', 'IMMUTABLE', {
+            .createEntity('EMBEDDEDCODE', 'IMMUTABLE', {
                 caption: caption,
                 code: code,
                 alignment: 'center',
@@ -68,7 +68,7 @@ class EmbedCode extends Component {
         const currentValues = {};
         if (
             currentEntity &&
-            contentState.getEntity(currentEntity).get('type') === 'EMBEDCODE'
+            contentState.getEntity(currentEntity).get('type') === 'EMBEDDEDCODE'
         ) {
             currentValues.embedCode = {};
             const entityRange =

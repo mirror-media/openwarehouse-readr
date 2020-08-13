@@ -39,7 +39,7 @@ let defaultEntityTagMap = {
 	[ENTITY.ANNOTATION.type]: ['<abbr title="<%= data.body %>"><%= data.text %>', '</abbr>'],
 	[ENTITY.AUDIO.type]: ['<div class="audio-container center"><div class="audio-title"><%= data.title %></div><!-- <div class="audio-desc"><%= data.description %></div> --><audio src="<%= data.url %>" />', '</div>'],
 	[ENTITY.BLOCKQUOTE.type]: ['<blockquote class="center"><div><%= data.quote %></div><div><%= data.quotedBy %></div>', '<blockquote>'],
-	[ENTITY.EMBEDCODE.type]: ['<div class="embedded <%= data.alignment %>" title="<%= data.caption %>"><%= data.code%>', '</div>'],
+	[ENTITY.EMBEDDEDCODE.type]: ['<div class="embedded <%= data.alignment %>" title="<%= data.caption %>"><%= data.code%>', '</div>'],
 	[ENTITY.INFOBOX.type]: ['<div class="info-box-container center"><div class="info-box-title"><%= data.title %></div><div class="info-box-body"><%= data.body %></div>', '</div>'],
 	[ENTITY.STOREDIMAGE.type]: ['<img alt="<%= data.title %>" src="<%= data.urlOriginal %>" srcset="<%= data.urlMobileSized %> 800w,  <%= data.urlTabletSized %> 1280w, <%= data.urlDesktopSized %> 2400w" class="center">', '</img>'],
 	[ENTITY.IMAGE.type]: ['<img alt="<%= data.title %>" src="<%= data.urlOriginal %>" srcset="<%= data.urlMobileSized %> 800w,  <%= data.urlTabletSized %> 1280w, <%= data.urlDesktopSized %> 2400w" class="center">', '</img>'],
