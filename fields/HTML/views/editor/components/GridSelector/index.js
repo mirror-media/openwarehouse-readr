@@ -7,7 +7,7 @@ import { Clear, Check } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import { usePopupState, bindTrigger, bindPopover } from 'material-ui-popup-state/hooks'
 
-import { useWindowDimensions } from '../../hooks/useWindowDimensions';
+import { useWindowDimensions } from '../../../../../../helpers/useWindowDimensions';
 import styleSheet from './style';
 
 const useStyles = makeStyles(styleSheet);
