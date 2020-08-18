@@ -5,7 +5,7 @@ import ENTITY from './entities';
 import htmlparser from 'htmlparser2';
 
 const processor = {
-	convertBlock (entityMap, block) {
+	convertBlock(entityMap, block) {
 		let alignment = 'center';
 		let content;
 		let entityRange = block.entityRanges[0];
@@ -48,9 +48,10 @@ const processor = {
 				}];
 				break;
 			case ENTITY.EMBEDDEDCODE.type:
+				console.log(entity);
 				alignment = entity.data && entity.data.alignment || alignment;
 				let caption = _.get(entity, ['data', 'caption'], '');
-				let embeddedCode = _.get(entity, ['data', 'embeddedCode'], '');
+				let embeddedCode = _.get(entity, ['data', 'code'], '');
 				let script = {};
 				let scripts = [];
 				let scriptTagStart = false;
