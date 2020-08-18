@@ -3,7 +3,6 @@ const { Markdown } = require('@keystonejs/fields-markdown');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { uuid } = require('uuidv4');
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
-const publishStateExaminer = require('../../hooks/publishStateExaminer');
 const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {
@@ -65,7 +64,6 @@ module.exports = {
         delete: allowRoles(admin),
     },
     hooks: {
-        resolveInput: publishStateExaminer,
     },
     adminConfig: {
         defaultColumns: 'slug, name, email, homepage, createdAt',

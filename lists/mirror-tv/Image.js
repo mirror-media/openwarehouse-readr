@@ -1,10 +1,9 @@
-const { Text, Select, Relationship, File, Url, Checkbox} = require('@keystonejs/fields');
+const { Text, Select, Relationship, File, Url, Checkbox } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { ImageAdapter } = require('../../lib/ImageAdapter');
 const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const fs = require('fs')
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
-const publishStateExaminer = require('../../hooks/publishStateExaminer');
 const { addWatermark } = require('../../helpers/watermark.js')
 const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/images/'
@@ -20,7 +19,8 @@ module.exports = {
         file: {
             label: '檔案',
             type: File,
-            adapter: new LocalFileAdapter({src:'./images',path:'/images', //function({id, }){}
+            adapter: new LocalFileAdapter({
+                src: './images', path: '/images', //function({id, }){}
             }),
             isRequired: true,
         },
@@ -42,7 +42,7 @@ module.exports = {
             ref: 'Tag',
             many: true
         },
-        needWatermark:{
+        needWatermark: {
             label: 'Need watermark?',
             type: Checkbox
         },
@@ -104,21 +104,20 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: publishStateExaminer,
-        beforeChange: async ({ existingItem, resolvedData}) => {
+        beforeChange: async ({ existingItem, resolvedData }) => {
             console.log("BEFORE CHANGE")
             console.log("EXISTING ITEM", existingItem)
             console.log("RESOLVED DATA", resolvedData)
 
 
-            if (typeof resolvedData.file != 'undefined'){
+            if (typeof resolvedData.file != 'undefined') {
                 var stream = fs.createReadStream(`./images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`)
                 var id = resolvedData.file.id
                 if (resolvedData.needWatermark) {
                     stream = await addWatermark(stream, resolvedData.file.id, resolvedData.file.originalFilename)
                 }
 
-            } else if (typeof existingItem.file != 'undefined'){
+            } else if (typeof existingItem.file != 'undefined') {
 
                 var stream = fs.createReadStream(`./images/${existingItem.file.id}-${existingItem.file.originalFilename}`)
                 var id = existingItem.file.id
@@ -136,9 +135,9 @@ module.exports = {
                 resolvedData.urlMobileSized = _meta.url.urlMobileSized
                 resolvedData.urlTabletSized = _meta.url.urlTabletSized
                 resolvedData.urlTinySized = _meta.url.urlTinySized
-            } 
+            }
 
-            return {existingItem, resolvedData}
+            return { existingItem, resolvedData }
         }
     },
     labelField: 'title',
