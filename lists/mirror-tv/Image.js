@@ -5,8 +5,10 @@ const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const fs = require('fs')
 const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
 const publishStateExaminer = require('../../hooks/publishStateExaminer');
+const { addWatermark } = require('../../helpers/watermark.js')
 const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/images/'
+
 
 module.exports = {
     fields: {
