@@ -160,6 +160,23 @@ pipeline:
       event: [push]
       branch: [newdev]
 
+  deployExternalGraphQLTVDev:
+    image: nytimes/drone-gke
+    zone: asia-east1-c
+    cluster: tv-dev
+    namespace: default
+    verbose: true
+    secrets:
+      - source: google_credentials
+        target: token
+    vars:
+      image: gcr.io/mirror-tv-275709/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_graphql
+      app: ${DRONE_REPO_NAME}-external-graphql
+      tier: backend
+    when:
+      event: [push]
+      branch: [newdev]
+
   rebuildCache:
     image: drillster/drone-volume-cache
     rebuild: true
