@@ -19,7 +19,7 @@ const Preview = () => {
 
     if (list == 'Post') {
         lockPage();
-        //useLeave();
+        useLeave();
     }
 
     let src = undefined;
