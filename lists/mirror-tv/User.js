@@ -1,7 +1,7 @@
 const { Text, Checkbox, Password, Select, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
-const access = require('../../helpers/access');
+const { admin, moderator, editor, owner, allowRoles } = require('../../helpers/accesses/mirror-tv');
+const access = require('../../helpers/accesses/mirror-tv');
 
 module.exports = {
     fields: {
@@ -18,7 +18,10 @@ module.exports = {
         },
         password: {
             label: '密碼',
-            type: Password
+            type: Password,
+            access: {
+                update: allowRoles(admin, moderator, owner),
+            }
         },
         role: {
             label: '角色權限',
@@ -44,8 +47,9 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: allowRoles(admin, moderator, editor, owner),
-        create: allowRoles(admin, moderator, editor, contributor),
+        read: allowRoles(admin, moderator, owner),
+        update: allowRoles(admin, moderator, owner),
+        create: allowRoles(admin, moderator),
         delete: allowRoles(admin),
     },
     hooks: {

@@ -1,6 +1,6 @@
 const { Slug, Text, Checkbox, Select, Relationship, DateTime } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/accesses/mirror-tv');
 const HTML = require('../../fields/HTML');
 const cacheHint = require('../../helpers/cacheHint');
 
@@ -193,6 +193,13 @@ module.exports = {
         isAdBlocked: {
             label: 'Google 廣告違規',
             type: Checkbox
+        },
+        lockTime: {
+            type: DateTime,
+            format: 'MM/dd/yyyy HH:mm',
+            adminConfig: {
+                isReadOnly: true,
+            },
         },
     },
     plugins: [

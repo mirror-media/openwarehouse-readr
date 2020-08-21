@@ -1,7 +1,7 @@
 const { Text, Relationship, File, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../../lib/GCSAdapter');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/accesses/mirror-tv');
 const cacheHint = require('../../helpers/cacheHint');
 
 const gcsDir = 'assets/audios/';

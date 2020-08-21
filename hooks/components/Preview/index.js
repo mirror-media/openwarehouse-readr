@@ -1,5 +1,4 @@
 import React from 'react';
-const { app: { project } } = require('../../../configs/config')
 import styleSheet from './style';
 
 import { Button, Popover, IconButton } from '@material-ui/core';
@@ -9,15 +8,24 @@ import { usePopupState, bindTrigger, bindPopover } from 'material-ui-popup-state
 
 import { useWindowDimensions } from '../../../helpers/useWindowDimensions';
 import { useItem } from '../../../helpers/useItem';
+import { lockPage } from '../../../helpers/lockPage';
+import { useLeave } from '../../../helpers/useLeave';
 
 
 const useStyles = makeStyles(styleSheet);
 
-const Preview = (porps) => {
+const Preview = () => {
     const { list, slug } = useItem();
+
+    if (list == 'Post') {
+        lockPage();
+        //useLeave();
+    }
+
     let src = undefined;
-    if (slug)
+    if (slug) {
         src = `https://www.mirrormedia.mg/story/${slug.value}?preview=true`;
+    }
 
     const popupState = usePopupState({ variant: 'popover', popupId: 'imagePopover' })
     const { width } = useWindowDimensions();
@@ -30,7 +38,7 @@ const Preview = (porps) => {
     return (
         <div>
             {
-                list == "Post" && (project == "mirrormedia" || project == "mirror-tv") &&
+                list == "Post" &&
                 <div className={classes.root}>
                     <Button
                         variant="contained"

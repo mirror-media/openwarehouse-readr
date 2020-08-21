@@ -1,6 +1,6 @@
 const { Text, DateTime, Select, Relationship, Url, Checkbox } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/accesses/mirror-tv');
 const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {
