@@ -1,6 +1,6 @@
 const { Integer, Text, DateTime, Relationship, Select } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, allowRoles } = require('../../helpers/readrAccess');
+const { admin, moderator, allowRoles } = require('../../helpers/access/readr');
 const cacheHint = require('../../helpers/cacheHint');
 const HTML = require('../../fields/HTML');
 

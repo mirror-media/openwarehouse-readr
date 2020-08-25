@@ -1,6 +1,6 @@
 const { Slug, Text, Relationship, Select } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, allowRoles } = require('../../helpers/readrAccess');
+const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr');
 const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {

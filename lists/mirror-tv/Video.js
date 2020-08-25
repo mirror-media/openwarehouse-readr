@@ -1,8 +1,7 @@
 const { Text, Checkbox, Select, Relationship, File, DateTime, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../../lib/GCSAdapter');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
-const publishStateExaminer = require('../../hooks/publishStateExaminer');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access/mirror-tv');
 const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/videos/';
 
@@ -108,7 +107,6 @@ module.exports = {
         delete: allowRoles(admin),
     },
     hooks: {
-        resolveInput: publishStateExaminer,
     },
     adminConfig: {
         defaultColumns: 'title, video, tags, state, publishTime, createdAt',

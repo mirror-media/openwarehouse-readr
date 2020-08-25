@@ -1,6 +1,6 @@
 const { Text, Checkbox, Password, Select } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, owner, allowRoles } = require('../../helpers/readrAccess');
+const { admin, moderator, editor, owner, allowRoles } = require('../../helpers/access/readr');
 const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {

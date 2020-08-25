@@ -1,7 +1,7 @@
 const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { ImageAdapter } = require('../../lib/ImageAdapter');
-const { admin, moderator, editor, allowRoles } = require('../../helpers/readrAccess');
+const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr');
 const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/images/';
 

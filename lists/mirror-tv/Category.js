@@ -1,7 +1,6 @@
 const { Slug, Text, Checkbox, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access');
-const publishStateExaminer = require('../../hooks/publishStateExaminer');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access/mirror-tv');
 const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {
@@ -45,7 +44,6 @@ module.exports = {
         delete: allowRoles(admin),
     },
     hooks: {
-        resolveInput: publishStateExaminer,
     },
     adminConfig: {
         defaultColumns: 'slug, title, isFeatured, createdAt',
