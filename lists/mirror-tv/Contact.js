@@ -2,7 +2,7 @@ const { Slug, Text, Url, Relationship } = require('@keystonejs/fields');
 const { Markdown } = require('@keystonejs/fields-markdown');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { uuid } = require('uuidv4');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/accesses/mirror-tv');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access/mirror-tv');
 const cacheHint = require('../../helpers/cacheHint');
 
 module.exports = {

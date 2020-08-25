@@ -1,6 +1,6 @@
 const { Integer, Select, Relationship, DateTime } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/accesses/mirror-tv');
+const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access/mirror-tv');
 const HTML = require('../../fields/HTML');
 const cacheHint = require('../../helpers/cacheHint');
 
