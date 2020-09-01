@@ -44,8 +44,8 @@ let defaultEntityTagMap = {
 	[ENTITY.STOREDIMAGE.type]: ['<img alt="<%= data.title %>" src="<%= data.urlOriginal %>" srcset="<%= data.urlMobileSized %> 800w,  <%= data.urlTabletSized %> 1280w, <%= data.urlDesktopSized %> 2400w" class="center">', '</img>'],
 	[ENTITY.IMAGE.type]: ['<img alt="<%= data.title %>" src="<%= data.urlOriginal %>" srcset="<%= data.urlMobileSized %> 800w,  <%= data.urlTabletSized %> 1280w, <%= data.urlDesktopSized %> 2400w" class="center">', '</img>'],
 	/*[ENTITY.IMAGEDIFF.type]: ['<!-- imageDiff component start --> <ol class="image-diff-container"> <% _.forEach(data, function(image, index) { if (index > 1) { return; } %><li class="image-diff-item"><img src="<%- image.url %>" /></li><% }); %>', '</ol><!-- imageDiff component end-->'],
-	[ENTITY.IMAGELINK.type]: ['<img alt="<%= data.description %>" src="<%= data.url %>" class="<%= data.alignment %>">', '</img>'],
-	[ENTITY.LINK.type]: ['<a target="_blank" href="<%= data.url %>">', '</a>'],*/
+	[ENTITY.IMAGELINK.type]: ['<img alt="<%= data.description %>" src="<%= data.url %>" class="<%= data.alignment %>">', '</img>'],*/
+	[ENTITY.LINK.type]: ['<a target="_blank" href="<%= data.url %>">', '</a>'],
 	[ENTITY.SLIDESHOW.type]: ['<!-- slideshow component start --> <ol class="slideshow-container"> <%  _.forEach(data, function(image) { %><li class="slideshow-slide"><img alt="<%- image.title %>" src="<%- image.urlOriginal %>" srcset="<%= image.urlMobileSized %> 800w,  <%= image.urlTabletSized %> 1280w, <%= image.urlDesktopSized %> 2400w" /></li><% }); %>', '</ol><!-- slideshow component end -->'],
 	[ENTITY.VIDEO.type]: ['<div controls class="video-container <%= data.alignment %>"><div class="video-title"><%= data.title %></div><div class="video-desc"><%= data.description %></div><video src="<%= data.url %>" />', '</div>'],
 	[ENTITY.YOUTUBE.type]: ['<iframe width="560" alt="<%= data.description %>" height="315" src="https://www.youtube.com/embed/<%= data.id %>" frameborder="0" allowfullscreen>', '</iframe>'],
