@@ -1,6 +1,8 @@
 const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { ImageAdapter } = require('../../lib/ImageAdapter');
+const { LocalFileAdapter } = require('@keystonejs/file-adapters')
+const fs = require('fs')
 const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr');
 const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/images/';
@@ -15,9 +17,19 @@ module.exports = {
         file: {
             label: '檔案',
             type: File,
+            adapter: new LocalFileAdapter({
+                src: './images', path: '/images', //function({id, }){}
+            }),
+            isRequired: true,
+        },
+		/*
+        file: {
+            label: '檔案',
+            type: File,
             adapter: new ImageAdapter(gcsDir),
             isRequired: true,
         },
+		*/
         copyright: {
             label: '版權',
             type: Select,
