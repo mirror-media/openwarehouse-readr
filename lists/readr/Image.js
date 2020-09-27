@@ -102,10 +102,11 @@ module.exports = {
             console.log("EXISTING ITEM", existingItem)
             console.log("RESOLVED DATA", resolvedData)
 
-
+			var origFilename;
             if (typeof resolvedData.file != 'undefined') {
                 var stream = fs.createReadStream(`./images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`)
                 var id = resolvedData.file.id
+				origFilename = resolvedData.file.originalFilename
                 if (resolvedData.needWatermark) {
                     stream = await addWatermark(stream, resolvedData.file.id, resolvedData.file.originalFilename)
                 }
@@ -114,6 +115,7 @@ module.exports = {
 
                 var stream = fs.createReadStream(`./images/${existingItem.file.id}-${existingItem.file.originalFilename}`)
                 var id = existingItem.file.id
+				origFilename = existingItem.file.originalFilename
                 if (existingItem.needWatermark) {
                     stream = await addWatermark(stream, existingItem.file.id, existingItem.file.originalFilename)
                 }
@@ -121,7 +123,7 @@ module.exports = {
 
             const image_adapter = new ImageAdapter(gcsDir)
 
-            let _meta = image_adapter.sync_save(stream, id)
+            let _meta = image_adapter.sync_save(stream, id, origFilename)
             if (resolvedData.file) {
                 resolvedData.urlOriginal = _meta.url.urlOriginal
                 resolvedData.urlDesktopSized = _meta.url.urlDesktopSized
