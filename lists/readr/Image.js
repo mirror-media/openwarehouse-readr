@@ -119,7 +119,6 @@ module.exports = {
                 }
             }
 
-			console.log(stream.metadata())
             const image_adapter = new ImageAdapter(gcsDir)
 
             let _meta = image_adapter.sync_save(stream, id)
