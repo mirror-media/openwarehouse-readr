@@ -144,6 +144,13 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
+        content_html:{
+            type: String,
+            label: 'Content HTML',
+            adminConfig: {
+                isReadOnly: true,
+            }
+        }
     },
     plugins: [
         atTracking(),
