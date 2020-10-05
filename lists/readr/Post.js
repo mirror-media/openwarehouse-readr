@@ -177,7 +177,8 @@ module.exports = {
 
             content = JSON.parse(resolvedData.content)
             resolvedData.contentHtml = content.html
-            resolvedData.contentApiData = content.apiData
+            resolvedData.contentApiData = JSON.stringify(content.apiData)
+            // console.log(typeof content.apiData)
             delete content["html"]
             delete content["apiData"]
             resolvedData.content = content
