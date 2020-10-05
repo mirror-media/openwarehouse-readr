@@ -144,9 +144,16 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
-        content_html:{
+        contentHtml:{
             type: String,
             label: 'Content HTML',
+            adminConfig: {
+                isReadOnly: true,
+            }
+        },
+        contentApiData:{
+            type: String,
+            label: 'Content API Data',
             adminConfig: {
                 isReadOnly: true,
             }
@@ -164,6 +171,19 @@ module.exports = {
     adminConfig: {
         defaultColumns: 'sortOrder,title, state, publishTime, createdAt',
         defaultSort: '-createdAt',
+    },
+    hooks:{
+        beforeChange: async ({ existingItem, resolvedData }) => {
+
+            content = JSON.parse(resolvedData.content)
+            resolvedData.contentHtml = content.html
+            resolvedData.contentApiData = content.apiData
+            delete content["html"]
+            delete content["apiData"]
+            resolvedData.content = content
+            return { existingItem, resolvedData }
+        }
+
     },
     labelField: 'title',
     cacheHint: cacheHint,
