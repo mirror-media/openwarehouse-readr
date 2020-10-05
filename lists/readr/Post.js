@@ -144,9 +144,16 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
-        content_html:{
+        contentHtml:{
             type: String,
             label: 'Content HTML',
+            adminConfig: {
+                isReadOnly: true,
+            }
+        },
+        contentApiData:{
+            type: String,
+            label: 'Content API Data',
             adminConfig: {
                 isReadOnly: true,
             }
@@ -164,6 +171,19 @@ module.exports = {
     adminConfig: {
         defaultColumns: 'sortOrder,title, state, publishTime, createdAt',
         defaultSort: '-createdAt',
+    },
+    // TODO: Modify the column name or definition in Postgres
+    hooks:{
+        beforeChange: async ({ existingItem, resolvedData }) => {
+            console.log(typeof resolvedData.content, resolvedData.content)
+            resolvedData.contentHtml = JSON.parse(resolvedData.content).html
+            resolvedData.contentApiData = JSON.parse(resolvedData.content).apiData
+            
+            console.log("NOW resolvedData:")
+            console.log(resolvedData.contentApiData)
+            return { existingItem, resolvedData }
+        }
+
     },
     labelField: 'title',
     cacheHint: cacheHint,
