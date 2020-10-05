@@ -145,14 +145,14 @@ module.exports = {
             ref: 'Image',
         },
         contentHtml:{
-            type: String,
+            type: Text,
             label: 'Content HTML',
             adminConfig: {
                 isReadOnly: true,
             }
         },
         contentApiData:{
-            type: String,
+            type: Text,
             label: 'Content API Data',
             adminConfig: {
                 isReadOnly: true,
