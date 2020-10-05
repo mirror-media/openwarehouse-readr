@@ -172,15 +172,15 @@ module.exports = {
         defaultColumns: 'sortOrder,title, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
-    // TODO: Modify the column name or definition in Postgres
     hooks:{
         beforeChange: async ({ existingItem, resolvedData }) => {
-            console.log(typeof resolvedData.content, resolvedData.content)
-            resolvedData.contentHtml = JSON.parse(resolvedData.content).html
-            resolvedData.contentApiData = JSON.parse(resolvedData.content).apiData
-            
-            console.log("NOW resolvedData:")
-            console.log(resolvedData.contentApiData)
+
+            content = JSON.parse(resolvedData.content)
+            resolvedData.contentHtml = content.html
+            resolvedData.contentApiData = content.apiData
+            delete content["html"]
+            delete content["apiData"]
+            resolvedData.content = content
             return { existingItem, resolvedData }
         }
 
