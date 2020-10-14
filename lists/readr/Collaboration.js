@@ -1,7 +1,14 @@
-const { Integer, Text, DateTime, Relationship, Url, Select } = require('@keystonejs/fields');
-const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, allowRoles } = require('../../helpers/access/readr');
-const cacheHint = require('../../helpers/cacheHint');
+const {
+    Integer,
+    Text,
+    Relationship,
+    Url,
+    Select,
+} = require('@keystonejs/fields')
+const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
+const cacheHint = require('../../helpers/cacheHint')
+const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
@@ -30,16 +37,11 @@ module.exports = {
         },
         startTime: {
             label: '開始時間',
-            type: DateTime,
-            format: 'MM/dd/yyyy HH:mm',
-            defaultValue: new Date().toISOString(),
-            isRequired: true,
-            yearPickerType: 'select', // this option seems not work
+            type: NewDateTime,
         },
         endTime: {
             label: '結束時間',
-            type: DateTime,
-            format: 'MM/dd/yyyy HH:mm',
+            type: NewDateTime,
         },
         progress: {
             label: '完成進度',
@@ -61,23 +63,10 @@ module.exports = {
         },
         publishTime: {
             label: '發佈時間',
-            type: DateTime,
-            format: 'MM/dd/yyyy HH:mm',
-            defaultValue: new Date().toISOString(),
-            /*dependsOn: {
-                '$or': {
-                    state: [
-                        'published',
-                        'scheduled'
-                    ]
-                }
-            }*/
+            type: NewDateTime,
         },
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),

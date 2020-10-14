@@ -1,8 +1,9 @@
-const { Integer, Text, DateTime, Relationship, Select } = require('@keystonejs/fields');
-const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, allowRoles } = require('../../helpers/access/readr');
-const cacheHint = require('../../helpers/cacheHint');
-const HTML = require('../../fields/HTML');
+const { Integer, Text, Relationship, Select } = require('@keystonejs/fields')
+const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
+const cacheHint = require('../../helpers/cacheHint')
+const HTML = require('../../fields/HTML')
+const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
@@ -28,9 +29,7 @@ module.exports = {
         },
         publishTime: {
             label: '發佈時間',
-            type: DateTime,
-            format: 'MM/dd/yyyy HH:mm',
-            defaultValue: new Date().toISOString(),
+            type: NewDateTime,
         },
         categories: {
             label: '分類',
@@ -144,25 +143,22 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
-        contentHtml:{
+        contentHtml: {
             type: Text,
             label: 'Content HTML',
             adminConfig: {
                 isReadOnly: true,
-            }
+            },
         },
-        contentApiData:{
+        contentApiData: {
             type: Text,
             label: 'Content API Data',
             adminConfig: {
                 isReadOnly: true,
-            }
-        }
+            },
+        },
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),
@@ -172,26 +168,29 @@ module.exports = {
         defaultColumns: 'sortOrder,title, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
-    hooks:{
+    hooks: {
         beforeChange: async ({ existingItem, resolvedData }) => {
             try {
-                content = JSON.parse(resolvedData.content || existingItem.content)
+                content = JSON.parse(
+                    resolvedData.content || existingItem.content
+                )
                 resolvedData.contentHtml = JSON.parse(resolvedData.content).html
-                resolvedData.contentApiData = JSON.stringify(JSON.parse(resolvedData.content).apiData)
+                resolvedData.contentApiData = JSON.stringify(
+                    JSON.parse(resolvedData.content).apiData
+                )
                 console.log(typeof content.apiData)
-                delete content["html"]
-                delete content["apiData"]
+                delete content['html']
+                delete content['apiData']
                 resolvedData.content = content
                 return { existingItem, resolvedData }
-            }
-            catch (err) { console.log(err)
-                console.log("EXISTING ITEM") 
+            } catch (err) {
+                console.log(err)
+                console.log('EXISTING ITEM')
                 console.log(existingItem)
-                console.log("RESOLVED DATA")
+                console.log('RESOLVED DATA')
                 console.log(resolvedData)
             }
-        }
-
+        },
     },
     labelField: 'title',
     cacheHint: cacheHint,
