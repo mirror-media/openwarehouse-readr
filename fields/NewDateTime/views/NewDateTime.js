@@ -14,7 +14,7 @@ function NewDateTime({ value, onChange }) {
   // get selected unix timestamp by moment from callback
   const changeHandler = (moment) => {
     const selectUnixTimestamp = parseInt(moment.format('x'))
-    const selectISO8601 = new Date(nowUnixTimestamp).toISOString()
+    const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
 
     setInputField(selectUnixTimestamp)
     onChange(selectISO8601)
