@@ -12,6 +12,11 @@ module.exports = {
             type: Integer,
             // isUnique: true,
         },
+        slug: {
+            label: 'slug',
+            type: Text,
+            isRequired: true,
+        },
         title: {
             label: '標題',
             type: Text,
