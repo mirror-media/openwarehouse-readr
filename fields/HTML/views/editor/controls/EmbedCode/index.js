@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
-import { getEntityRange, getSelectionEntity } from 'draftjs-utils';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { EditorState, RichUtils, Modifier, AtomicBlockUtils } from 'draft-js'
+import { getEntityRange, getSelectionEntity } from 'draftjs-utils'
 
-import TwoInputs from '../../components/TwoInputs';
+import TwoInputs from '../../components/TwoInputs'
 
 class EmbedCode extends Component {
     static propTypes = {
@@ -11,38 +11,41 @@ class EmbedCode extends Component {
         onChange: PropTypes.func,
         modalHandler: PropTypes.object,
         translations: PropTypes.object,
-    };
+    }
 
     constructor(props) {
-        super(props);
-        const { editorState, modalHandler } = this.props;
+        super(props)
+        const { editorState, modalHandler } = this.props
         this.state = {
             expanded: false,
             embedCode: undefined,
-            currentEntity: editorState ? getSelectionEntity(editorState) : undefined,
-        };
-        modalHandler.registerCallBack(this.expandCollapse);
+            currentEntity: editorState
+                ? getSelectionEntity(editorState)
+                : undefined,
+        }
+        modalHandler.registerCallBack(this.expandCollapse)
     }
 
     componentDidUpdate(prevProps) {
-        const { editorState } = this.props;
+        const { editorState } = this.props
         if (editorState && editorState !== prevProps.editorState) {
-            this.setState({ currentEntity: getSelectionEntity(editorState) });
+            this.setState({ currentEntity: getSelectionEntity(editorState) })
         }
     }
 
     componentWillUnmount() {
-        const { modalHandler } = this.props;
-        modalHandler.deregisterCallBack(this.expandCollapse);
+        const { modalHandler } = this.props
+        modalHandler.deregisterCallBack(this.expandCollapse)
     }
 
     onExpandEvent = () => {
-        this.signalExpanded = !this.state.expanded;
-    };
+        this.signalExpanded = !this.state.expanded
+    }
 
     onChange = (caption, code) => {
-        const { editorState, onChange } = this.props;
-        const contentState = editorState.getCurrentContent();
+        const { editorState, onChange } = this.props
+        const contentState = editorState.getCurrentContent()
+        const currentSelection = editorState.getSelection()
         const entityKey = editorState
             .getCurrentContent()
             .createEntity('EMBEDDEDCODE', 'IMMUTABLE', {
@@ -50,84 +53,100 @@ class EmbedCode extends Component {
                 code: code,
                 alignment: 'center',
             })
-            .getLastCreatedEntityKey();
+            .getLastCreatedEntityKey()
         const newEditorState = AtomicBlockUtils.insertAtomicBlock(
             editorState,
             entityKey,
-            ' ',
-        );
+            ' '
+        )
 
-        onChange(newEditorState);
-        this.doCollapse();
-    };
+        // const newContentState = Modifier.replaceText(
+        //     contentState,
+        //     currentSelection,
+        //     `${code}\n\n-${caption}`,
+        //     editorState.getCurrentInlineStyle()
+        // )
+
+        // const newEditorState = EditorState.push(
+        //     editorState,
+        //     newContentState,
+        //     'insert-characters'
+        // )
+
+        // onChange(RichUtils.toggleBlockType(newEditorState, 'code-block'))
+
+        onChange(newEditorState)
+        this.doCollapse()
+    }
 
     getCurrentValues = () => {
-        const { editorState } = this.props;
-        const { currentEntity } = this.state;
-        const contentState = editorState.getCurrentContent();
-        const currentValues = {};
+        const { editorState } = this.props
+        const { currentEntity } = this.state
+        const contentState = editorState.getCurrentContent()
+        const currentValues = {}
         if (
             currentEntity &&
             contentState.getEntity(currentEntity).get('type') === 'EMBEDDEDCODE'
         ) {
-            currentValues.embedCode = {};
+            currentValues.embedCode = {}
             const entityRange =
-                currentEntity && getEntityRange(editorState, currentEntity);
+                currentEntity && getEntityRange(editorState, currentEntity)
             currentValues.embedCode.caption =
-                currentEntity && contentState.getEntity(currentEntity).get('data').caption;
+                currentEntity &&
+                contentState.getEntity(currentEntity).get('data').caption
             currentValues.embedCode.code =
                 currentEntity &&
-                contentState.getEntity(currentEntity).get('data').code;
+                contentState.getEntity(currentEntity).get('data').code
         }
-        return currentValues;
-    };
+        return currentValues
+    }
 
     doExpand = () => {
         this.setState({
             expanded: true,
-        });
-    };
+        })
+    }
 
     expandCollapse = () => {
         this.setState({
             expanded: this.signalExpanded,
-        });
-        this.signalExpanded = false;
-    };
+        })
+        this.signalExpanded = false
+    }
 
     doCollapse = () => {
         this.setState({
             expanded: false,
-        });
-    };
+        })
+    }
 
     prepareLayoutConfig = () => ({
         style: {
             icon: undefined,
             className: 'fa fa-code',
-            title: "Embed Code"
+            title: 'Embed Code',
         },
         labels: {
-            first: "Caption",
-            last: "Code"
+            first: 'Caption',
+            last: 'Code',
         },
         isRequired: {
             first: true,
-            last: true
-        }
-    });
+            last: true,
+        },
+    })
 
     prepareLayoutCurrentState = (embedCode) => ({
         twoInputs: {
             first: (embedCode && embedCode.caption) || '',
             last: (embedCode && embedCode.code) || '',
         },
-    });
+    })
 
     render() {
-        const { translations } = this.props;
-        const { expanded } = this.state;
-        const { embedCode } = this.getCurrentValues();
+        const { translations } = this.props
+        const { expanded } = this.state
+        const { embedCode } = this.getCurrentValues()
         return (
             <TwoInputs
                 translations={translations}
@@ -139,8 +158,8 @@ class EmbedCode extends Component {
                 currentState={this.prepareLayoutCurrentState(embedCode)}
                 onChange={this.onChange}
             />
-        );
+        )
     }
 }
 
-export default EmbedCode;
+export default EmbedCode

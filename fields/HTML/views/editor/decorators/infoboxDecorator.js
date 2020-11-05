@@ -1,23 +1,33 @@
-import React, { useState } from 'react';
-import { InfoboxType } from '../controls/Infobox';
-import classNames from 'classnames';
+import React, { useState } from 'react'
+import { InfoboxType } from '../controls/Infobox'
+import classNames from 'classnames'
 
 function strategy(contentBlock, callback, contentState) {
-    contentBlock.findEntityRanges(character => {
-        const entityKey = character.getEntity();
+    contentBlock.findEntityRanges((character) => {
+        const entityKey = character.getEntity()
         return (
             entityKey !== null &&
             contentState.getEntity(entityKey).getType() === InfoboxType
-        );
-    }, callback);
+        )
+    }, callback)
 }
 
 const component = (props) => {
+    const { contentState } = props
+    const entity = contentState.getEntity(props.entityKey)
+    const dataFromEntity = entity.getData()
 
-    const { title, body } = props.contentState.getEntity(props.entityKey).getData();
+    const [data, setData] = useState(dataFromEntity)
+    const { title, body } = data
+    // const { title, body } = props.contentState.getEntity(props.entityKey).getData();
+
+    const clickHandler = () => {
+        console.log('YOYO')
+    }
     return (
         <div
-            className='info-box-container center'
+            onClick={clickHandler}
+            className="info-box-container center"
             style={{
                 backgroundColor: '#F7F7FF',
                 position: 'relative',
@@ -28,7 +38,7 @@ const component = (props) => {
             }}
         >
             <img
-                src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjIzcHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDIzIDI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCAzLjguMyAoMjk4MDIpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPmljb24taW5mb2JveDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJBcnRpY2xlIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iVG9waWMt4oCTLU1vYmlsZS1Qb3J0cmFpdCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE0OS4wMDAwMDAsIC03MjU2LjAwMDAwMCkiPgogICAgICAgICAgICA8ZyBpZD0iSW5mb2JveCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsIDcyNTUuOTEzMDQzKSI+CiAgICAgICAgICAgICAgICA8ZyBpZD0iTG9nby1Db3B5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDkuMDAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJpY29uLWluZm9ib3giPgogICAgICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iUmVjdGFuZ2xlLTEiIGZpbGw9IiNFNjAwMTIiIHBvaW50cz0iMCAwLjEwNDQ2ODg4OSAxMy43MzU0NDk3IDYuNjA1NDQyMTggMTMuNzM1NDQ5NyAxNy4zOTQ1NTc4IDAgMjMuODk1NjE5NyI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iUmVjdGFuZ2xlLTIiIGZpbGw9IiNDNzAwMEEiIHBvaW50cz0iMTMuNzM1NDQ5NyA2LjYwNTQ0MjE4IDIyLjQ3NjE5MDUgNC4zNTkyOTY2MSAyMi40NzYxOTA1IDE5LjY1NTEyNjYgMTMuNzM1NDQ5NyAxNy4zOTQ1NTc4Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4='
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjIzcHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDIzIDI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCAzLjguMyAoMjk4MDIpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPmljb24taW5mb2JveDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJBcnRpY2xlIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iVG9waWMt4oCTLU1vYmlsZS1Qb3J0cmFpdCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE0OS4wMDAwMDAsIC03MjU2LjAwMDAwMCkiPgogICAgICAgICAgICA8ZyBpZD0iSW5mb2JveCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsIDcyNTUuOTEzMDQzKSI+CiAgICAgICAgICAgICAgICA8ZyBpZD0iTG9nby1Db3B5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNDkuMDAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJpY29uLWluZm9ib3giPgogICAgICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iUmVjdGFuZ2xlLTEiIGZpbGw9IiNFNjAwMTIiIHBvaW50cz0iMCAwLjEwNDQ2ODg4OSAxMy43MzU0NDk3IDYuNjA1NDQyMTggMTMuNzM1NDQ5NyAxNy4zOTQ1NTc4IDAgMjMuODk1NjE5NyI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iUmVjdGFuZ2xlLTIiIGZpbGw9IiNDNzAwMEEiIHBvaW50cz0iMTMuNzM1NDQ5NyA2LjYwNTQ0MjE4IDIyLjQ3NjE5MDUgNC4zNTkyOTY2MSAyMi40NzYxOTA1IDE5LjY1NTEyNjYgMTMuNzM1NDQ5NyAxNy4zOTQ1NTc4Ij48L3BvbHlnb24+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
                 style={{
                     width: '1.27778rem',
                     height: '1.33333rem',
@@ -43,13 +53,13 @@ const component = (props) => {
                 }}
             />
             <div
-                className='info-box-text'
+                className="info-box-text"
                 style={{
-                    padding: '2rem 1.33333rem 1.33333rem 1.33333rem'
+                    padding: '2rem 1.33333rem 1.33333rem 1.33333rem',
                 }}
             >
                 <h4
-                    className='info-box-title'
+                    className="info-box-title"
                     style={{
                         fontSize: '1.11111rem',
                         lineHeight: 1.2,
@@ -72,7 +82,7 @@ const component = (props) => {
                 />
             </div>
         </div>
-    );
+    )
 }
 
-export default { strategy: strategy, component: component };
+export default { strategy: strategy, component: component }

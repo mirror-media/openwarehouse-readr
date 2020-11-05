@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
-import { stopPropagation } from '../../utils/common';
-import Option from '../../components/Option';
-import './styles.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { stopPropagation } from '../../utils/common'
+import Option from '../../components/Option'
+import './styles.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 class TwoInputs extends Component {
     static propTypes = {
@@ -17,13 +17,14 @@ class TwoInputs extends Component {
         onChange: PropTypes.func,
         currentState: PropTypes.object,
         translations: PropTypes.object,
-    };
+    }
 
     state = {
         showModal: false,
         lastInput: '',
         firstInput: '',
-    };
+        edgeDistance: 0,
+    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.expanded && !this.props.expanded) {
@@ -31,65 +32,69 @@ class TwoInputs extends Component {
                 showModal: false,
                 lastInput: '',
                 firstInput: '',
-            });
+            })
         }
     }
 
-    add = () => {
-        const { onChange } = this.props;
-        const { firstInput, lastInput } = this.state;
-        onChange(firstInput, lastInput);
-    };
+    add = (e) => {
+        e.preventDefault()
+        const { onChange } = this.props
+        const { firstInput, lastInput } = this.state
+        onChange(firstInput, lastInput)
+    }
 
-    updateValue = event => {
+    updateValue = (event) => {
         this.setState({
             [`${event.target.name}`]: event.target.value,
-        });
-    };
+        })
+    }
 
     hideModal = () => {
         this.setState({
             showModal: false,
-        });
-    };
+        })
+    }
 
     signalExpandShowModal = () => {
         const {
             onExpandEvent,
             currentState: { twoInputs },
-        } = this.props;
-        onExpandEvent();
+        } = this.props
+        onExpandEvent()
         this.setState({
             showModal: true,
             lastInput: (twoInputs && twoInputs.last) || '',
             firstInput: (twoInputs && twoInputs.first) || '',
-        });
-    };
+        })
+    }
 
     forceExpandAndShowModal = () => {
         const {
             doExpand,
             currentState: { twoInputs, selectionText },
-        } = this.props;
-        doExpand();
+        } = this.props
+        doExpand()
         this.setState({
             showModal: true,
             lastInput: twoInputs && twoInputs.last,
             firstInput: (twoInputs && twoInputs.first) || selectionText,
-        });
-    };
+        })
+    }
 
+    //   Handle 2 input  section
     renderAddModal() {
         const {
             config: { popupClassName, labels, isRequired },
             doCollapse,
             translations,
-        } = this.props;
-        const { firstInput, lastInput } = this.state;
+        } = this.props
+        const { firstInput, lastInput } = this.state
+
         return (
             <div
                 className={classNames('rdw-link-modal', popupClassName)}
                 onClick={stopPropagation}
+                style={labels.last === 'Quote' ? { left: `-100px` } : null}
             >
                 <label className="rdw-link-modal-label" htmlFor="linkTitle">
                     {labels['first']}
@@ -117,7 +122,10 @@ class TwoInputs extends Component {
                     <button
                         className="rdw-link-modal-btn"
                         onClick={this.add}
-                        disabled={(isRequired.first && !firstInput) || (isRequired.last && !lastInput)}
+                        disabled={
+                            (isRequired.first && !firstInput) ||
+                            (isRequired.last && !lastInput)
+                        }
                     >
                         {translations['generic.add']}
                     </button>
@@ -126,19 +134,20 @@ class TwoInputs extends Component {
                     </button>
                 </span>
             </div>
-        );
+        )
     }
 
     render() {
         const {
             config: { style, className },
             expanded,
-        } = this.props;
-        const { showModal } = this.state;
+        } = this.props
+        const { showModal } = this.state
         return (
             <div
                 className={classNames('rdw-link-wrapper', className)}
                 aria-label="rdw-link-control"
+                ref="inner"
             >
                 <Option
                     value="unordered-list-item"
@@ -152,8 +161,8 @@ class TwoInputs extends Component {
                 </Option>
                 {expanded && showModal ? this.renderAddModal() : undefined}
             </div>
-        );
+        )
     }
 }
 
-export default TwoInputs;
+export default TwoInputs

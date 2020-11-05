@@ -1,12 +1,13 @@
-import annotationDecorator from './annotationDecorator';
-import audioDecorator from './audioDecorator';
-import blockQuoteDecorator from './blockQuoteDecorator';
-import embedCodeDecorator from './embedCodeDecorator';
-import infoboxDecorator from './infoboxDecorator';
-import imageDecorator from './imageDecorator';
-import slideshowDecorator from './slideshowDecorator';
-import videoDecorator from './videoDecorator';
-import youtubeDecorator from './youtubeDecorator';
+import annotationDecorator from './annotationDecorator'
+import audioDecorator from './audioDecorator'
+import blockQuoteDecorator from './blockQuoteDecorator'
+import embedCodeDecorator from './embedCodeDecorator'
+import infoboxDecorator from './infoboxDecorator'
+import imageDecorator from './imageDecorator'
+import slideshowDecorator from './slideshowDecorator'
+import videoDecorator from './videoDecorator'
+import youtubeDecorator from './youtubeDecorator'
+import quoteDecorator from './quoteDecorator'
 
 export default [
     annotationDecorator,
@@ -18,4 +19,5 @@ export default [
     slideshowDecorator,
     videoDecorator,
     youtubeDecorator,
-];
+    quoteDecorator,
+]
