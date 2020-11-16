@@ -15,7 +15,7 @@ module.exports = {
         slug: {
             label: 'slug',
             type: Text,
-            isRequired: true,
+            isRequired: false,
         },
         title: {
             label: '標題',
