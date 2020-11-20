@@ -7,7 +7,7 @@ spec:
     app: {{.app}}
     tier: {{.tier}}
   ports:
-    - port: 80
+  - port: 80
     protocol: TCP
     targetPort: 3000
   type: LoadBalancer
@@ -21,9 +21,9 @@ metadata:
   name: {{.app}}
 spec:
   replicas: 1
-    selector:
-      matchLabels:
-        app: {{.app}}
+  selector:
+    matchLabels:
+      app: {{.app}}
   template:
     metadata:
       labels:
