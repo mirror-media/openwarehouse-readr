@@ -1,33 +1,50 @@
-import React, { useState } from 'react';
-import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
-import { getSelectionText } from 'draftjs-utils';
+import React, { useState } from 'react'
+import {
+    AtomicBlockUtils,
+    EditorState,
+    Modifier,
+    ContentBlock,
+    genKey,
+} from 'draft-js'
+import { getSelectionText } from 'draftjs-utils'
 
-import MiniEditor from '../../components/MiniEditor';
-import '../../css/main.css';
+import MiniEditor from '../../components/MiniEditor'
+import '../../css/main.css'
+import { htmlToText } from 'html-to-text'
 
-export const InfoboxType = 'INFOBOX';
+export const InfoboxType = 'INFOBOX'
+
 export default (props) => {
-    const { editorState, onChange } = props;
+    const { editorState, onChange } = props
 
-    const getPreSelectedText = () => getSelectionText(editorState);;
+    const getPreSelectedText = () => getSelectionText(editorState)
+
+    const insertBlock = (type, data) => {
+        const contentState = editorState.getCurrentContent()
+        const contentStateWithEntity = contentState.createEntity(
+            type,
+            'IMMUTABLE',
+            data
+        )
+
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+        const editorStateWithEntity = EditorState.set(editorState, {
+            currentContent: contentStateWithEntity,
+        })
+
+        const editorStateWithAtomicBlock = AtomicBlockUtils.insertAtomicBlock(
+            editorStateWithEntity,
+            entityKey,
+            ' '
+        )
+
+        onChange(editorStateWithAtomicBlock)
+    }
 
     const onSave = (title, html) => {
-        const contentState = editorState.getCurrentContent();
-        const entityKey = editorState
-            .getCurrentContent()
-            .createEntity(InfoboxType, 'IMMUTABLE', {
-                title: title,
-                body: html,
-            })
-            .getLastCreatedEntityKey();
-        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
-            editorState,
-            entityKey,
-            ' ',
-        );
-
-        onChange(newEditorState);
-    };
+        insertBlock(InfoboxType, { title: title, body: htmlToText(html) })
+    }
 
     return (
         <MiniEditor
@@ -36,7 +53,6 @@ export default (props) => {
             onSave={onSave}
         />
     )
-
 }
 
 const prepareLayoutConfig = () => ({
@@ -48,4 +64,4 @@ const prepareLayoutConfig = () => ({
     title: {
         text: 'Infobox',
     },
-});
+})

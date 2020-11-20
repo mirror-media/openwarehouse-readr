@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
-import { getEntityRange, getSelectionEntity } from 'draftjs-utils';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { EditorState, Modifier, RichUtils, convertToRaw } from 'draft-js'
+import { getEntityRange, getSelectionEntity } from 'draftjs-utils'
 
-import TwoInputs from '../../components/TwoInputs';
-import '../../css/main.css';
+import TwoInputs from '../../components/TwoInputs'
+import '../../css/main.css'
 
 class BlockQuote extends Component {
     static propTypes = {
@@ -12,122 +12,127 @@ class BlockQuote extends Component {
         onChange: PropTypes.func,
         modalHandler: PropTypes.object,
         translations: PropTypes.object,
-    };
+    }
 
     constructor(props) {
-        super(props);
-        const { editorState, modalHandler } = this.props;
+        super(props)
+        const { editorState, modalHandler } = this.props
         this.state = {
             expanded: false,
             blockQuote: undefined,
-            currentEntity: editorState ? getSelectionEntity(editorState) : undefined,
-        };
-        modalHandler.registerCallBack(this.expandCollapse);
+            currentEntity: editorState
+                ? getSelectionEntity(editorState)
+                : undefined,
+        }
+        modalHandler.registerCallBack(this.expandCollapse)
     }
 
     componentDidUpdate(prevProps) {
-        const { editorState } = this.props;
+        const { editorState } = this.props
         if (editorState && editorState !== prevProps.editorState) {
-            this.setState({ currentEntity: getSelectionEntity(editorState) });
+            this.setState({ currentEntity: getSelectionEntity(editorState) })
         }
     }
 
     componentWillUnmount() {
-        const { modalHandler } = this.props;
-        modalHandler.deregisterCallBack(this.expandCollapse);
+        const { modalHandler } = this.props
+        modalHandler.deregisterCallBack(this.expandCollapse)
     }
 
     onExpandEvent = () => {
-        this.signalExpanded = !this.state.expanded;
-    };
+        this.signalExpanded = !this.state.expanded
+    }
 
     onChange = (quotedBy, quote) => {
-        const { editorState, onChange } = this.props;
-        const contentState = editorState.getCurrentContent();
-        const entityKey = editorState
-            .getCurrentContent()
-            .createEntity('BLOCKQUOTE', 'IMMUTABLE', {
-                quotedBy: quotedBy,
-                quote: quote,
-            })
-            .getLastCreatedEntityKey();
-        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
-            editorState,
-            entityKey,
-            ' ',
-        );
+        const { editorState, onChange } = this.props
 
-        onChange(newEditorState);
-        this.doCollapse();
-    };
+        const contentState = editorState.getCurrentContent()
+        const currentSelection = editorState.getSelection()
+        const newContentState = Modifier.replaceText(
+            contentState,
+            currentSelection,
+            `${quote}\n\n-${quotedBy}`,
+            editorState.getCurrentInlineStyle()
+        )
+
+        const newEditorState = EditorState.push(
+            editorState,
+            newContentState,
+            'insert-characters'
+        )
+
+        onChange(RichUtils.toggleBlockType(newEditorState, 'blockquote'))
+        this.doCollapse()
+    }
 
     getCurrentValues = () => {
-        const { editorState } = this.props;
-        const { currentEntity } = this.state;
-        const contentState = editorState.getCurrentContent();
-        const currentValues = {};
+        const { editorState } = this.props
+        const { currentEntity } = this.state
+        const contentState = editorState.getCurrentContent()
+        const currentValues = {}
         if (
             currentEntity &&
             contentState.getEntity(currentEntity).get('type') === 'BLOCKQUOTE'
         ) {
-            currentValues.blockQuote = {};
+            currentValues.blockQuote = {}
             const entityRange =
-                currentEntity && getEntityRange(editorState, currentEntity);
+                currentEntity && getEntityRange(editorState, currentEntity)
             currentValues.blockQuote.quotedBy =
-                currentEntity && contentState.getEntity(currentEntity).get('data').quotedBy;
+                currentEntity &&
+                contentState.getEntity(currentEntity).get('data').quotedBy
             currentValues.blockQuote.quote =
                 currentEntity &&
-                contentState.getEntity(currentEntity).get('data').quote;
+                contentState.getEntity(currentEntity).get('data').quote
         }
-        return currentValues;
-    };
+        return currentValues
+    }
 
     doExpand = () => {
         this.setState({
             expanded: true,
-        });
-    };
+        })
+    }
 
     expandCollapse = () => {
         this.setState({
             expanded: this.signalExpanded,
-        });
-        this.signalExpanded = false;
-    };
+        })
+        this.signalExpanded = false
+    }
 
     doCollapse = () => {
         this.setState({
             expanded: false,
-        });
-    };
+        })
+    }
 
     prepareLayoutConfig = () => ({
         style: {
             icon: undefined,
             className: 'fa fa-quote-right',
-            title: "Block Quote"
+            title: 'Block Quote',
         },
         labels: {
-            first: "Quoted By",
-            last: "Quote"
+            first: 'Quoted By',
+            last: 'Quote',
         },
         isRequired: {
             first: true,
-            last: true
-        }
-    });
+            last: true,
+        },
+    })
 
     prepareLayoutCurrentState = (blockQuote) => ({
         twoInputs: {
             first: (blockQuote && blockQuote.quotedBy) || '',
             last: (blockQuote && blockQuote.quote) || '',
         },
-    });
+    })
 
     render() {
-        const { translations } = this.props;
-        const { expanded } = this.state;
-        const { blockQuote } = this.getCurrentValues();
+        const { translations } = this.props
+        const { expanded } = this.state
+        const { blockQuote } = this.getCurrentValues()
         return (
             <TwoInputs
                 translations={translations}
@@ -139,8 +144,8 @@ class BlockQuote extends Component {
                 currentState={this.prepareLayoutCurrentState(blockQuote)}
                 onChange={this.onChange}
             />
-        );
+        )
     }
 }
 
-export default BlockQuote;
+export default BlockQuote

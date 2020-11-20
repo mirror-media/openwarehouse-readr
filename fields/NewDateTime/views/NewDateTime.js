@@ -3,6 +3,7 @@ import './NewDateTime.style.css'
 import Datetime from 'react-datetime'
 import 'react-datetime/css/react-datetime.css'
 import './DateFormat'
+import moment from 'moment'
 
 function NewDateTime({ value, onChange }) {
     const [inputField, setInputField] = useState('')
@@ -12,8 +13,14 @@ function NewDateTime({ value, onChange }) {
     const newValue = Date.parse(value)
 
     // get selected unix timestamp by moment from callback
-    const changeHandler = (moment) => {
-        const selectUnixTimestamp = parseInt(moment.format('x'))
+    const changeHandler = (momentObj) => {
+        let edittedMomentObj = momentObj
+
+        if (typeof momentObj !== 'object') {
+            edittedMomentObj = moment(momentObj)
+        }
+
+        const selectUnixTimestamp = parseInt(edittedMomentObj.format('x'))
         const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
 
         setInputField(selectUnixTimestamp)
@@ -35,9 +42,10 @@ function NewDateTime({ value, onChange }) {
             <Datetime
                 value={inputField}
                 initialValue={newValue ? newValue : ''}
-                onChange={(moment) => changeHandler(moment)}
-                dateFormat="YYYY-MM-DD"
+                onChange={(momentObj) => changeHandler(momentObj)}
+                dateFormat="YYYY-MM-DD Z"
                 timeFormat="HH:mm:ss"
+                strictParsing={false}
             />
             <button className="nowButton" onClick={(e) => nowHandler(e)}>
                 Now
