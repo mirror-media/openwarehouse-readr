@@ -5,7 +5,6 @@ const { LocalFileAdapter } = require('@keystonejs/file-adapters');
 const fs = require('fs')
 const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr');
 const cacheHint = require('../../helpers/cacheHint');
-const cacheHint = require('../../helpers/cacheHint');
 const gcsDir = 'assets/images/';
 
 module.exports = {
