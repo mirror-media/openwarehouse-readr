@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js'
 import { PanoramaOutlined } from '@material-ui/icons'
 
 import GridSelector from '../../components/GridSelector'
-import { setPages, setData } from '../../utils/fetchData';
+import { setPages, setData } from '../../utils/fetchData'
 
 const dataConfig = {
     list: 'Image',
@@ -12,39 +12,58 @@ const dataConfig = {
     maxItemsPerPage: 12,
 }
 
+const StoredImageType = 'STOREDIMAGE'
+
 const Image = (props) => {
-    const { onChange, editorState } = props;
-    const [pageNumbers, setPageNumbers] = useState(0);
-    const [page, setPage] = useState(1);
-    const [pagedData, setPagedData] = useState([]);
-    const [searchText, setSearchText] = useState("");
+    const { onChange, editorState } = props
+    const [pageNumbers, setPageNumbers] = useState(0)
+    const [page, setPage] = useState(1)
+    const [pagedData, setPagedData] = useState([])
+    const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        setPages(dataConfig, searchText, setPageNumbers);
+        setPages(dataConfig, searchText, setPageNumbers)
     }, [searchText])
 
     useEffect(() => {
-        setData(dataConfig, searchText, page, setPagedData);
+        setData(dataConfig, searchText, page, setPagedData)
     }, [searchText, pageNumbers, page])
 
-    const saveData = selectedData => {
-        const contentState = editorState.getCurrentContent();
-        const entityKey = editorState
-            .getCurrentContent()
-            .createEntity('STOREDIMAGE', 'IMMUTABLE', selectedData)
-            .getLastCreatedEntityKey();
-        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
-            editorState,
-            entityKey,
-            ' ',
-        );
+    const insertBlock = (type, selectedData) => {
+        console.log(selectedData)
+        const contentState = editorState.getCurrentContent()
+        const contentStateWithEntity = contentState.createEntity(
+            type,
+            'IMMUTABLE',
+            selectedData
+        )
 
-        onChange(newEditorState);
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+        const editorStateWithEntity = EditorState.set(editorState, {
+            currentContent: contentStateWithEntity,
+        })
+
+        const editorStateWithAtomicBlock = AtomicBlockUtils.insertAtomicBlock(
+            editorStateWithEntity,
+            entityKey,
+            ' '
+        )
+
+        onChange(editorStateWithAtomicBlock)
     }
 
-    const ImageTile = props => {
-        const { id, data, eventHandler } = props;
-        const onClick = event => eventHandler(id);
+    const onSave = (selectedData) => {
+        console.log(selectedData)
+        insertBlock(StoredImageType, {
+            entityType: 'storedImage',
+            selectedData: selectedData,
+        })
+    }
+
+    const ImageTile = (props) => {
+        const { id, data, eventHandler } = props
+        const onClick = (event) => eventHandler(id)
 
         return (
             <img
@@ -58,11 +77,11 @@ const Image = (props) => {
                 }}
                 onClick={onClick}
             />
-        );
-    };
+        )
+    }
 
-    const ImageEditingTile = props => {
-        const { data } = props;
+    const ImageEditingTile = (props) => {
+        const { data } = props
         return (
             <img
                 src={data.urlDesktopSized}
@@ -73,8 +92,8 @@ const Image = (props) => {
                     width: '100%',
                 }}
             />
-        );
-    };
+        )
+    }
 
     return (
         <GridSelector
@@ -82,14 +101,14 @@ const Image = (props) => {
             page={page}
             pagedData={pagedData}
             searchText={searchText}
-            onPageChange={setPage}
             onSearchTextChange={setSearchText}
-            onChange={saveData}
+            onPageChange={setPage}
+            onChange={onSave}
             ButtonIconComponent={PanoramaOutlined}
             TileComponent={ImageTile}
             EditingTileComponent={ImageEditingTile}
         />
-    );
+    )
 }
 
 Image.propTypes = {
@@ -97,4 +116,4 @@ Image.propTypes = {
     editorState: PropTypes.object,
 }
 
-export default Image;
+export default Image

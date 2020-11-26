@@ -5,6 +5,7 @@ import {
     Modifier,
     ContentBlock,
     genKey,
+    convertToRaw,
 } from 'draft-js'
 import { getSelectionText } from 'draftjs-utils'
 
@@ -16,7 +17,6 @@ export const InfoboxType = 'INFOBOX'
 
 export default (props) => {
     const { editorState, onChange } = props
-
     const getPreSelectedText = () => getSelectionText(editorState)
 
     const insertBlock = (type, data) => {
@@ -39,11 +39,20 @@ export default (props) => {
             ' '
         )
 
+        console.log(entityKey)
+        console.log(
+            convertToRaw(editorStateWithAtomicBlock.getCurrentContent())
+        )
+
         onChange(editorStateWithAtomicBlock)
     }
 
     const onSave = (title, html) => {
-        insertBlock(InfoboxType, { title: title, body: htmlToText(html) })
+        insertBlock(InfoboxType, {
+            entityType: 'infobox',
+            title: title,
+            body: htmlToText(html),
+        })
     }
 
     return (

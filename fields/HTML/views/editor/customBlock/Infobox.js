@@ -1,51 +1,68 @@
-import React, { useState } from 'react'
-import { InfoboxType } from '../controls/Infobox'
-import { convertToRaw, EditorState, Modifier } from 'draft-js'
-import classNames from 'classnames'
+import React from 'react'
 
-function strategy(contentBlock, callback, contentState) {
-    contentBlock.findEntityRanges((character) => {
-        const entityKey = character.getEntity()
-        return (
-            entityKey !== null &&
-            contentState.getEntity(entityKey).getType() === InfoboxType
-        )
-    }, callback)
-}
+function Infobox({
+    data,
+    setData,
+    editMode,
+    invalidTextFormat,
+    setInvalidTextFormat,
+    saveBlock,
+    removeBlock,
+    onClick,
+}) {
+    const inputChangeHandler = (e) => {
+        console.log('changeText')
+        setInvalidTextFormat(false)
+        setData({ ...data, [e.target.name]: e.target.value })
+    }
 
-const component = (props) => {
-    const { contentState, entityKey } = props
-    const entity = contentState.getEntity(entityKey)
-    const dataFromEntity = entity.getData()
+    const submitHandler = (e) => {
+        e.preventDefault()
+    }
 
-    const [data, setData] = useState(dataFromEntity)
-    const { title, body } = data
-    // const { title, body } = props.contentState.getEntity(props.entityKey).getData();
-
-    const clickHandler = () => {
-        const newData = {
-            ...data,
-            title: 'I am new title.',
-            body: 'I am new body',
+    var editPanel = null
+    if (editMode) {
+        var buttonClass = 'textInput-saveButton'
+        if (invalidTextFormat) {
+            buttonClass += ' textInput-invalidButton'
         }
 
-        setData(newData)
-
-        // const { editorState, onChange } = data.editorStatePackage
-
-        // console.log(editorState)
-        // const contentStateWithEntity = contentState.replaceEntityData(
-        //     entityKey,
-        //     newData
-        // )
-        // const editorStateWithEntity = EditorState.set(editorState, {
-        //     currentContent: contentStateWithEntity,
-        // })
-        // onChange(editorStateWithEntity)
+        editPanel = (
+            <div className="textInput-panel">
+                <input
+                    className="textInput-input"
+                    onChange={inputChangeHandler}
+                    value={data.title}
+                    name="title"
+                />
+                <textarea
+                    className="textInput-textarea"
+                    onChange={inputChangeHandler}
+                    value={data.body}
+                    name="body"
+                />
+                <div className="textInput-buttons">
+                    <button
+                        className={buttonClass}
+                        disabled={invalidTextFormat}
+                        onClick={saveBlock}
+                    >
+                        {invalidTextFormat ? 'Invalid TeX' : 'Done'}
+                    </button>
+                    <button
+                        className="textInput-removeButton"
+                        onClick={removeBlock}
+                    >
+                        Remove
+                    </button>
+                </div>
+            </div>
+        )
     }
+
     return (
         <div
-            onClick={clickHandler}
+            onClick={onClick}
             className="info-box-container center"
             style={{
                 backgroundColor: '#F7F7FF',
@@ -89,22 +106,22 @@ const component = (props) => {
                         textAlign: 'center',
                     }}
                 >
-                    {title}
+                    {data.title}
                 </h4>
                 <div
-                    dangerouslySetInnerHTML={{ __html: body }}
+                    // dangerouslySetInnerHTML={{ __html: body }}
                     style={{
                         padding: '2rem 1.33333rem 1.33333rem 1.33333rem',
                         fontSize: '0.83333rem',
                         lineHeight: 1.8,
                         textAlign: 'justify',
                     }}
-                />
+                ></div>
+                {data.body}
             </div>
+            {editPanel}
         </div>
     )
 }
 
-const props = {}
-
-export default { strategy: strategy, component: component, props: props }
+export default Infobox

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js';
-import { getSelectionEntity } from 'draftjs-utils';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { AtomicBlockUtils, EditorState, Modifier } from 'draft-js'
+import { getSelectionEntity } from 'draftjs-utils'
 
-import TwoInputs from '../../components/TwoInputs';
+import TwoInputs from '../../components/TwoInputs'
 
 class YouTube extends Component {
     static propTypes = {
@@ -11,109 +11,118 @@ class YouTube extends Component {
         onChange: PropTypes.func,
         modalHandler: PropTypes.object,
         translations: PropTypes.object,
-    };
+    }
 
     constructor(props) {
-        super(props);
-        const { editorState, modalHandler } = this.props;
+        super(props)
+        const { editorState, modalHandler } = this.props
         this.state = {
             expanded: false,
             youtube: undefined,
-            currentEntity: editorState ? getSelectionEntity(editorState) : undefined,
-        };
-        modalHandler.registerCallBack(this.expandCollapse);
+            currentEntity: editorState
+                ? getSelectionEntity(editorState)
+                : undefined,
+        }
+        modalHandler.registerCallBack(this.expandCollapse)
     }
 
     componentDidUpdate(prevProps) {
-        const { editorState } = this.props;
+        const { editorState } = this.props
         if (editorState && editorState !== prevProps.editorState) {
-            this.setState({ currentEntity: getSelectionEntity(editorState) });
+            this.setState({ currentEntity: getSelectionEntity(editorState) })
         }
     }
 
     componentWillUnmount() {
-        const { modalHandler } = this.props;
-        modalHandler.deregisterCallBack(this.expandCollapse);
+        const { modalHandler } = this.props
+        modalHandler.deregisterCallBack(this.expandCollapse)
     }
 
     onExpandEvent = () => {
-        this.signalExpanded = !this.state.expanded;
-    };
+        this.signalExpanded = !this.state.expanded
+    }
 
     onChange = (id, description) => {
-        const { editorState, onChange } = this.props;
-        const { currentEntity } = this.state;
-        const contentState = editorState.getCurrentContent();
-        const entityKey = editorState
-            .getCurrentContent()
-            .createEntity('YOUTUBE', 'IMMUTABLE',
-                {
-                    id: id,
-                    description: description,
-                }
-            )
-            .getLastCreatedEntityKey();
-        const newEditorState = AtomicBlockUtils.insertAtomicBlock(
-            editorState,
-            entityKey,
-            ' ',
-        );
+        this.insertBlock('YOUTUBE', { id: id, description: description })
 
-        onChange(newEditorState);
-        this.doCollapse();
-    };
+        this.doCollapse()
+    }
+
+    insertBlock = (type, data) => {
+        const { editorState, onChange } = this.props
+
+        const contentState = editorState.getCurrentContent()
+        const contentStateWithEntity = contentState.createEntity(
+            type,
+            'IMMUTABLE',
+            { content: data }
+        )
+
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+        const editorStateWithEntity = EditorState.set(editorState, {
+            currentContent: contentStateWithEntity,
+        })
+
+        const editorStateWithAtomicBlock = AtomicBlockUtils.insertAtomicBlock(
+            editorStateWithEntity,
+            entityKey,
+            ' '
+        )
+
+        onChange(editorStateWithAtomicBlock)
+    }
 
     getCurrentValues = () => {
         // Do nothing. Don't collect selection.
-        return {};
-    };
+        return {}
+    }
 
     doExpand = () => {
         this.setState({
             expanded: true,
-        });
-    };
+        })
+    }
 
     expandCollapse = () => {
         this.setState({
             expanded: this.signalExpanded,
-        });
-        this.signalExpanded = false;
-    };
+        })
+        this.signalExpanded = false
+    }
 
     doCollapse = () => {
         this.setState({
             expanded: false,
-        });
-    };
+        })
+    }
 
     prepareLayoutConfig = () => ({
         style: {
             icon: undefined,
             className: 'fab fa-youtube',
-            title: "YouTube Link"
+            title: 'YouTube Link',
         },
         labels: {
-            first: "YouTube ID",
-            last: "Description"
+            first: 'YouTube ID',
+            last: 'Description',
         },
         isRequired: {
             first: true,
-            last: false
-        }
-    });
+            last: false,
+        },
+    })
 
     prepareLayoutCurrentState = (youtube) => ({
         twoInputs: {
             first: (youtube && youtube.id) || '',
             last: (youtube && youtube.description) || '',
         },
-    });
+    })
 
     render() {
-        const { translations } = this.props;
-        const { expanded } = this.state;
-        const { youtube } = this.getCurrentValues();
+        const { translations } = this.props
+        const { expanded } = this.state
+        const { youtube } = this.getCurrentValues()
         return (
             <TwoInputs
                 translations={translations}
@@ -125,8 +134,8 @@ class YouTube extends Component {
                 currentState={this.prepareLayoutCurrentState(youtube)}
                 onChange={this.onChange}
             />
-        );
+        )
     }
 }
 
-export default YouTube;
+export default YouTube
