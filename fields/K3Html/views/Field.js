@@ -17,6 +17,9 @@ import {
 // import { Button, FormInput } from 'elemental'
 import ENTITY from './K3/entities'
 import decorator from './editor/entity-decorator'
+// import AtomicBlockSwitcher from './editor/base/atomic-block-switcher'
+import DraftConverter from './K3/draft-converter'
+import blockStyleFn from './editor/base/block-style-fn'
 
 let lastId = 0
 function getId() {
@@ -295,13 +298,69 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                 <FieldLabel field={field} errors={errors} />
                 <FieldDescription text={field.adminDoc} />
 
-                <Editor
-                    editorState={editorState}
-                    onChange={onEditorStateChange}
-                />
+                <div className={outerClassName}>
+                    <div className="RichEditor-root">
+                        <div
+                            className={'DraftEditor-controls' + expandBtnClass}
+                        >
+                            <div
+                                className={
+                                    'DraftEditor-controlsInner' + expandBtnClass
+                                }
+                            ></div>
+                        </div>
+                        <div className={className + expandBtnClass}>
+                            <Editor
+                                editorState={editorState}
+                                onChange={onEditorStateChange}
+                                customStyleMap={styleMap}
+                                blockStyleFn={blockStyleFn}
+                                // blockRendererFn={_blockRenderer}
+                                handleKeyCommand={handleKeyCommand}
+                                handlePastedText={handlePastedText}
+                                keyBindingFn={keyBindingFn}
+                                placeholder="Enter HTML Here..."
+                                spellCheck={useSpellCheck}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </FieldContainer>
     )
 }
 
 export default HtmlField
+
+// Custom overrides for "code" style.
+const styleMap = {
+    CODE: {
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+        fontSize: 16,
+        padding: 2,
+    },
+}
+
+// block settings
+const BLOCK_TYPES = [
+    {
+        label: 'Blockquote',
+        style: 'blockquote',
+        icon: 'fa-quote-left',
+        text: '',
+    },
+    { label: 'Code Block', style: 'code-block', icon: 'fa-code', text: '' },
+    { label: 'H1', style: 'header-one', icon: 'fa-header', text: '1' },
+    { label: 'H2', style: 'header-two', icon: 'fa-header', text: '2' },
+    { label: 'OL', style: 'ordered-list-item', icon: 'fa-list-ol', text: '' },
+    { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
+]
+
+// inline style settings
+var INLINE_STYLES = [
+    { label: 'Bold', style: 'BOLD', icon: 'fa-bold', text: '' },
+    { label: 'Italic', style: 'ITALIC', icon: 'fa-italic', text: '' },
+    { label: 'Underline', style: 'UNDERLINE', icon: 'fa-underline', text: '' },
+    { label: 'Monospace', style: 'CODE', icon: 'fa-terminal', text: '' },
+]
