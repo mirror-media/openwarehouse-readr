@@ -104,7 +104,7 @@ module.exports = {
         },
         summary: {
             label: '重點摘要',
-            type: K3HTML,
+            type: Text,
         },
         brief: {
             label: '前言',
@@ -112,7 +112,7 @@ module.exports = {
         },
         content: {
             label: '內文',
-            type: Text,
+            type: K3HTML,
         },
         wordCount: {
             label: '字數',

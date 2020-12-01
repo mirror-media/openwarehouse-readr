@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
 
-import { Editor } from 'react-draft-wysiwyg'
 import {
     BlockMapBuilder,
+    Editor,
     EditorState,
     KeyBindingUtil,
     Modifier,
@@ -14,16 +14,27 @@ import {
     convertToRaw,
     getDefaultKeyBinding,
 } from 'draft-js'
+// import { Button, FormInput } from 'elemental'
+import ENTITY from './K3/entities'
+import decorator from './editor/entity-decorator'
 
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+let lastId = 0
+function getId() {
+    return 'keystone-html-' + lastId++
+}
 
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
-    const initialEditorState = value ? value : EditorState.createEmpty()
+    const initialEditorState = getInitialState(value)
     const [editorState, setEditorState] = useState(initialEditorState)
 
+    // Handle both editorstate and keystone value change
     const onEditorStateChange = (newEditorState) => {
         setEditorState(newEditorState)
         onChange(newEditorState)
+    }
+
+    function getInitialState(value) {
+        return value ? value : EditorState.createEmpty()
     }
 
     return (
@@ -41,7 +52,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
 
                 <Editor
                     editorState={editorState}
-                    onEditorStateChange={onEditorStateChange}
+                    onChange={onEditorStateChange}
                 />
             </div>
         </FieldContainer>
