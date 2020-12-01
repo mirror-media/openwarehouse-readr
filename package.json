@@ -66,6 +66,15 @@
     "redis": "^3.0.2",
     "request": "^2.88.2",
     "shortid": "^2.2.15",
-    "uuidv4": "^6.1.0"
+    "uuidv4": "^6.1.0",
+    "@twreporter/react-article-components": "0.2.0",
+    "blacklist": "1.1.2",
+    "elemental": "^0.6.0",
+    "expression-match": "0.0.17",
+    "raf": "^3.2.0",
+    "react-addons-css-transition-group": "^15.2.0",
+    "react-dnd": "^2.1.4",
+    "react-dnd-html5-backend": "^2.1.2",
+    "xhr": "2.2.0"
   }
 }

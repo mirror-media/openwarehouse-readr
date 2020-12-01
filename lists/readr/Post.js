@@ -3,6 +3,7 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const HTML = require('../../fields/HTML')
+const K3HTML = require('../../fields/K3HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
@@ -103,15 +104,15 @@ module.exports = {
         },
         summary: {
             label: '重點摘要',
-            type: HTML,
+            type: K3HTML,
         },
         brief: {
             label: '前言',
-            type: HTML,
+            type: Text,
         },
         content: {
             label: '內文',
-            type: HTML,
+            type: Text,
         },
         wordCount: {
             label: '字數',
