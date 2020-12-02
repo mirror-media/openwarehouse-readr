@@ -29,7 +29,7 @@
     /* Repair mysterious missing Safari cursor */
     border-left: 0.1px solid transparent;
     position: relative;
-    z-index: 1;
+    z-index: 0;
 }
 
 .public-DraftEditor-content {
@@ -98,6 +98,7 @@
  * enlarged full-screen HTML editor
  */
 .DraftEditor-fullscreen {
+    box-sizing: border-box;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -118,6 +119,7 @@
 }
 
 .DraftEditor-expandButton {
+    display: inline-block;
     position: absolute;
     right: 0;
     top: 0;
@@ -127,7 +129,7 @@
 }
 .DraftEditor-expandButton.expanded {
     right: 3em;
-    z-index: 300;
+    z-index: 999;
     background: rgba(255, 255, 255, 0.8);
 }
 .DraftEditor-controls.expanded {
@@ -138,6 +140,10 @@
     left: 0;
     padding: 0 3em;
 }
+.DraftEditor-controlsInner {
+    position: relative;
+}
+
 .DraftEditor-controlsInner.expanded {
     padding: 0.5em;
     background: -moz-linear-gradient(

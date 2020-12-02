@@ -28,7 +28,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 // import '../../../admin/public/styles/keystone/wysiwyg.scss'
 
 // DRAFT
-// import '../../../admin/public/styles/draftjs/editor.scss'
+import '../../../admin/public/styles/draftjs/editor.css'
 
 let lastId = 0
 function getId() {
@@ -48,7 +48,7 @@ function refreshEditorState(editorState) {
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     const initialEditorState = getInitialState(value)
     const [editorState, setEditorState] = useState(initialEditorState)
-    const [isEnlarged, setIsEnlarged] = useState('desktop')
+    const [isEnlarged, setIsEnlarged] = useState(false)
 
     // Handle both editorstate and keystone value change
     const onEditorStateChange = (newEditorState) => {
@@ -307,7 +307,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                 className="editorContainer"
                 style={{
                     border: '1px solid #C1C7D0',
-                    borderRadius: 3,
+                    borderRadius: 6,
                     padding: '2px',
                 }}
             >
