@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
+import { BlockStyleButtons, InlineStyleButtons } from './editor/editor-buttons'
+// import { Button, FormInput } from 'elemental';
 
 import {
     BlockMapBuilder,
@@ -14,12 +16,19 @@ import {
     convertToRaw,
     getDefaultKeyBinding,
 } from 'draft-js'
-// import { Button, FormInput } from 'elemental'
 import ENTITY from './K3/entities'
 import decorator from './editor/entity-decorator'
 // import AtomicBlockSwitcher from './editor/base/atomic-block-switcher'
 import DraftConverter from './K3/draft-converter'
 import blockStyleFn from './editor/base/block-style-fn'
+
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
+// COMPONENTS
+// import '../../../admin/public/styles/keystone/wysiwyg.scss'
+
+// DRAFT
+// import '../../../admin/public/styles/draftjs/editor.scss'
 
 let lastId = 0
 function getId() {
@@ -27,6 +36,13 @@ function getId() {
 }
 function getInitialState(value) {
     return value ? value : EditorState.createEmpty()
+}
+
+function refreshEditorState(editorState) {
+    return EditorState.forceSelection(
+        editorState,
+        editorState.getCurrentContent().getSelectionAfter()
+    )
 }
 
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
@@ -86,7 +102,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
 
     function toggleInlineStyle(inlineStyle) {
         let newEditorState = RichUtils.toggleInlineStyle(
-            this.state.editorState,
+            editorState,
             inlineStyle
         )
         onEditorStateChange(newEditorState)
@@ -120,7 +136,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
 
     function _toggleAtomicBlock(entity, value) {
         const _editorState = BlockModifier.insertAtomicBlock(
-            this.state.editorState,
+            editorState,
             entity,
             value
         )
@@ -167,22 +183,22 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     function toggleEntity(entity, value) {
         switch (entity) {
             case ENTITY.AUDIO.type:
-                return this._toggleAudio(entity, value)
+                return _toggleAudio(entity, value)
             case ENTITY.BLOCKQUOTE.type:
             case ENTITY.IMAGELINK.type:
             case ENTITY.INFOBOX.type:
             case ENTITY.EMBEDDEDCODE.type:
             case ENTITY.YOUTUBE.type:
-                return this._toggleAtomicBlock(entity, value)
+                return _toggleAtomicBlock(entity, value)
             case ENTITY.ANNOTATION.type:
             case ENTITY.LINK.type:
-                return this._toggleInlineEntity(entity, value)
+                return _toggleInlineEntity(entity, value)
             case ENTITY.IMAGE.type:
-                return this._toggleImage(entity, value)
+                return _toggleImage(entity, value)
             case ENTITY.SLIDESHOW.type:
-                return this._toggleSlideshow(entity, value)
+                return _toggleSlideshow(entity, value)
             case ENTITY.IMAGEDIFF.type:
-                return this._toggleImageDiff(entity, value)
+                return _toggleImageDiff(entity, value)
             default:
                 return
         }
@@ -307,7 +323,36 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                 className={
                                     'DraftEditor-controlsInner' + expandBtnClass
                                 }
-                            ></div>
+                            >
+                                <BlockStyleButtons
+                                    buttons={BLOCK_TYPES}
+                                    editorState={editorState}
+                                    onToggle={toggleBlockType}
+                                />
+
+                                <InlineStyleButtons
+                                    buttons={INLINE_STYLES}
+                                    editorState={editorState}
+                                    onToggle={toggleInlineStyle}
+                                />
+
+                                <span
+                                    value="unordered-list-item"
+                                    className={
+                                        'hollow-primary DraftEditor-expandButton' +
+                                        expandBtnClass
+                                    }
+                                    onClick={enlargeEditor}
+                                    aria-haspopup="true"
+                                    aria-expanded={isEnlarged}
+                                    title="expand"
+                                >
+                                    <i
+                                        className={'fa ' + expandIcon}
+                                        aria-hidden="true"
+                                    ></i>
+                                </span>
+                            </div>
                         </div>
                         <div className={className + expandBtnClass}>
                             <Editor
