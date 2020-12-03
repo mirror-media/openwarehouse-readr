@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
-import { BlockStyleButtons, InlineStyleButtons } from './editor/editor-buttons'
+import {
+    BlockStyleButtons,
+    InlineStyleButtons,
+    EntityButtons,
+} from './editor/editor-buttons'
 // import { Button, FormInput } from 'elemental';
+import { Button } from 'element-react'
 
 import {
     BlockMapBuilder,
@@ -336,7 +341,13 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                     onToggle={toggleInlineStyle}
                                 />
 
-                                <span
+                                <EntityButtons
+                                    entities={Object.keys(ENTITY)}
+                                    editorState={editorState}
+                                    onToggle={toggleEntity}
+                                />
+
+                                <Button
                                     value="unordered-list-item"
                                     className={
                                         'hollow-primary DraftEditor-expandButton' +
@@ -351,7 +362,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                         className={'fa ' + expandIcon}
                                         aria-hidden="true"
                                     ></i>
-                                </span>
+                                </Button>
                             </div>
                         </div>
                         <div className={className + expandBtnClass}>
@@ -396,8 +407,8 @@ const BLOCK_TYPES = [
         text: '',
     },
     { label: 'Code Block', style: 'code-block', icon: 'fa-code', text: '' },
-    { label: 'H1', style: 'header-one', icon: 'fa-header', text: '1' },
-    { label: 'H2', style: 'header-two', icon: 'fa-header', text: '2' },
+    { label: 'H1', style: 'header-one', icon: 'fa-header', text: 'H1' },
+    { label: 'H2', style: 'header-two', icon: 'fa-header', text: 'H2' },
     { label: 'OL', style: 'ordered-list-item', icon: 'fa-list-ol', text: '' },
     { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
 ]

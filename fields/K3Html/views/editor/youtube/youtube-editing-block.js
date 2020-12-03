@@ -1,53 +1,64 @@
-'use strict';
-import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin';
-import React from 'react';
+'use strict'
 
-class YoutubeEditingBlock extends EntityEditingBlockMixin(React.Component) {
-	constructor (props) {
-		super(props);
-		this.state.editingFields = {
-			youtubeId: props.youtubeId,
-			description: props.description,
-		};
-	}
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-	// overwrite
-	_composeEditingFields (props) {
-		return {
-			youtubeId: {
-				type: 'text',
-				value: props.youtubeId,
-			},
-			description: {
-				type: 'textarea',
-				value: props.description,
-			},
-		};
-	}
+import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
 
-	// overwrite
-	_decomposeEditingFields (fields) {
-		return {
-			youtubeId: fields.youtubeId.value,
-			description: fields.description.value,
-		};
-	}
+// export class EntityEditingBlockMixin extends Component {
+//     render() {
+//         return <div>EntityEditingBlockMixin</div>
+//     }
+// }
+// export class YoutubeEditingBlock extends Component {
+
+export class YoutubeEditingBlock extends EntityEditingBlockMixin {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            editingFields: {
+                youtubeId: props.youtubeId,
+                description: props.description,
+            },
+        }
+    }
+
+    // overwrite
+    _composeEditingFields(props) {
+        return {
+            youtubeId: {
+                type: 'text',
+                value: props.youtubeId,
+            },
+            description: {
+                type: 'textarea',
+                value: props.description,
+            },
+        }
+    }
+    // overwrite
+    _decomposeEditingFields(fields) {
+        return {
+            youtubeId: fields.youtubeId.value,
+            description: fields.description.value,
+        }
+    }
 }
 
-YoutubeEditingBlock.displayName = 'YoutubeEditingBlock';
+YoutubeEditingBlock.displayName = 'YoutubeEditingBlock'
+// YoutubeEditingBlock.propTypes = {
+//     description: PropTypes.string,
+//     isModalOpen: PropTypes.bool,
+//     onToggle: PropTypes.func.isRequired,
+//     toggleModal: PropTypes.func,
+//     youtubeId: PropTypes.string,
+// }
 
-YoutubeEditingBlock.propTypes = {
-	description: React.PropTypes.string,
-	isModalOpen: React.PropTypes.bool,
-	onToggle: React.PropTypes.func.isRequired,
-	toggleModal: React.PropTypes.func,
-	youtubeId: React.PropTypes.string,
-};
+// YoutubeEditingBlock.defaultProps = {
+//     description: '',
+//     isModalOpen: false,
+//     youtubeId: '',
+// }
 
-YoutubeEditingBlock.defaultProps = {
-	description: '',
-	isModalOpen: false,
-	youtubeId: '',
-};
-
-export default YoutubeEditingBlock;
+export default YoutubeEditingBlock
