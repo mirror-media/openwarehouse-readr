@@ -27,7 +27,7 @@ import BlockModifier from './editor/modifiers/index'
 import decorator from './editor/entity-decorator'
 const { isCtrlKeyCommand } = KeyBindingUtil
 
-// import AtomicBlockSwitcher from './editor/base/atomic-block-switcher'
+import AtomicBlockSwitcher from './editor/base/atomic-block-switcher'
 import DraftConverter from './K3/draft-converter'
 import blockStyleFn from './editor/base/block-style-fn'
 
@@ -44,7 +44,24 @@ function getId() {
     return 'keystone-html-' + lastId++
 }
 function getInitialState(value) {
-    return value ? value : EditorState.createEmpty()
+    let editorState
+    try {
+        if (value) {
+            // create an EditorState from the raw Draft data
+            let contentState = value.getCurrentContent()
+            editorState = EditorState.createWithContent(contentState, decorator)
+        } else {
+            // create empty draft object
+            editorState = EditorState.createEmpty(decorator)
+        }
+    } catch (error) {
+        // create empty EditorState
+        editorState = EditorState.createEmpty(decorator)
+    }
+
+    return editorState
+
+    // return value ? value : EditorState.createEmpty()
 }
 
 function refreshEditorState(editorState) {
@@ -244,6 +261,12 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
         return null
     }
 
+    function _convertToApiData(editorState) {
+        const content = convertToRaw(editorState.getCurrentContent())
+        const apiData = DraftConverter.convertToApiData(content)
+        return apiData.toJS()
+    }
+
     function enlargeEditor() {
         // also set editorState to force editor to re-render
         setIsEnlarged(!isEnlarged)
@@ -373,14 +396,14 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                         </div>
                         <div className={className + expandBtnClass}>
                             <Editor
-                                editorState={editorState}
-                                onChange={onEditorStateChange}
-                                customStyleMap={styleMap}
+                                blockRendererFn={_blockRenderer}
                                 blockStyleFn={blockStyleFn}
-                                // blockRendererFn={_blockRenderer}
+                                customStyleMap={styleMap}
+                                editorState={editorState}
                                 handleKeyCommand={handleKeyCommand}
                                 handlePastedText={handlePastedText}
                                 keyBindingFn={keyBindingFn}
+                                onChange={onEditorStateChange}
                                 placeholder="Enter HTML Here..."
                                 spellCheck={useSpellCheck}
                             />

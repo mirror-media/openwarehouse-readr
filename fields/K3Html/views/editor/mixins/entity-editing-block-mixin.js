@@ -221,18 +221,21 @@ export class EntityEditingBlock extends Component {
         }
         let onChange = this._handleEditingFieldChange.bind(this, field)
         return (
-            <Form label={field} htmlFor={'form-input-' + field} key={field}>
-                <Form.Item label={field} labelWidth="120">
-                    <Input
-                        type={type}
-                        multiline={type === 'textarea' ? true : false}
-                        placeholder={'Enter ' + field}
-                        name={'form-input-' + field}
-                        onChange={onChange}
-                        defaultValue={value}
-                    />
-                </Form.Item>
-            </Form>
+            // <Form label={field} htmlFor={'form-input-' + field} key={field}>
+            // <Form.Item label={field} labelWidth="120">
+            <div>
+                <Input
+                    type={type}
+                    multiline={type === 'textarea' ? 'true' : 'false'}
+                    placeholder={'Enter ' + field}
+                    name={'form-input-' + field}
+                    onChange={onChange}
+                    defaultValue={value}
+                />
+                <div style={{ margin: '20px 0' }}></div>
+            </div>
+            //</Form.Item>
+            // </Form>
         )
     }
 

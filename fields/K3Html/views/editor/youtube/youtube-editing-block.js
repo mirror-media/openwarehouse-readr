@@ -10,7 +10,6 @@ import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
 //         return <div>EntityEditingBlockMixin</div>
 //     }
 // }
-// export class YoutubeEditingBlock extends Component {
 
 export class YoutubeEditingBlock extends EntityEditingBlockMixin {
     constructor(props) {
