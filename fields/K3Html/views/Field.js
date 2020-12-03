@@ -25,6 +25,8 @@ import ENTITY from './K3/entities'
 import BlockModifier from './editor/modifiers/index'
 
 import decorator from './editor/entity-decorator'
+const { isCtrlKeyCommand } = KeyBindingUtil
+
 // import AtomicBlockSwitcher from './editor/base/atomic-block-switcher'
 import DraftConverter from './K3/draft-converter'
 import blockStyleFn from './editor/base/block-style-fn'
