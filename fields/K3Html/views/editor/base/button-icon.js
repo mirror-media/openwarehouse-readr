@@ -32,6 +32,7 @@ export class EntityStyleButton extends React.Component {
                 type="default"
                 className={className}
                 data-tooltip={this.props.label}
+                onClick={this.props.onClick}
             >
                 <i className={'fab ' + this.props.icon}></i>
                 <span>{this.props.iconText}</span>

@@ -48,126 +48,78 @@
 // 	return Wrapper;
 // }
 // --------------------------------------------
-// import React, { useState } from 'react'
-// import ButtonIcon from './button-icon'
-
-// function btWrapper(props) {
-//     const [isToggled, setIsToggled] = useState(true)
-
-//     function _toggleModal() {
-//         setIsToggled(isToggled)
-//     }
-
-//     const PASS = { ...props.children }
-//     console.log(PASS)
-
-//     return (
-//         <div
-//             className="Button Button--default"
-//             style={{ display: 'inline-block' }}
-//             onClick={_toggleModal}
-//         >
-//             {/* {React.cloneElement(props.children, {
-//                 isModalOpen: isToggled,
-//                 toggleModal: _toggleModal,
-//             })} */}
-
-//             <ButtonIcon {...props} />
-//         </div>
-//     )
-// }
-// // btWrapper.displayName = `ButtonWith${getDisplayName(EditingBlockComponent)}`
-
-// export default btWrapper
-
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import ButtonIcon from './button-icon'
 
-const getDisplayName = (WrappedComponent) =>
-    WrappedComponent.displayName || WrappedComponent.name || 'Component'
+function btWrapper(props) {
+    const [isToggled, setIsToggled] = useState(false)
 
-export class WrapComponent extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isToggled: true,
-        }
-        this.toggleModal = this._toggleModal.bind(this)
+    const _toggleModal = () => {
+        setIsToggled(!isToggled)
     }
 
-    _toggleModal() {
-        this.setState({
-            isToggled: !this.state.isToggled,
-        })
-    }
-
-    render() {
-        return (
-            <div
-                className="Button Button--default"
-                style={{ display: 'inline-block' }}
-                onClick={this.toggleModal}
-            >
-                {/* {React.cloneElement(this.props.children, {
-                    isModalOpen: this.isToggled,
-                    toggleModal: this._toggleModal,
-                })} */}
-                <ButtonIcon {...this.props.buttonData} />
-            </div>
-        )
-    }
+    return (
+        <div
+            className="Button Button--default"
+            style={{ display: 'inline-block' }}
+        >
+            {React.cloneElement(props.children, {
+                ...props.buttonData,
+                isModalOpen: isToggled,
+                toggleModal: _toggleModal,
+            })}
+            <ButtonIcon {...props.buttonData} onClick={_toggleModal} />
+        </div>
+    )
 }
+// btWrapper.displayName = `ButtonWith${getDisplayName(EditingBlockComponent)}`
 
-// Wrapper.displayName = `ButtonWith${getDisplayName(EditingBlockComponent)}`
-// Wrapper.defaultProps = {
-//     readOnly: false,
-// }
+export default btWrapper
 
-export default WrapComponent
-
+// import React, { Component } from 'react'
 // import ButtonIcon from './button-icon'
-// import React, { Component } from 'react';
 
-// // Export
-// export default function WrapComponent (EditingBlockComponent) {
-// 	class Wrapper extends Component {
-// 		constructor (props) {
-// 			super(props);
-// 			this.state = {
-// 				isToggled: true,
-// 			};
-// 			this.toggleModal = this._toggleModal.bind(this);
-// 		}
+// const getDisplayName = (WrappedComponent) =>
+//     WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
-// 		_toggleModal () {
-// 			this.setState({
-// 				isToggled: !this.state.isToggled,
-// 			});
-// 		}
+// export class WrapComponent extends Component {
+//     constructor(props) {
+//         super(props)
+//         this.state = {
+//             isToggled: true,
+//         }
+//         this.toggleModal = this._toggleModal.bind(this)
+//     }
 
-// 		render () {
-// 			return (
-// 				<div
-// 					className="Button Button--default"
-// 					style={{ display: 'inline-block' }}
-// 					onClick={this.toggleModal}
-// 				>
-// 					<EditingBlockComponent
-// 						{...this.props}
-// 						isModalOpen={!this.state.isToggled}
-// 						toggleModal={this.toggleModal}
-// 					/>
-// 					<ButtonIcon
-// 						{...this.props}
-// 					/>
-// 				</div>
-// 			);
-// 		}
-// 	}
-// 	Wrapper.displayName = `ButtonWith${getDisplayName(EditingBlockComponent)}`;
-// 	Wrapper.defaultProps = {
-// 		readOnly: false,
-// 	};
+//     _toggleModal() {
+//         console.log(this)
+//         // this.setState({
+//         //     isToggled: !this.state.isToggled,
+//         // })
+//     }
 
-// 	return Wrapper;
+//     render() {
+//         return (
+//             <div
+//                 className="Button Button--default"
+//                 style={{ display: 'inline-block' }}
+//                 onClick={() => this._toggleModal}
+//             >
+//                 {React.cloneElement(this.props.children, {
+//                     ...this.props.buttonData,
+//                     isModalOpen: this.isToggled,
+//                     toggleModal: this._toggleModal,
+//                 })}
+//                 {this.isToggled}
+//                 <ButtonIcon {...this.props.buttonData} />
+//             </div>
+//         )
+//     }
 // }
+
+// // Wrapper.displayName = `ButtonWith${getDisplayName(EditingBlockComponent)}`
+// // Wrapper.defaultProps = {
+// //     readOnly: false,
+// // }
+
+// export default WrapComponent

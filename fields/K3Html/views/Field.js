@@ -22,6 +22,8 @@ import {
     getDefaultKeyBinding,
 } from 'draft-js'
 import ENTITY from './K3/entities'
+import BlockModifier from './editor/modifiers/index'
+
 import decorator from './editor/entity-decorator'
 // import AtomicBlockSwitcher from './editor/base/atomic-block-switcher'
 import DraftConverter from './K3/draft-converter'
@@ -69,6 +71,8 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
 
         setEditorState(newEditorState)
         onChange(newEditorState)
+
+        console.log(convertToRaw(newEditorState.getCurrentContent()))
     }
 
     function focus() {

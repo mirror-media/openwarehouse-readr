@@ -1,6 +1,8 @@
 'use strict'
 // import { Button, FormField, FormInput, Modal } from 'elemental'
 // import { Modal } from 'elemental'
+import { Dialog, Button, Form, Input } from 'element-react'
+import 'element-theme-default'
 import {
     BlockMapBuilder,
     Editor,
@@ -29,7 +31,7 @@ export class EntityEditingBlock extends Component {
     constructor(props) {
         super(props)
         this.toggleModal = this._toggleModal.bind(this)
-        // this.handleSave = this._handleSave.bind(this)
+        this.handleSave = this._handleSave.bind(this)
         this.composeEditingFields = this._composeEditingFields.bind(this)
         // this.focus = this._focus.bind(this)
         // this._handleEditorStateChange = this._handleEditorStateChange.bind(
@@ -157,7 +159,7 @@ export class EntityEditingBlock extends Component {
     }
 
     _handleEditingFieldChange(field, e) {
-        this._editingFields[field].value = e.target.value
+        this._editingFields[field].value = e
     }
 
     _handleSave() {
@@ -213,37 +215,35 @@ export class EntityEditingBlock extends Component {
     //     )
     // }
 
-    // _renderEditingField(field, type, value) {
-    //     if (type === 'html') {
-    //         return this._renderDraftjsEditingField(this.state.editorState)
-    //     }
-    //     let onChange = this._handleEditingFieldChange.bind(this, field)
-    //     return (
-    //         <FormField
-    //             label={field}
-    //             htmlFor={'form-input-' + field}
-    //             key={field}
-    //         >
-    //             <FormInput
-    //                 type={type}
-    //                 multiline={type === 'textarea' ? true : false}
-    //                 placeholder={'Enter ' + field}
-    //                 name={'form-input-' + field}
-    //                 onChange={onChange}
-    //                 defaultValue={value}
-    //             />
-    //         </FormField>
-    //     )
-    // }
+    _renderEditingField(field, type, value) {
+        if (type === 'html') {
+            return this._renderDraftjsEditingField(this.state.editorState)
+        }
+        let onChange = this._handleEditingFieldChange.bind(this, field)
+        return (
+            <Form label={field} htmlFor={'form-input-' + field} key={field}>
+                <Form.Item label={field} labelWidth="120">
+                    <Input
+                        type={type}
+                        multiline={type === 'textarea' ? true : false}
+                        placeholder={'Enter ' + field}
+                        name={'form-input-' + field}
+                        onChange={onChange}
+                        defaultValue={value}
+                    />
+                </Form.Item>
+            </Form>
+        )
+    }
 
-    // _renderEditingFields(fields) {
-    //     let Fields = Object.keys(fields).map((field) => {
-    //         const type = fields[field].type
-    //         const value = fields[field].value
-    //         return this._renderEditingField(field, type, value)
-    //     })
-    //     return Fields
-    // }
+    _renderEditingFields(fields) {
+        let Fields = Object.keys(fields).map((field) => {
+            const type = fields[field].type
+            const value = fields[field].value
+            return this._renderEditingField(field, type, value)
+        })
+        return Fields
+    }
 
     _toggleBlockStyle(blockType) {
         this._handleEditorStateChange(
@@ -314,7 +314,6 @@ export class EntityEditingBlock extends Component {
     }
     render() {
         return (
-            <h1>YO</h1>
             // <Modal
             //     isOpen={this.props.isModalOpen}
             //     onCancel={this.toggleModal}
@@ -337,6 +336,25 @@ export class EntityEditingBlock extends Component {
             //         </Button>
             //     </Modal.Footer>
             // </Modal>
+
+            <Dialog
+                title={`Insert ${this.props.label}`}
+                visible={this.props.isModalOpen}
+                onCancel={this.toggleModal}
+                lockScroll={false}
+            >
+                <Dialog.Body>
+                    {this._renderEditingFields(this.state.editingFields)}
+                </Dialog.Body>
+                <Dialog.Footer>
+                    <Button type="primary" onClick={this.handleSave}>
+                        Save
+                    </Button>
+                    <Button type="link-cancel" onClick={this.toggleModal}>
+                        Cancel
+                    </Button>
+                </Dialog.Footer>
+            </Dialog>
         )
     }
 }
