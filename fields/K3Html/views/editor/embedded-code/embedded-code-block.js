@@ -55,15 +55,15 @@ export class EmbeddedCodeBlock extends AtomicBlockRendererMixin {
         // const linkKey = blockWithLinkAtBeginning.getEntityAt(0)
         const data = contentState.getEntity(this.props.entityKey).getData()
         // const { url } = linkInstance.getData()
-        const code = data.code
+        const { code, caption, alignment } = data
 
-        const htmlReactElement = htmlParser(code)
+        const convertHtmlStringToReactComponent = htmlParser(code)
         return (
             <div
                 contentEditable={false}
                 className="embedded-container center-block"
                 style={_.merge(style, {
-                    alignItem: data.alignment,
+                    alignItem: 'center',
                     position: 'relative',
                 })}
             >
@@ -73,7 +73,7 @@ export class EmbeddedCodeBlock extends AtomicBlockRendererMixin {
                 >
                     {this.props.children}
                 </AlignedEmbedded> */}
-                {htmlParser(code)}
+                {convertHtmlStringToReactComponent}
                 {/* <EditingBt onClick={this.toggleEditMode} /> */}
                 {/* {EditBlock} */}
             </div>

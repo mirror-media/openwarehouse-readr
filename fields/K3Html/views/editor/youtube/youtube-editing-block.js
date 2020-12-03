@@ -1,15 +1,7 @@
 'use strict'
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
 import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
-
-// export class EntityEditingBlockMixin extends Component {
-//     render() {
-//         return <div>EntityEditingBlockMixin</div>
-//     }
-// }
 
 export class YoutubeEditingBlock extends EntityEditingBlockMixin {
     constructor(props) {
@@ -54,10 +46,10 @@ YoutubeEditingBlock.displayName = 'YoutubeEditingBlock'
 //     youtubeId: PropTypes.string,
 // }
 
-// YoutubeEditingBlock.defaultProps = {
-//     description: '',
-//     isModalOpen: false,
-//     youtubeId: '',
-// }
+YoutubeEditingBlock.defaultProps = {
+    description: '',
+    isModalOpen: false,
+    youtubeId: '',
+}
 
 export default YoutubeEditingBlock

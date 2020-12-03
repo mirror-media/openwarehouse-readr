@@ -312,9 +312,9 @@ export class EntityEditingBlock extends Component {
         this._handleEditorStateChange(_editorState)
     }
 
-    render() {
-        return <div>EntityEditingBlockMixin</div>
-    }
+    // render() {
+    //     return <div>EntityEditingBlockMixin</div>
+    // }
     render() {
         return (
             // <Modal

@@ -90,8 +90,6 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
 
         setEditorState(newEditorState)
         onChange(newEditorState)
-
-        console.log(convertToRaw(newEditorState.getCurrentContent()))
     }
 
     function focus() {

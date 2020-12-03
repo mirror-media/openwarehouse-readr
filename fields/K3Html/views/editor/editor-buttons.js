@@ -6,15 +6,15 @@ import 'element-theme-default'
 import React from 'react'
 import map from 'lodash/map'
 import { Entity } from 'draft-js'
+import ENTITY from './entities'
 // import AnnotationBt from './annotation/annotation-bt'
 // import AudioButton from './audio/audio-bt'
 // import BlockQuoteBt from './quote/block-quote-bt'
-// import EmbeddedCodeBt from './embedded-code/embedded-code-bt'
-import ENTITY from './entities'
+import EmbeddedCodeBt from './embedded-code/embedded-code-bt'
 // import ImageButton from './image/image-button'
 // import ImageLinkButton from './image-link/image-link-bt'
 // import InfoBoxBt from './info-box/info-box-bt'
-// import LinkButton from './link/link-button'
+import LinkButton from './link/link-button'
 import YoutubeBt from './youtube/youtube-bt'
 
 const _ = {
@@ -196,18 +196,17 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.LINK.type:
                 return (
-                    <span>{entity}</span>
-
-                    // <LinkButton
-                    //     active={active}
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     url={data ? data.url : ''}
-                    //     text={data ? data.text : selectedText}
-                    //     icon="fa-link"
-                    //     iconText=""
-                    // />
+                    // <span>{entity}</span>
+                    <LinkButton
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        url={data ? data.url : ''}
+                        text={data ? data.text : selectedText}
+                        icon="fa fa-link"
+                        iconText=""
+                    />
                 )
             case ENTITY.IMAGE.type:
                 return (
@@ -271,16 +270,16 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.EMBEDDEDCODE.type:
                 return (
-                    // <EmbeddedCodeBt
-                    //     active={active}
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     caption={data ? data.caption : ''}
-                    //     embeddedCode={data ? data.embeddedCode : ''}
-                    //     iconText=" Embed"
-                    // />
-                    <span>{entity}</span>
+                    <EmbeddedCodeBt
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        caption={data ? data.caption : ''}
+                        embeddedCode={data ? data.embeddedCode : ''}
+                        iconText=" Embed"
+                    />
+                    // <span>{entity}</span>
                 )
             case ENTITY.YOUTUBE.type:
                 return (
@@ -290,7 +289,7 @@ export const EntityButtons = (props) => {
                         key={entity}
                         label={entity}
                         onToggle={onToggle}
-                        icon="fa-youtube fa-2"
+                        icon="fab fa-youtube fa-2"
                         iconText=""
                         youtubeId={data ? data.youtubeId : ''}
                     />
