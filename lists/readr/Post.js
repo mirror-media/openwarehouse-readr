@@ -3,7 +3,6 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const HTML = require('../../fields/HTML')
-const K3HTML = require('../../fields/K3HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
@@ -112,7 +111,7 @@ module.exports = {
         },
         content: {
             label: '內文',
-            type: K3HTML,
+            type: HTML,
         },
         wordCount: {
             label: '字數',

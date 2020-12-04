@@ -1,114 +1,339 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
-
-import { Editor } from 'react-draft-wysiwyg'
 import {
+    BlockStyleButtons,
+    InlineStyleButtons,
+    EntityButtons,
+} from './editor/editor-buttons'
+// import { Button, FormInput } from 'elemental';
+import { Button } from 'element-react'
+
+import {
+    BlockMapBuilder,
+    Editor,
     EditorState,
+    KeyBindingUtil,
+    Modifier,
+    Entity,
     RichUtils,
-    CompositeDecorator,
+    convertFromHTML,
+    convertFromRaw,
     convertToRaw,
+    getDefaultKeyBinding,
 } from 'draft-js'
-import { handleDraftEditorPastedText } from 'draftjs-conductor'
-import { builtInButtons, customButtons } from './customToolbar'
-import decorators from './editor/decorators'
+import ENTITY from './K3/entities'
+import BlockModifier from './editor/modifiers/index'
 
-import { Zoom } from './editor/controls'
-import { addClassToContentBlock } from './draftPropsHandler'
+import decorator from './editor/entity-decorator'
+const { isCtrlKeyCommand } = KeyBindingUtil
 
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import './editor/css/fixSectionPosition.css'
-import './editor/css/TeXEditor.css'
-import decorator from './K3/entity-decorator'
+import AtomicBlockSwitcher from './editor/base/atomic-block-switcher'
+import DraftConverter from './K3/draft-converter'
+import blockStyleFn from './editor/base/block-style-fn'
 
-import { Map } from 'immutable'
-import { insertTeXBlock } from './editor/utils/modifiers/insertTeXBlock'
-import { removeTeXBlock } from './editor/utils/modifiers/removeTeXBlock'
-import MediaCustomBlock from './editor/controls/MediaCustomBlock'
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
+// COMPONENTS
+// import '../../../admin/public/styles/keystone/wysiwyg.scss'
+
+// DRAFT
+import '../../../admin/public/styles/draftjs/editor.css'
+
+let lastId = 0
+function getId() {
+    return 'keystone-html-' + lastId++
+}
+function getInitialState(value) {
+    let editorState
+    try {
+        if (value) {
+            // create an EditorState from the raw Draft data
+            let contentState = value.getCurrentContent()
+            editorState = EditorState.createWithContent(contentState, decorator)
+        } else {
+            // create empty draft object
+            editorState = EditorState.createEmpty(decorator)
+        }
+    } catch (error) {
+        // create empty EditorState
+        editorState = EditorState.createEmpty(decorator)
+    }
+
+    return editorState
+
+    // return value ? value : EditorState.createEmpty()
+}
+
+function refreshEditorState(editorState) {
+    return EditorState.forceSelection(
+        editorState,
+        editorState.getCurrentContent().getSelectionAfter()
+    )
+}
 
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
-    const initialEditorState = value ? value : EditorState.createEmpty()
+    const initialEditorState = getInitialState(value)
     const [editorState, setEditorState] = useState(initialEditorState)
-    const [textContentBlock, setTextContentBlock] = useState(Map())
-    const editorRef = useRef()
+    const [isEnlarged, setIsEnlarged] = useState(false)
+    const mainEditorRef = useRef()
 
     // Handle both editorstate and keystone value change
     const onEditorStateChange = (newEditorState) => {
+        const content = convertToRaw(editorState.getCurrentContent())
+        const cHtml = DraftConverter.convertToHtml(content)
+        const apiData = DraftConverter.convertToApiData(content)
+        console.log(content)
+
+        const valueStr = JSON.stringify({
+            draft: content,
+            html: cHtml,
+            apiData,
+        })
+
         setEditorState(newEditorState)
         onChange(newEditorState)
     }
 
-    // After receiving key command, generate new state from RichUtils, and update state.
-    const handleKeyCommand = (command, editorState) => {
-        // RichUtils.handleKeyCommand will handle blocks in different cases which the default behavior of Editor does not handle.
-        const newState = RichUtils.handleKeyCommand(editorState, command)
-
-        if (newState) {
-            onEditorStateChange(newState)
-            return 'handled'
-        } else {
-            // Upon receiving 'not-handled', Editor will fallback to the default behavior.
-            return 'not-handled'
-        }
+    function focus() {
+        mainEditorRef.focus()
     }
 
-    // ??
-    const handlePastedText = (text, html, editorState, onChange) => {
-        let newEditorState = handleDraftEditorPastedText(html, editorState)
-        if (newEditorState) {
-            onChange(newEditorState)
+    function handleKeyCommand(command) {
+        let newState
+        switch (command) {
+            case 'insert-soft-newline':
+                newState = RichUtils.insertSoftNewline(editorState)
+                break
+            default:
+                newState = RichUtils.handleKeyCommand(editorState, command)
+        }
+        if (newState) {
+            onEditorStateChange(newState)
             return true
         }
         return false
     }
 
-    // Detect every contentBox
-    const blockRendererFn = (contentBlock) => {
-        // if (contentBlock.getType() !== 'atomic') return null
-        // console.log(contentBlock.getType())
-        if (contentBlock.getType() === 'atomic') {
+    function keyBindingFn(e) {
+        if (e.keyCode === 13 /* `enter` key */) {
+            if (isCtrlKeyCommand(e) || e.shiftKey) {
+                return 'insert-soft-newline'
+            }
+        }
+        return getDefaultKeyBinding(e)
+    }
+
+    function toggleBlockType(blockType) {
+        let newEditorState = RichUtils.toggleBlockType(editorState, blockType)
+        onEditorStateChange(newEditorState)
+    }
+
+    function toggleInlineStyle(inlineStyle) {
+        let newEditorState = RichUtils.toggleInlineStyle(
+            editorState,
+            inlineStyle
+        )
+        onEditorStateChange(newEditorState)
+    }
+
+    function _toggleTextWithEntity(entityKey, text) {
+        const selection = editorState.getSelection()
+        let contentState = editorState.getCurrentContent()
+
+        if (selection.isCollapsed()) {
+            contentState = Modifier.removeRange(
+                editorState.getCurrentContent(),
+                selection,
+                'backward'
+            )
+        }
+        contentState = Modifier.replaceText(
+            contentState,
+            selection,
+            text,
+            null,
+            entityKey
+        )
+        const _editorState = EditorState.push(
+            editorState,
+            contentState,
+            editorState.getLastChangeType()
+        )
+        onEditorStateChange(_editorState)
+    }
+
+    function _toggleAtomicBlock(entity, value) {
+        const _editorState = BlockModifier.insertAtomicBlock(
+            editorState,
+            entity,
+            value
+        )
+        onEditorStateChange(_editorState)
+    }
+
+    function _toggleAudio(entity, value) {
+        const audio = Array.isArray(value) ? value[0] : null
+        if (!audio) {
+            return
+        }
+        _toggleAtomicBlock(entity, audio)
+    }
+
+    function _toggleInlineEntity(entity, value) {
+        const entityKey = Entity.create(entity, 'IMMUTABLE', value)
+        _toggleTextWithEntity(entityKey, _.get(value, 'text'))
+    }
+
+    function _toggleImage(entity, value) {
+        const image = Array.isArray(value) ? value[0] : null
+        if (!image) {
+            return
+        }
+        _toggleAtomicBlock(entity, image)
+    }
+
+    function _toggleImageDiff(entity, value) {
+        const images = Array.isArray(value) && value.length === 2 ? value : null
+        if (!images) {
+            return
+        }
+        _toggleAtomicBlock(entity, images)
+    }
+
+    function _toggleSlideshow(entity, value) {
+        const images = Array.isArray(value) && value.length > 0 ? value : null
+        if (!images) {
+            return
+        }
+        _toggleAtomicBlock(entity, images)
+    }
+
+    function toggleEntity(entity, value) {
+        switch (entity) {
+            case ENTITY.AUDIO.type:
+                return _toggleAudio(entity, value)
+            case ENTITY.BLOCKQUOTE.type:
+            case ENTITY.IMAGELINK.type:
+            case ENTITY.INFOBOX.type:
+            case ENTITY.EMBEDDEDCODE.type:
+            case ENTITY.YOUTUBE.type:
+                return _toggleAtomicBlock(entity, value)
+            case ENTITY.ANNOTATION.type:
+            case ENTITY.LINK.type:
+                return _toggleInlineEntity(entity, value)
+            case ENTITY.IMAGE.type:
+                return _toggleImage(entity, value)
+            case ENTITY.SLIDESHOW.type:
+                return _toggleSlideshow(entity, value)
+            case ENTITY.IMAGEDIFF.type:
+                return _toggleImageDiff(entity, value)
+            default:
+                return
+        }
+    }
+
+    function _blockRenderer(block) {
+        if (block.getType() === 'atomic') {
             return {
-                component: MediaCustomBlock,
-                editable: false,
+                component: AtomicBlockSwitcher,
                 props: {
-                    onStartEdit: (blockKey) => {
-                        //   something important, but i can't figure out WTF is this.
-                        setTextContentBlock(
-                            textContentBlock.set(blockKey, true)
-                        )
-                    },
-                    onFinishEdit: (blockKey, newContentState) => {
-                        setTextContentBlock(textContentBlock.remove(blockKey))
-
-                        const newEditorState = EditorState.createWithContent(
-                            newContentState
+                    onFinishEdit: (blockKey, valueChanged) => {
+                        const _editorState = BlockModifier.handleAtomicEdit(
+                            editorState,
+                            blockKey,
+                            valueChanged
                         )
 
-                        onEditorStateChange(newEditorState)
+                        // workaround here.
+                        // use refreshEditorState to make the Editor rerender
+                        onEditorStateChange(refreshEditorState(_editorState))
                     },
-                    onRemove: (blockKey) => removeTeX(blockKey),
+                    refreshEditorState: () => {
+                        onEditorStateChange(refreshEditorState(editorState))
+                    },
+                    data: _convertToApiData(editorState),
+                    // render desktop layout when editor is enlarged,
+                    // otherwise render mobile layout
+                    device: isEnlarged ? 'desktop' : 'mobile',
                 },
             }
         }
+        return null
+    }
 
-        if (contentBlock.getType() !== 'atomic') return null
-        return {
-            // component: AtomicBlock,
-            editable: false,
+    function _convertToApiData(editorState) {
+        const content = convertToRaw(editorState.getCurrentContent())
+        const apiData = DraftConverter.convertToApiData(content)
+        return apiData.toJS()
+    }
+
+    function enlargeEditor() {
+        // also set editorState to force editor to re-render
+        setIsEnlarged(!isEnlarged)
+        onEditorStateChange(refreshEditorState(editorState))
+    }
+
+    function handlePastedText(text, html) {
+        function insertFragment(editorState, fragment) {
+            let newContent = Modifier.replaceWithFragment(
+                editorState.getCurrentContent(),
+                editorState.getSelection(),
+                fragment
+            )
+            return EditorState.push(editorState, newContent, 'insert-fragment')
+        }
+
+        if (html) {
+            // remove meta tag
+            html = html.replace(/<meta (.+?)>/g, '')
+            // replace p, h2 by div.
+            // TODO need to find out how many block tags we need to replace
+            // currently, just handle p, h1, h2, ..., h6 tag
+            // NOTE: I don't know why header style can not be parsed into ContentBlock,
+            // so I replace it by div temporarily
+            html = html
+                .replace(/<p|<h1|<h2|<h3|<h4|<h5|<h6/g, '<div')
+                .replace(/<\/p|<\/h1|<\/h2|<\/h3|<\/h4|<\/h5|<\/h6/g, '</div')
+
+            let newEditorState = editorState
+            var htmlFragment = convertFromHTML(html)
+            if (htmlFragment) {
+                var htmlMap = BlockMapBuilder.createFromArray(htmlFragment)
+                onEditorStateChange(insertFragment(newEditorState, htmlMap))
+                // prevent the default paste behavior.
+                return true
+            }
+        }
+        // use default paste behavior
+        return false
+    }
+
+    const useSpellCheck = true
+
+    // If the user changes block type before entering any text, we can
+    // either style the placeholder or hide it. Let's just hide it now.
+    let outerClassName = ''
+    let className = 'RichEditor-editor'
+    let expandIcon = 'fa-expand'
+    let expandBtnClass = ''
+    let contentState = editorState.getCurrentContent()
+
+    if (!contentState.hasText()) {
+        if (
+            contentState
+                .getBlockMap()
+                .first()
+                .getType() !== 'unstyled'
+        ) {
+            className += ' RichEditor-hidePlaceholder'
         }
     }
 
-    const removeTeX = (blockKey) => {
-        setEditorState(removeTeXBlock(editorState, blockKey))
-        setTextContentBlock(textContentBlock.remove(blockKey))
+    if (isEnlarged) {
+        outerClassName = 'DraftEditor-fullscreen'
+        expandIcon = 'fa-compress'
+        expandBtnClass = ' expanded'
     }
-    // const insertTeX = (e) => {
-    //     e.preventDefault()
-    //     setTextContentBlock(Map())
-    //     setEditorState(insertTeXBlock(editorState))
-    // }
-    // const focus = () => {
-    //     editorRef.current.editor.focus()
-    // }
 
     return (
         <FieldContainer>
@@ -116,31 +341,115 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                 className="editorContainer"
                 style={{
                     border: '1px solid #C1C7D0',
-                    borderRadius: 3,
+                    borderRadius: 6,
                     padding: '2px',
                 }}
             >
                 <FieldLabel field={field} errors={errors} />
                 <FieldDescription text={field.adminDoc} />
-                <Zoom />
 
-                <Editor
-                    editorState={editorState}
-                    onEditorStateChange={onEditorStateChange}
-                    handlePastedText={handlePastedText}
-                    toolbar={builtInButtons}
-                    toolbarCustomButtons={customButtons}
-                    customDecorators={decorators}
-                    handleKeyCommand={handleKeyCommand}
-                    placeholder="請輸入文字"
-                    blockStyleFn={addClassToContentBlock}
-                    blockRendererFn={blockRendererFn}
-                    ref={editorRef}
-                    readOnly={textContentBlock.count()}
-                />
+                <div className={outerClassName}>
+                    <div className="RichEditor-root">
+                        <div
+                            className={'DraftEditor-controls' + expandBtnClass}
+                        >
+                            <div
+                                className={
+                                    'DraftEditor-controlsInner' + expandBtnClass
+                                }
+                            >
+                                <BlockStyleButtons
+                                    buttons={BLOCK_TYPES}
+                                    editorState={editorState}
+                                    onToggle={toggleBlockType}
+                                />
+
+                                <InlineStyleButtons
+                                    buttons={INLINE_STYLES}
+                                    editorState={editorState}
+                                    onToggle={toggleInlineStyle}
+                                />
+
+                                <EntityButtons
+                                    entities={Object.keys(ENTITY)}
+                                    editorState={editorState}
+                                    onToggle={toggleEntity}
+                                />
+
+                                <Button
+                                    value="unordered-list-item"
+                                    className={
+                                        'hollow-primary DraftEditor-expandButton' +
+                                        expandBtnClass
+                                    }
+                                    onClick={enlargeEditor}
+                                    aria-haspopup="true"
+                                    aria-expanded={isEnlarged}
+                                    title="expand"
+                                >
+                                    <i
+                                        className={'fa ' + expandIcon}
+                                        aria-hidden="true"
+                                    ></i>
+                                </Button>
+                            </div>
+                        </div>
+                        <div
+                            className={className + expandBtnClass}
+                            onClick={() => focus()}
+                        >
+                            <Editor
+                                blockRendererFn={_blockRenderer}
+                                blockStyleFn={blockStyleFn}
+                                customStyleMap={styleMap}
+                                editorState={editorState}
+                                handleKeyCommand={handleKeyCommand}
+                                handlePastedText={handlePastedText}
+                                keyBindingFn={keyBindingFn}
+                                onChange={onEditorStateChange}
+                                placeholder="Enter HTML Here..."
+                                spellCheck={useSpellCheck}
+                                ref={mainEditorRef}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </FieldContainer>
     )
 }
 
 export default HtmlField
+
+// Custom overrides for "code" style.
+const styleMap = {
+    CODE: {
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+        fontSize: 16,
+        padding: 2,
+    },
+}
+
+// block settings
+const BLOCK_TYPES = [
+    {
+        label: 'Blockquote',
+        style: 'blockquote',
+        icon: 'fa-quote-left',
+        text: '',
+    },
+    { label: 'Code Block', style: 'code-block', icon: 'fa-code', text: '' },
+    { label: 'H1', style: 'header-one', icon: 'fa-header', text: 'H1' },
+    { label: 'H2', style: 'header-two', icon: 'fa-header', text: 'H2' },
+    { label: 'OL', style: 'ordered-list-item', icon: 'fa-list-ol', text: '' },
+    { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
+]
+
+// inline style settings
+var INLINE_STYLES = [
+    { label: 'Bold', style: 'BOLD', icon: 'fa-bold', text: '' },
+    { label: 'Italic', style: 'ITALIC', icon: 'fa-italic', text: '' },
+    { label: 'Underline', style: 'UNDERLINE', icon: 'fa-underline', text: '' },
+    { label: 'Monospace', style: 'CODE', icon: 'fa-terminal', text: '' },
+]
