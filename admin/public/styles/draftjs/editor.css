@@ -27,7 +27,7 @@
  */
 
 .DraftEditor-editorContainer {
-    background-color: rgba(255, 255, 255, 0);
+    /* background-color: rgba(255, 255, 255, 0); */
     /* Repair mysterious missing Safari cursor */
     border-left: 0.1px solid transparent;
     position: relative;
@@ -140,6 +140,11 @@
     z-index: 999;
     background: rgba(255, 255, 255, 0.8);
 }
+
+.RichEditor-editor.expanded .DraftEditor-editorContainer {
+    min-height: 100vh;
+}
+
 .DraftEditor-controls.expanded {
     position: fixed;
     z-index: 200;
