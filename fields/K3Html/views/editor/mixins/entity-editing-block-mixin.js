@@ -14,6 +14,7 @@ import {
     convertFromHTML,
     convertFromRaw,
     getDefaultKeyBinding,
+    convertToRaw,
 } from 'draft-js'
 import {
     BlockStyleButtons,
@@ -25,6 +26,8 @@ import React, { Component } from 'react'
 import blockStyleFn from '../base/block-style-fn'
 import decorator from '../entity-decorator'
 
+import '../../../../../admin/public/styles/draftjs/editor.css'
+
 const { isCtrlKeyCommand } = KeyBindingUtil
 
 export class EntityEditingBlock extends Component {
@@ -33,10 +36,9 @@ export class EntityEditingBlock extends Component {
         this.toggleModal = this._toggleModal.bind(this)
         this.handleSave = this._handleSave.bind(this)
         this.composeEditingFields = this._composeEditingFields.bind(this)
-        // this.focus = this._focus.bind(this)
-        // this._handleEditorStateChange = this._handleEditorStateChange.bind(
-        //     this
-        // )
+        this.focus = this._focus.bind(this)
+        this._handleEditorStateChange = this._handleEditorStateChange.bind(this)
+
         this._handleKeyCommand = this._handleKeyCommand.bind(this)
         this._handlePastedText = this._handlePastedText.bind(this)
         this._toggleBlockType = this._toggleBlockStyle.bind(this)
@@ -74,9 +76,7 @@ export class EntityEditingBlock extends Component {
 
     // need to be overwrited
     _handleEditorStateChange(editorState) {
-        this.setState({
-            editorState: editorState,
-        })
+        this.setState({ ...this.state, editorState: editorState })
     }
 
     _handleKeyCommand(command) {
@@ -176,44 +176,44 @@ export class EntityEditingBlock extends Component {
         )
     }
 
-    // _renderDraftjsEditingField(editorState) {
-    //     return (
-    //         <div className="RichEditor-root">
-    //             <div className={'DraftEditor-controls'}>
-    //                 <div className={'DraftEditor-controlsInner'}>
-    //                     <BlockStyleButtons
-    //                         buttons={BLOCK_TYPES}
-    //                         editorState={editorState}
-    //                         onToggle={this._toggleBlockType}
-    //                     />
-    //                     <InlineStyleButtons
-    //                         buttons={INLINE_STYLES}
-    //                         editorState={editorState}
-    //                         onToggle={this._toggleInlineStyle}
-    //                     />
-    //                     <EntityButtons
-    //                         entities={[ENTITY.LINK.type]}
-    //                         editorState={editorState}
-    //                         onToggle={this._toggleEntity}
-    //                     />
-    //                 </div>
-    //             </div>
-    //             <div className={'RichEditor-editor'} onClick={this.focus}>
-    //                 <Editor
-    //                     blockStyleFn={blockStyleFn}
-    //                     handleKeyCommand={this._handleKeyCommand}
-    //                     handlePastedText={this._handlePastedText}
-    //                     keyBindingFn={this._keyBindingFn}
-    //                     editorState={editorState}
-    //                     onChange={this._handleEditorStateChange}
-    //                     placeholder="Enter HTML Here..."
-    //                     ref="editor"
-    //                     spellCheck
-    //                 />
-    //             </div>
-    //         </div>
-    //     )
-    // }
+    _renderDraftjsEditingField(editorState) {
+        return (
+            <div className="RichEditor-root">
+                <div className={'DraftEditor-controls'}>
+                    <div className={'DraftEditor-controlsInner'}>
+                        <BlockStyleButtons
+                            buttons={BLOCK_TYPES}
+                            editorState={editorState}
+                            onToggle={this._toggleBlockType}
+                        />
+                        <InlineStyleButtons
+                            buttons={INLINE_STYLES}
+                            editorState={editorState}
+                            onToggle={this._toggleInlineStyle}
+                        />
+                        {/* <EntityButtons
+                            entities={[ENTITY.LINK.type]}
+                            editorState={editorState}
+                            onToggle={this._toggleEntity}
+                        /> */}
+                    </div>
+                </div>
+                <div className={'RichEditor-editor'} onClick={this.focus}>
+                    <Editor
+                        blockStyleFn={blockStyleFn}
+                        handleKeyCommand={this._handleKeyCommand}
+                        handlePastedText={this._handlePastedText}
+                        keyBindingFn={this._keyBindingFn}
+                        editorState={this.state.editorState}
+                        onChange={this._handleEditorStateChange}
+                        placeholder="Enter HTML Here..."
+                        ref="editor"
+                        spellCheck
+                    />
+                </div>
+            </div>
+        )
+    }
 
     _renderEditingField(field, type, value) {
         if (type === 'html') {
@@ -227,7 +227,7 @@ export class EntityEditingBlock extends Component {
                 <Input
                     type={type}
                     multiline={type === 'textarea' ? 'true' : 'false'}
-                    placeholder={'Enter ' + field}
+                    placeholder={'Enter' + field}
                     name={'form-input-' + field}
                     onChange={onChange}
                     defaultValue={value}
@@ -239,10 +239,11 @@ export class EntityEditingBlock extends Component {
         )
     }
 
-    _renderEditingFields(fields) {
-        let Fields = Object.keys(fields).map((field) => {
-            const type = fields[field].type
-            const value = fields[field].value
+    _renderEditingFields(editingFields) {
+        let Fields = Object.keys(editingFields).map((field) => {
+            const type = editingFields[field].type
+            const value = editingFields[field].value
+
             return this._renderEditingField(field, type, value)
         })
         return Fields

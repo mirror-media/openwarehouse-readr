@@ -54,9 +54,9 @@ export default class BlockQuoteBlock extends AtomicBlockRendererMixin {
                 contentEditable={false}
                 onClick={this.toggleEditMode}
                 style={{
-                    backgroundColor: 'GhostWhite',
+                    // backgroundColor: 'GhostWhite',
                     cursor: 'pointer',
-                    padding: '16px 0',
+                    // padding: '16px 0',
                 }}
             >
                 <blockquote>

@@ -1,7 +1,15 @@
-'use strict';
-import BtWrapper from '../base/bt-wrapper';
-import InfoBoxEditingBlock from './info-box-editing-block';
-import React from 'react'; // eslint-disable-line no-unused-vars
+'use strict'
+import BtWrapper from '../base/bt-wrapper'
+import InfoBoxEditingBlock from './info-box-editing-block'
 
-export default BtWrapper(InfoBoxEditingBlock);
+import React from 'react'
 
+function infoBoxButton(props) {
+    return (
+        <BtWrapper buttonData={props}>
+            <InfoBoxEditingBlock />
+        </BtWrapper>
+    )
+}
+
+export default infoBoxButton
