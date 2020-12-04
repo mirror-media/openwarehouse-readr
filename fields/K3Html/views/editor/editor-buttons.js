@@ -9,7 +9,7 @@ import { Entity } from 'draft-js'
 import ENTITY from './entities'
 // import AnnotationBt from './annotation/annotation-bt'
 // import AudioButton from './audio/audio-bt'
-// import BlockQuoteBt from './quote/block-quote-bt'
+import BlockQuoteBt from './quote/block-quote-bt'
 import EmbeddedCodeBt from './embedded-code/embedded-code-bt'
 // import ImageButton from './image/image-button'
 // import ImageLinkButton from './image-link/image-link-bt'
@@ -166,18 +166,18 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.BLOCKQUOTE.type:
                 return (
-                    <span>{entity}</span>
+                    // <span>{entity}</span>
 
-                    // <BlockQuoteBt
-                    //     active={active}
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     icon="fa-quote-right"
-                    //     iconText=""
-                    //     quote={data ? data.quote : selectedText}
-                    //     quoteBy={data ? data.quoteBy : ''}
-                    // />
+                    <BlockQuoteBt
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="fa fa-quote-right"
+                        iconText=""
+                        quote={data ? data.quote : selectedText}
+                        quoteBy={data ? data.quoteBy : ''}
+                    />
                 )
             case ENTITY.INFOBOX.type:
                 return (

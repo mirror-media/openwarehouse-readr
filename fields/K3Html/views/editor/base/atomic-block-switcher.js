@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import ENTITY from '../entities'
 // import Wrapper from './block-wrapper'
 // import AudioBlock from '../audio/audio-block'
-// import BlockQuoteBlock from '../quote/block-quote-block'
+import BlockQuoteBlock from '../quote/block-quote-block'
 import EmbeddedCodeBlock from '../embedded-code/embedded-code-block'
 // import ImageBlock from '../image/image-block'
 // import ImageDiffBlock from '../image-diff/image-diff-block'
@@ -114,12 +114,12 @@ export class AtomicBlockSwitcher extends Component {
                 //     }
                 break
             case ENTITY.BLOCKQUOTE.type:
-                //     BlockComponent = BlockQuoteBlock
-                //     if (device === 'mobile') {
-                //         style = mobileStyle
-                //     } else {
-                //         style = tabletMinStyle
-                //     }
+                BlockComponent = BlockQuoteBlock
+                if (device === 'mobile') {
+                    style = mobileStyle
+                } else {
+                    style = tabletMinStyle
+                }
                 break
             case ENTITY.EMBEDDEDCODE.type:
                 BlockComponent = EmbeddedCodeBlock
@@ -170,13 +170,13 @@ export class AtomicBlockSwitcher extends Component {
                 //     }
                 break
             case ENTITY.YOUTUBE.type:
-            BlockComponent = YoutubeBlock
-            if (device === 'mobile') {
-                style = mobileStyle
-            } else {
-                style = tabletMaxStyle
-            }
-            break
+                BlockComponent = YoutubeBlock
+                if (device === 'mobile') {
+                    style = mobileStyle
+                } else {
+                    style = tabletMaxStyle
+                }
+                break
             default:
                 return null
         }
@@ -184,7 +184,7 @@ export class AtomicBlockSwitcher extends Component {
         //     return null
         // }
         return (
-            <div className={classNames('center-block')} style={style}>
+            <div style={style}>
                 <BlockComponent
                     {...this.props}
                     device={device}
