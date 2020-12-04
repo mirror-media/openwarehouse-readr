@@ -17,6 +17,8 @@
 .DraftEditor-root {
     position: relative;
     background: rgb(250, 251, 252);
+    min-height: 5rem;
+    padding: 1rem;
 }
 
 /**

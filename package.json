@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@ffprobe-installer/ffprobe": "^1.0.12",
-    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "@google-cloud/storage": "^5.0.0",
     "@keystonejs/adapter-knex": "^10.0.0",
     "@keystonejs/app-admin-ui": "^7.0.1",

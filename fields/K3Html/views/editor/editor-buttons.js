@@ -7,7 +7,7 @@ import React from 'react'
 import map from 'lodash/map'
 import { Entity } from 'draft-js'
 import ENTITY from './entities'
-// import AnnotationBt from './annotation/annotation-bt'
+import AnnotationBt from './annotation/annotation-bt'
 // import AudioButton from './audio/audio-bt'
 import BlockQuoteBt from './quote/block-quote-bt'
 import EmbeddedCodeBt from './embedded-code/embedded-code-bt'
@@ -136,19 +136,17 @@ export const EntityButtons = (props) => {
         switch (entity) {
             case ENTITY.ANNOTATION.type:
                 return (
-                    <span>{entity}</span>
-
-                    // <AnnotationBt
-                    //     active={active}
-                    //     annotation={data ? data.annotation : ''}
-                    //     draftRawObj={data ? data.draftRawObj : null}
-                    //     icon="fa-pencil-square-o"
-                    //     iconText=""
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     text={data ? data.text : selectedText}
-                    // />
+                    <AnnotationBt
+                        active={active}
+                        annotation={data ? data.annotation : ''}
+                        draftRawObj={data ? data.draftRawObj : null}
+                        icon="fas fa-edit"
+                        iconText=""
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        text={data ? data.text : selectedText}
+                    />
                 )
             case ENTITY.AUDIO.type:
                 return (
