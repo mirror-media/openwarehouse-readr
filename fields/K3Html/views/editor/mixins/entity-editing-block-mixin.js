@@ -219,7 +219,10 @@ export class EntityEditingBlock extends Component {
         if (type === 'html') {
             return this._renderDraftjsEditingField(this.state.editorState)
         }
-        let onChange = this._handleEditingFieldChange.bind(this, field)
+        const onChange = (e) => {
+            console.log(e)
+            // this._handleEditingFieldChange.bind(this, field)
+        }
         return (
             // <Form label={field} htmlFor={'form-input-' + field} key={field}>
             // <Form.Item label={field} labelWidth="120">
@@ -230,7 +233,7 @@ export class EntityEditingBlock extends Component {
                     placeholder={'Enter ' + field}
                     name={'form-input-' + field}
                     onChange={onChange}
-                    defaultValue={value}
+                    value={value}
                 />
                 <div style={{ margin: '20px 0' }}></div>
             </div>

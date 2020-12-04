@@ -1,56 +1,68 @@
-'use strict';
+'use strict'
 
-import { AlignedYoutube } from '@twreporter/react-article-components/dist/components/article/index';
-import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin';
-import EditingBt from '../base/editing-bt';
-import React from 'react';
-import YoutubeEditingBlock from './youtube-editing-block';
-import get from 'lodash/get';
+import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
+// import EditingBt from '../base/editing-bt';
+import React from 'react'
+// import YoutubeEditingBlock from './youtube-editing-block';
+import get from 'lodash/get'
 
 const _ = {
-  get,
+    get,
 }
 
-export default class YoutubeBlock extends AtomicBlockRendererMixin(React.Component) {
-	constructor (props) {
-		super(props);
-	}
+export class YoutubeBlock extends AtomicBlockRendererMixin {
+    constructor(props) {
+        super(props)
+    }
 
-	render () {
-		if (!this.state.data) {
-			return null;
-		}
+    render() {
+        if (!this.state.data) {
+            return null
+        }
 
-		let blockContent = _.get(this.state.data, ['content', 0], {});
-		let youtubeId = blockContent.youtubeId;
-		let description = blockContent.description;
-		const EditBlock = (
-			<YoutubeEditingBlock
-				description={description}
-				label="youtube"
-				isModalOpen={this.state.editMode}
-				onToggle={this.handleEditingBlockChange}
-				toggleModal={this.toggleEditMode}
-				youtubeId={youtubeId}
-			/>
-		);
+        let blockContent = _.get(this.state.data, ['content', 0], {})
+        let youtubeId = blockContent.youtubeId
+        let description = blockContent.description
+        const EditBlock = (
+            // <YoutubeEditingBlock
+            // 	description={description}
+            // 	label="youtube"
+            // 	isModalOpen={this.state.editMode}
+            // 	onToggle={this.handleEditingBlockChange}
+            // 	toggleModal={this.toggleEditMode}
+            // 	youtubeId={youtubeId}
+            // />
+            <h6>YoutubeEditingBlock</h6>
+        )
 
-		return (
-			<div
-				contentEditable={false}
-				calssName="youtube-container"
-				style={{
-					position: 'relative',
-				}}
-			>
-				<AlignedYoutube
-					{...this.state.data}
-				/>
-				<EditingBt
+        return (
+            <div
+                contentEditable={false}
+                calssName="youtube-container"
+                style={{
+                    position: 'relative',
+                }}
+            >
+                <figure style={{ backgroundColor: 'GhostWhite' }}>
+                    <iframe
+                        width="560"
+                        alt={description}
+                        height="315"
+                        src={'https://www.youtube.com/embed/' + youtubeId}
+                        frameBorder="0"
+                        allowFullScreen
+                    />
+                    <figcaption>{description}</figcaption>
+                </figure>
+                {/* <h6>I am youtube</h6> */}
+                {/* <Youtube {...this.state.data} /> */}
+                {/* <EditingBt
 					onClick={this.toggleEditMode}
-				/>
-				{EditBlock}
-			</div>
-		);
-	}
-};
+				/> */}
+                {/* {EditBlock} */}
+            </div>
+        )
+    }
+}
+
+export default YoutubeBlock

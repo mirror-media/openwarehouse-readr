@@ -81,6 +81,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
         const content = convertToRaw(editorState.getCurrentContent())
         const cHtml = DraftConverter.convertToHtml(content)
         const apiData = DraftConverter.convertToApiData(content)
+        console.log(content)
 
         const valueStr = JSON.stringify({
             draft: content,

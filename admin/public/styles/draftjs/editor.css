@@ -115,7 +115,7 @@
     padding: 0;
 }
 .DraftEditor-fullscreen .DraftEditor-editorContainer {
-    padding: 15px;
+    padding: 110px 15px 0;
 }
 
 .DraftEditor-expandButton {
@@ -124,12 +124,17 @@
     right: 0;
     top: 0;
 }
+
+.DraftEditor-controls {
+    position: relative;
+    width: 100%;
+}
 .DraftEditor-controls .ButtonGroup {
     padding: 1px 2px;
 }
 .DraftEditor-expandButton.expanded {
-    top: 0;
-    right: 100px;
+    right: 8px;
+    top: 8px;
     z-index: 999;
     background: rgba(255, 255, 255, 0.8);
 }
@@ -140,9 +145,20 @@
     top: 0;
     left: 0;
     padding: 0 3em;
+    box-sizing: border-box;
 }
 .DraftEditor-controlsInner {
+    box-sizing: border-box;
+    width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.button-groups {
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .DraftEditor-controlsInner.expanded {

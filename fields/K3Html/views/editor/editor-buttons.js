@@ -61,7 +61,7 @@ export const BlockStyleButtons = (props) => {
         .getBlockForKey(selection.getStartKey())
         .getType()
     return (
-        <span>
+        <span className="button-groups">
             {_.map(buttons, (button) => (
                 <StyleButton
                     key={button.label}
@@ -81,7 +81,7 @@ export const InlineStyleButtons = (props) => {
     const { editorState, buttons, onToggle } = props
     let currentStyle = editorState.getCurrentInlineStyle()
     return (
-        <span>
+        <span className="button-groups">
             {_.map(buttons, (button) => (
                 <StyleButton
                     key={button.label}
@@ -301,8 +301,10 @@ export const EntityButtons = (props) => {
     }
 
     //    return <span>{_.map(entities, (entity) => chooseButton(entity))}</span>
-    return entities.map((entity) => {
+    const buttons = entities.map((entity) => {
         const button = chooseButton(entity)
         return button
     })
+
+    return <span className="button-groups">{buttons}</span>
 }

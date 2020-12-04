@@ -11,7 +11,7 @@ import EmbeddedCodeBlock from '../embedded-code/embedded-code-block'
 // import ImageLinkBlock from '../image-link/image-link-block'
 // import InfoBoxBlock from '../info-box/info-box-block';
 // import SlideshowBlock from '../slideshow/slideshow-block'
-// import YoutubeBlock from '../youtube/youtube-block'
+import YoutubeBlock from '../youtube/youtube-block'
 import classNames from 'classnames'
 import get from 'lodash/get'
 import { Entity } from 'draft-js'
@@ -170,13 +170,13 @@ export class AtomicBlockSwitcher extends Component {
                 //     }
                 break
             case ENTITY.YOUTUBE.type:
-            // BlockComponent = YoutubeBlock
-            // if (device === 'mobile') {
-            //     style = mobileStyle
-            // } else {
-            //     style = tabletMaxStyle
-            // }
-            // break
+            BlockComponent = YoutubeBlock
+            if (device === 'mobile') {
+                style = mobileStyle
+            } else {
+                style = tabletMaxStyle
+            }
+            break
             default:
                 return null
         }
