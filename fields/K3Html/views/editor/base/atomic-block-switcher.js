@@ -9,7 +9,7 @@ import EmbeddedCodeBlock from '../embedded-code/embedded-code-block'
 // import ImageBlock from '../image/image-block'
 // import ImageDiffBlock from '../image-diff/image-diff-block'
 // import ImageLinkBlock from '../image-link/image-link-block'
-// import InfoBoxBlock from '../info-box/info-box-block';
+import InfoBoxBlock from '../info-box/info-box-block'
 // import SlideshowBlock from '../slideshow/slideshow-block'
 import YoutubeBlock from '../youtube/youtube-block'
 import classNames from 'classnames'
@@ -130,12 +130,12 @@ export class AtomicBlockSwitcher extends Component {
                 }
                 break
             case ENTITY.INFOBOX.type:
-                // 	BlockComponent = InfoBoxBlock;
-                // 	if (device === 'mobile') {
-                // 		style = mobileStyle;
-                // 	} else {
-                // 		style = tabletMinStyle;
-                // 	}
+                BlockComponent = InfoBoxBlock
+                if (device === 'mobile') {
+                    style = mobileStyle
+                } else {
+                    style = tabletMinStyle
+                }
                 break
             case ENTITY.IMAGE.type:
                 //     BlockComponent = ImageBlock

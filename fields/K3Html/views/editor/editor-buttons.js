@@ -13,7 +13,7 @@ import BlockQuoteBt from './quote/block-quote-bt'
 import EmbeddedCodeBt from './embedded-code/embedded-code-bt'
 // import ImageButton from './image/image-button'
 // import ImageLinkButton from './image-link/image-link-bt'
-// import InfoBoxBt from './info-box/info-box-bt'
+import InfoBoxBt from './info-box/info-box-bt'
 import LinkButton from './link/link-button'
 import YoutubeBt from './youtube/youtube-bt'
 
@@ -181,18 +181,18 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.INFOBOX.type:
                 return (
-                    <span>{entity}</span>
+                    // <span>{entity}</span>
 
-                    // <InfoBoxBt
-                    //     active={active}
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     title={data ? data.title : selectedText}
-                    //     body={data ? data.body : ''}
-                    //     icon=""
-                    //     iconText="infobox"
-                    // />
+                    <InfoBoxBt
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        title={data ? data.title : selectedText}
+                        body={data ? data.body : ''}
+                        icon=""
+                        iconText="infobox"
+                    />
                 )
             case ENTITY.LINK.type:
                 return (

@@ -9,8 +9,6 @@ export class BlockQuoteEditingBlock extends EntityEditingBlockMixin {
     }
     // overwrite EntityEditingBlock._composeEditingFields
     _composeEditingFields(props) {
-        console.log(props)
-
         return {
             quoteBy: {
                 type: 'text',
@@ -25,8 +23,6 @@ export class BlockQuoteEditingBlock extends EntityEditingBlockMixin {
 
     // overwrite EntityEditingBlock._decomposeEditingFields
     _decomposeEditingFields(fields) {
-        console.log(fields)
-
         return {
             quoteBy: fields.quoteBy.value,
             quote: fields.quote.value,

@@ -75,6 +75,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     const initialEditorState = getInitialState(value)
     const [editorState, setEditorState] = useState(initialEditorState)
     const [isEnlarged, setIsEnlarged] = useState(false)
+    const mainEditorRef = useRef()
 
     // Handle both editorstate and keystone value change
     const onEditorStateChange = (newEditorState) => {
@@ -94,7 +95,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     }
 
     function focus() {
-        // this.refs.editor.focus();
+        mainEditorRef.focus()
     }
 
     function handleKeyCommand(command) {
@@ -393,7 +394,10 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                 </Button>
                             </div>
                         </div>
-                        <div className={className + expandBtnClass}>
+                        <div
+                            className={className + expandBtnClass}
+                            onClick={() => focus()}
+                        >
                             <Editor
                                 blockRendererFn={_blockRenderer}
                                 blockStyleFn={blockStyleFn}
@@ -405,6 +409,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                 onChange={onEditorStateChange}
                                 placeholder="Enter HTML Here..."
                                 spellCheck={useSpellCheck}
+                                ref={mainEditorRef}
                             />
                         </div>
                     </div>

@@ -43,7 +43,13 @@ export class YoutubeBlock extends AtomicBlockRendererMixin {
                     position: 'relative',
                 }}
             >
-                <figure style={{ backgroundColor: 'GhostWhite' }}>
+                <figure
+                    style={
+                        {
+                            // backgroundColor: 'GhostWhite'
+                        }
+                    }
+                >
                     <iframe
                         width="560"
                         alt={description}
