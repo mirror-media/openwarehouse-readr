@@ -1,50 +1,53 @@
-'use strict';
-import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin';
-import React from 'react';
+'use strict'
+import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-class BlockQuoteEditingBlock extends EntityEditingBlockMixin(React.Component) {
-	constructor (props) {
-		super(props);
-	}
+export class BlockQuoteEditingBlock extends EntityEditingBlockMixin {
+    constructor(props) {
+        super(props)
+    }
+    // overwrite EntityEditingBlock._composeEditingFields
+    _composeEditingFields(props) {
+        console.log(props)
 
-	// overwrite EntityEditingBlock._composeEditingFields
-	_composeEditingFields (props) {
-		return {
-			quoteBy: {
-				type: 'text',
-				value: props.quoteBy,
-			},
-			quote: {
-				type: 'textarea',
-				value: props.quote,
-			},
-		};
-	}
+        return {
+            quoteBy: {
+                type: 'text',
+                value: props.quoteBy,
+            },
+            quote: {
+                type: 'textarea',
+                value: props.quote,
+            },
+        }
+    }
 
+    // overwrite EntityEditingBlock._decomposeEditingFields
+    _decomposeEditingFields(fields) {
+        console.log(fields)
 
-	// overwrite EntityEditingBlock._decomposeEditingFields
-	_decomposeEditingFields (fields) {
-		return {
-			quoteBy: fields.quoteBy.value,
-			quote: fields.quote.value,
-		};
-	}
-};
+        return {
+            quoteBy: fields.quoteBy.value,
+            quote: fields.quote.value,
+        }
+    }
+}
 
-BlockQuoteEditingBlock.displayName = 'BlockQuoteEditingBlock';
+BlockQuoteEditingBlock.displayName = 'BlockQuoteEditingBlock'
 
-BlockQuoteEditingBlock.propTypes = {
-	isModalOpen: React.PropTypes.bool,
-	onToggle: React.PropTypes.func.isRequired,
-	quote: React.PropTypes.string,
-	quoteBy: React.PropTypes.string,
-	toggleModal: React.PropTypes.func,
-};
+// BlockQuoteEditingBlock.propTypes = {
+// 	isModalOpen: PropTypes.bool,
+// 	onToggle: PropTypes.func.isRequired,
+// 	quote: PropTypes.string,
+// 	quoteBy: PropTypes.string,
+// 	toggleModal: PropTypes.func,
+// };
 
 BlockQuoteEditingBlock.defaultProps = {
-	isModalOpen: false,
-	quote: '',
-	quoteBy: '',
-};
+    isModalOpen: false,
+    quote: '',
+    quoteBy: '',
+}
 
-export default BlockQuoteEditingBlock;
+export default BlockQuoteEditingBlock
