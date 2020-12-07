@@ -433,15 +433,17 @@ const styleMap = {
 
 // block settings
 const BLOCK_TYPES = [
+    { label: 'Normal', style: 'unstyled', icon: '', text: 'Normal' },
+    { label: 'H1', style: 'header-one', icon: 'fa-header', text: 'H1' },
+    { label: 'H2', style: 'header-two', icon: 'fa-header', text: 'H2' },
+    { label: 'Code Block', style: 'code-block', icon: 'fa-code', text: '' },
+
     {
         label: 'Blockquote',
         style: 'blockquote',
         icon: 'fa-quote-left',
         text: '',
     },
-    { label: 'Code Block', style: 'code-block', icon: 'fa-code', text: '' },
-    { label: 'H1', style: 'header-one', icon: 'fa-header', text: 'H1' },
-    { label: 'H2', style: 'header-two', icon: 'fa-header', text: 'H2' },
     { label: 'OL', style: 'ordered-list-item', icon: 'fa-list-ol', text: '' },
     { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
 ]

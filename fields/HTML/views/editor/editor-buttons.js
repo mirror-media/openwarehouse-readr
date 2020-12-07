@@ -8,11 +8,11 @@ import map from 'lodash/map'
 import { Entity } from 'draft-js'
 import ENTITY from './entities'
 import AnnotationBt from './annotation/annotation-bt'
-// import AudioButton from './audio/audio-bt'
+import AudioButton from './audio/audio-bt'
 import BlockQuoteBt from './quote/block-quote-bt'
 import EmbeddedCodeBt from './embedded-code/embedded-code-bt'
-// import ImageButton from './image/image-button'
-// import ImageLinkButton from './image-link/image-link-bt'
+import ImageButton from './image/image-button'
+import ImageLinkButton from './image-link/image-link-bt'
 import InfoBoxBt from './info-box/info-box-bt'
 import LinkButton from './link/link-button'
 import YoutubeBt from './youtube/youtube-bt'
@@ -150,17 +150,17 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.AUDIO.type:
                 return (
-                    <span>{entity}</span>
+                    // <span>{entity}</span>
 
-                    // <AudioButton
-                    //     active={active}
-                    //     apiPath="audios"
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     icon="fa-file-audio-o"
-                    //     iconText=" Audio"
-                    // />
+                    <AudioButton
+                        active={active}
+                        apiPath="audios"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="fa-file-audio-o"
+                        iconText=" Audio"
+                    />
                 )
             case ENTITY.BLOCKQUOTE.type:
                 return (
@@ -208,63 +208,60 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.IMAGE.type:
                 return (
-                    <span>{entity}</span>
-
-                    // <ImageButton
-                    //     active={active}
-                    //     apiPath="images"
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     icon="fa-photo"
-                    //     iconText=" Img"
-                    // />
+                    // <span>{entity}</span>
+                    <ImageButton
+                        active={active}
+                        apiPath="images"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="far fa-image"
+                        iconText=" Img"
+                    />
                 )
             case ENTITY.SLIDESHOW.type:
                 return (
-                    <span>{entity}</span>
-
-                    // <ImageButton
-                    //     active={active}
-                    //     apiPath="images"
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     selectionLimit={
-                    //         ENTITY.SLIDESHOW.slideshowSelectionLimit
-                    //     }
-                    //     icon="fa-slideshare"
-                    //     iconText=" Slideshow"
-                    // />
+                    // <span>{entity}</span>
+                    <ImageButton
+                        active={active}
+                        apiPath="images"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        selectionLimit={
+                            ENTITY.SLIDESHOW.slideshowSelectionLimit
+                        }
+                        icon="fa fa-images"
+                        iconText=" Slideshow"
+                    />
                 )
-            case ENTITY.IMAGEDIFF.type:
-                return (
-                    <span>{entity}</span>
-
-                    // <ImageButton
-                    //     active={active}
-                    //     apiPath="images"
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     selectionLimit={2}
-                    //     icon="fa-object-ungroup"
-                    //     iconText=" Diff"
-                    // />
-                )
+            // case ENTITY.IMAGEDIFF.type:
+            //     return (
+            //         <ImageButton
+            //             active={active}
+            //             apiPath="images"
+            //             key={entity}
+            //             label={entity}
+            //             onToggle={onToggle}
+            //             selectionLimit={2}
+            //             icon="fa fa-object-ungroup"
+            //             // iconText=" Diff"
+            //             iconText=" Diff"
+            //         />
+            //     )
             case ENTITY.IMAGELINK.type:
                 return (
-                    // <ImageLinkButton
-                    //     active={active}
-                    //     desc={data ? data.desc : ''}
-                    //     key={entity}
-                    //     label={entity}
-                    //     onToggle={onToggle}
-                    //     url={data ? data.url : ''}
-                    //     icon="fa-external-link"
-                    //     iconText=" ImgLink"
-                    // />
-                    <span>{entity}</span>
+                    // <span>{entity}</span>
+                    <ImageLinkButton
+                        active={active}
+                        desc={data ? data.desc : ''}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        url={data ? data.url : ''}
+                        icon="fa fa-external-link"
+                        iconText=" ImgLink"
+                    />
                 )
             case ENTITY.EMBEDDEDCODE.type:
                 return (

@@ -138,12 +138,12 @@ export class AtomicBlockSwitcher extends Component {
                 }
                 break
             case ENTITY.IMAGE.type:
-                //     BlockComponent = ImageBlock
-                //     if (device === 'mobile') {
-                //         style = mobileStyle
-                //     } else {
-                //         style = tabletMaxStyle
-                //     }
+                // BlockComponent = ImageBlock
+                // if (device === 'mobile') {
+                //     style = mobileStyle
+                // } else {
+                //     style = tabletMaxStyle
+                // }
                 break
             case ENTITY.IMAGELINK.type:
                 //     BlockComponent = ImageLinkBlock
