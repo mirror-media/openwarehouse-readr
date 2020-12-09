@@ -17,7 +17,7 @@ export default class ImagesDiff extends Component {
         this.handleValueChange = this.handleValueChange.bind(this)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({
             width: this.props.width,
             height: this.props.height,

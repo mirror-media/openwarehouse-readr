@@ -8,6 +8,7 @@ import xhr from 'xhr'
 
 import {
     setPages,
+    fetchAllDataCount,
     fetchDataWithGql,
 } from '../../../../fields/HTML/views/editor/utils/fetchData'
 
@@ -17,11 +18,12 @@ export class SelectorMixin extends Component {
 
         // input in the search field
         this._searchInput = ''
-        this.PAGE_SIZE = 6
+        this.PAGE_SIZE = 12
         this.API = '/api/'
 
         this.state = {
             currentPage: 1,
+            totalPage: 6,
             error: null,
             isSelectionOpen: props.isSelectionOpen,
             items: [],
@@ -40,7 +42,7 @@ export class SelectorMixin extends Component {
         this.setPagedData = this.setPagedData.bind(this)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this._getItems()
     }
 
@@ -48,12 +50,12 @@ export class SelectorMixin extends Component {
         this._searchInput = ''
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            ...this.state,
+    // replacement of componentWillReceiveProps
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
             isSelectionOpen: nextProps.isSelectionOpen,
             selectedItems: nextProps.selectedItems,
-        })
+        }
     }
 
     _handleCancel() {
@@ -77,6 +79,7 @@ export class SelectorMixin extends Component {
             search: input,
             limit: limit,
             skip: page === 0 ? 0 : (page - 1) * limit,
+            page: page,
         }
         return Promise.resolve(qs.stringify(queryString))
     }
@@ -99,18 +102,18 @@ export class SelectorMixin extends Component {
      * @param {string} [queryString=] - Query string for keystone api
      * @return {Promise}
      */
-    loadItemsFromGql(queryString = '', dataConfig) {
+    async loadItemsFromCMS(queryString = '', dataConfig) {
         console.log('loadItems in SelectorMixin')
-
         const searchText = this._searchInput
-        const page = this.state.currentPage
 
-        // setPages(dataConfig, searchText, this.setPageNumbers)
+        const pageInQueryString = parseInt(qs.parse(queryString).page)
+        const currentPage = pageInQueryString
+            ? pageInQueryString
+            : this.state.currentPage
 
-        return new Promise((resolve, reject) => {
-            const data = fetchDataWithGql(dataConfig, searchText, 1)
-            resolve(data)
-        })
+        const data = await fetchDataWithGql(dataConfig, searchText, currentPage)
+
+        return data
     }
 
     setPageNumbers(newPageNumber) {
@@ -121,23 +124,23 @@ export class SelectorMixin extends Component {
     }
 
     _handlePageSelect(selectedPage) {
-        // this._buildQueryString(selectedPage, this.PAGE_SIZE, this._searchInput)
-        //     .then((queryString) => {
-        //         return this.loadItems(queryString)
-        //     })
-        //     .then(
-        //         (items) => {
-        //             this.setState({...this.state,
-        //                 items: items,
-        //                 currentPage: selectedPage,
-        //             })
-        //         },
-        //         (reason) => {
-        //             this.setState({...this.state,
-        //                 error: reason,
-        //             })
-        //         }
-        //     )
+        console.log(` in handlePageSelect:${selectedPage}`)
+        this._buildQueryString(selectedPage, this.PAGE_SIZE, this._searchInput)
+            .then((queryString) => {
+                return this.loadItems(queryString)
+            })
+            .then(
+                (items) => {
+                    this.setState({
+                        ...this.state,
+                        items: items,
+                        currentPage: selectedPage,
+                    })
+                },
+                (reason) => {
+                    this.setState({ ...this.state, error: reason })
+                }
+            )
     }
 
     _updateSelection(selectedItems) {
@@ -162,8 +165,13 @@ export class SelectorMixin extends Component {
                 return this.loadItems(queryString)
             })
             .then(
-                (items) => {
-                    this.setState({ ...this.state, items: items })
+                async (items) => {
+                    // await fetchAllDataCount()
+                    this.setState({
+                        ...this.state,
+                        items: items,
+                        total: 556,
+                    })
                 },
                 (reason) => {
                     console.warn(reason)

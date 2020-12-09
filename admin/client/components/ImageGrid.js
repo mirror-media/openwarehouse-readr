@@ -6,6 +6,7 @@ class ImageItem extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            image: props.image,
             isSelected: props.isSelected,
         }
     }
@@ -20,6 +21,7 @@ class ImageItem extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
             isSelected: nextProps.isSelected,
+            image: nextProps.image,
         }
     }
 
@@ -34,9 +36,9 @@ class ImageItem extends Component {
     }
 
     render() {
-        const { width, padding, url, doShowRemove, style } = this.props
+        const { width, padding, doShowRemove, style } = this.props
         const { isSelected } = this.state
-
+        const { url, id } = this.state.image
         const styles = {
             imageGridItem: objectAssign(
                 {
@@ -143,12 +145,11 @@ class ImageGrid extends Component {
                 : false
             return (
                 <ImageItem
-                    id={image.id}
-                    isSelected={isSelected}
                     key={image.id}
+                    image={image}
+                    isSelected={isSelected}
                     onSelect={this._handleSelect.bind(this, image)}
                     padding={padding}
-                    url={image.url}
                     width={width}
                 />
             )

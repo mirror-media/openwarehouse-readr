@@ -220,19 +220,19 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.SLIDESHOW.type:
                 return (
-                    // <span>{entity}</span>
-                    <ImageButton
-                        active={active}
-                        apiPath="images"
-                        key={entity}
-                        label={entity}
-                        onToggle={onToggle}
-                        selectionLimit={
-                            ENTITY.SLIDESHOW.slideshowSelectionLimit
-                        }
-                        icon="fa fa-images"
-                        iconText=" Slideshow"
-                    />
+                    <span>{entity}</span>
+                    // <ImageButton
+                    //     active={active}
+                    //     apiPath="images"
+                    //     key={entity}
+                    //     label={entity}
+                    //     onToggle={onToggle}
+                    //     selectionLimit={
+                    //         ENTITY.SLIDESHOW.slideshowSelectionLimit
+                    //     }
+                    //     icon="fa fa-images"
+                    //     iconText=" Slideshow"
+                    // />
                 )
             // case ENTITY.IMAGEDIFF.type:
             //     return (

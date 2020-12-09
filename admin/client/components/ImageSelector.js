@@ -30,34 +30,33 @@ export class ImageSelector extends SelectorMixin {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        let props = {}
-        this.setState({
-            ...this.state,
+    // replacement of componentWillReceiveProps
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
             isSelectionOpen: nextProps.isSelectionOpen,
-        })
+        }
     }
 
     loadItems(querstring = '') {
         console.log('loadItems in ImageSelector')
 
         return new Promise((resolve, reject) => {
-            // call loadItems in SelectorMixin
             const dataConfig = {
                 list: 'Image',
                 columns: ['title', 'urlDesktopSized'],
                 maxItemsPerPage: 12,
             }
 
-            this.loadItemsFromGql(querstring, dataConfig)
-                .then((images) => {
-                    resolve(
-                        images.map((image) => {
-                            // return parseImageAPIResponse(image)
+            // call loadItemsFromGql in SelectorMixin
 
-                            return parseImageAPIResponse(image)
-                        })
-                    )
+            this.loadItemsFromCMS(querstring, dataConfig)
+                .then((items) => {
+                    const reFormatData = items.map((image) => {
+                        // format fetched data's format
+                        return parseImageAPIResponse(image)
+                    })
+
+                    resolve(reFormatData)
                 })
                 .catch((err) => reject(err))
         })
@@ -74,7 +73,6 @@ export class ImageSelector extends SelectorMixin {
         }
 
         const { isSelectionOpen, items, selectedItems } = this.state
-        console.log(items)
         return (
             <Dialog
                 title="Select image"
@@ -98,11 +96,11 @@ export class ImageSelector extends SelectorMixin {
                             updateSelection={this.updateSelection}
                         />
                         <Pagination
-                            currentPage={this.state.currentPage}
-                            onPageSelect={this.handlePageSelect}
                             pageSize={this.PAGE_SIZE}
                             total={this.state.total}
-                            limit={PAGINATION_LIMIT}
+                            currentPage={this.state.currentPage}
+                            onCurrentChange={this.handlePageSelect}
+                            // limit={PAGINATION_LIMIT}
                         />
                     </div>
                     <div>
