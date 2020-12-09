@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 // import EditingBt from '../base/editing-bt';

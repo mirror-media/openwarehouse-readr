@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import { AudioGrid } from './AudioGrid'
 import SelectionMixin from './mixins/SelectionMixin'
 import React, { Component } from 'react'

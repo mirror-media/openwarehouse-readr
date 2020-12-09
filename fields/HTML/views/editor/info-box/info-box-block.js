@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 
 // import { AlignedInfoBox } from '@twreporter/react-article-components/dist/components/article/index';
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'

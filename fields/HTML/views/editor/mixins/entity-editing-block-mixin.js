@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 // import { Button, FormField, FormInput, Modal } from 'elemental'
 // import { Modal } from 'elemental'
 import { Dialog, Button, Form, Input } from 'element-react'
@@ -155,7 +155,7 @@ export class EntityEditingBlock extends Component {
     }
 
     _focus() {
-        // this.refs.editor.focus()
+        this.refs.subEditor.focus()
     }
 
     _handleEditingFieldChange(field, e) {
@@ -178,7 +178,7 @@ export class EntityEditingBlock extends Component {
 
     _renderDraftjsEditingField(editorState) {
         return (
-            <div className="RichEditor-root">
+            <div className="RichEditor-root" key={editorState}>
                 <div className={'DraftEditor-controls'}>
                     <div className={'DraftEditor-controlsInner'}>
                         <BlockStyleButtons
@@ -207,7 +207,7 @@ export class EntityEditingBlock extends Component {
                         editorState={this.state.editorState}
                         onChange={this._handleEditorStateChange}
                         placeholder="Enter HTML Here..."
-                        ref="editor"
+                        ref="subEditor"
                         spellCheck
                     />
                 </div>
@@ -220,10 +220,11 @@ export class EntityEditingBlock extends Component {
             return this._renderDraftjsEditingField(this.state.editorState)
         }
         let onChange = this._handleEditingFieldChange.bind(this, field)
+
         return (
             // <Form label={field} htmlFor={'form-input-' + field} key={field}>
             // <Form.Item label={field} labelWidth="120">
-            <div>
+            <div key={field}>
                 <Input
                     type={type}
                     multiline={type === 'textarea' ? 'true' : 'false'}

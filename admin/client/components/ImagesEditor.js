@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import { DragSource, DropTarget, DragDropContext } from 'react-dnd'
 import { ImageItem } from './ImageGrid'
 import { FormField, FormInput } from 'elemental'

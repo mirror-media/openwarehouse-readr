@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import ImageSelector from '../../../../../admin/client/components/ImageSelector'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'

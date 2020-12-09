@@ -15,73 +15,83 @@
 /*jslint unparam: true */
 /*global define, window, XDomainRequest */
 
-(function (factory) {
-    'use strict';
+;(function(factory) {
+    // 'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
-        define(['jquery'], factory);
+        define(['jquery'], factory)
     } else {
         // Browser globals:
-        factory(window.jQuery);
+        factory(window.jQuery)
     }
-}(function ($) {
-    'use strict';
+})(function($) {
+    // 'use strict';
     if (window.XDomainRequest && !$.support.cors) {
-        $.ajaxTransport(function (s) {
+        $.ajaxTransport(function(s) {
             if (s.crossDomain && s.async) {
                 if (s.timeout) {
-                    s.xdrTimeout = s.timeout;
-                    delete s.timeout;
+                    s.xdrTimeout = s.timeout
+                    delete s.timeout
                 }
-                var xdr;
+                var xdr
                 return {
-                    send: function (headers, completeCallback) {
-                        var addParamChar = /\?/.test(s.url) ? '&' : '?';
-                        function callback(status, statusText, responses, responseHeaders) {
-                            xdr.onload = xdr.onerror = xdr.ontimeout = $.noop;
-                            xdr = null;
-                            completeCallback(status, statusText, responses, responseHeaders);
+                    send: function(headers, completeCallback) {
+                        var addParamChar = /\?/.test(s.url) ? '&' : '?'
+                        function callback(
+                            status,
+                            statusText,
+                            responses,
+                            responseHeaders
+                        ) {
+                            xdr.onload = xdr.onerror = xdr.ontimeout = $.noop
+                            xdr = null
+                            completeCallback(
+                                status,
+                                statusText,
+                                responses,
+                                responseHeaders
+                            )
                         }
-                        xdr = new XDomainRequest();
+                        xdr = new XDomainRequest()
                         // XDomainRequest only supports GET and POST:
                         if (s.type === 'DELETE') {
-                            s.url = s.url + addParamChar + '_method=DELETE';
-                            s.type = 'POST';
+                            s.url = s.url + addParamChar + '_method=DELETE'
+                            s.type = 'POST'
                         } else if (s.type === 'PUT') {
-                            s.url = s.url + addParamChar + '_method=PUT';
-                            s.type = 'POST';
+                            s.url = s.url + addParamChar + '_method=PUT'
+                            s.type = 'POST'
                         } else if (s.type === 'PATCH') {
-                            s.url = s.url + addParamChar + '_method=PATCH';
-                            s.type = 'POST';
+                            s.url = s.url + addParamChar + '_method=PATCH'
+                            s.type = 'POST'
                         }
-                        xdr.open(s.type, s.url);
-                        xdr.onload = function () {
+                        xdr.open(s.type, s.url)
+                        xdr.onload = function() {
                             callback(
                                 200,
                                 'OK',
-                                {text: xdr.responseText},
+                                { text: xdr.responseText },
                                 'Content-Type: ' + xdr.contentType
-                            );
-                        };
-                        xdr.onerror = function () {
-                            callback(404, 'Not Found');
-                        };
+                            )
+                        }
+                        xdr.onerror = function() {
+                            callback(404, 'Not Found')
+                        }
                         if (s.xdrTimeout) {
-                            xdr.ontimeout = function () {
-                                callback(0, 'timeout');
-                            };
-                            xdr.timeout = s.xdrTimeout;
+                            xdr.ontimeout = function() {
+                                callback(0, 'timeout')
+                            }
+                            xdr.timeout = s.xdrTimeout
                         }
-                        xdr.send((s.hasContent && s.data) || null);
+                        xdr.send((s.hasContent && s.data) || null)
                     },
-                    abort: function () {
+                    abort: function() {
                         if (xdr) {
-                            xdr.onerror = $.noop();
-                            xdr.abort();
+                            xdr.onerror = $.noop()
+                            xdr.abort()
                         }
-                    }
-                };
+                    },
+                }
             }
-        });
+        })
     }
-}));
+})

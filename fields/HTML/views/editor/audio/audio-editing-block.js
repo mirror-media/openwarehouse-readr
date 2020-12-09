@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import AudioSelector from '../../../../../admin/client/components/AudioSelector'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'

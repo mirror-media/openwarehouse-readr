@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import BtWrapper from '../base/bt-wrapper'
 import ImageLinkEditingBlock from './image-link-editing-block'
 

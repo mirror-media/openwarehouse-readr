@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
 import {
     BlockStyleButtons,
@@ -95,7 +95,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     }
 
     function focus() {
-        mainEditorRef.focus()
+        mainEditorRef.current.focus()
     }
 
     function handleKeyCommand(command) {
@@ -437,7 +437,6 @@ const BLOCK_TYPES = [
     { label: 'H1', style: 'header-one', icon: 'fa-header', text: 'H1' },
     { label: 'H2', style: 'header-two', icon: 'fa-header', text: 'H2' },
     { label: 'Code Block', style: 'code-block', icon: 'fa-code', text: '' },
-
     {
         label: 'Blockquote',
         style: 'blockquote',

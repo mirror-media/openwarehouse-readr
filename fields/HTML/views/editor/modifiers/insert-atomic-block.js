@@ -1,16 +1,9 @@
-'use strict';
+// 'use strict';
 
-import {
-	AtomicBlockUtils,
-	Entity,
-} from 'draft-js';
+import { AtomicBlockUtils, Entity } from 'draft-js'
 
-export default function insertAtomicBlock (editorState, type, value) {
-	const entityKey = Entity.create(
-		type,
-		'IMMUTABLE',
-		value
-	);
+export default function insertAtomicBlock(editorState, type, value) {
+    const entityKey = Entity.create(type, 'IMMUTABLE', value)
 
-	return AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ');
+    return AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ')
 }

@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import { convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 // import DraftConverter from '../../K3/draft-converter'

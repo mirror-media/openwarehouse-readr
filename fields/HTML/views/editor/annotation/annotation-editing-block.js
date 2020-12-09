@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import { convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'

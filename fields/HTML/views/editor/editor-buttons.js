@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 // import { Button, ButtonGroup } from 'elemental'
 import { Button } from 'element-react'
 import 'element-theme-default'
@@ -26,7 +26,6 @@ class StyleButton extends React.Component {
         super()
         this.onToggle = (e) => {
             e.preventDefault()
-            console.log('press')
             this.props.onToggle(this.props.style)
         }
     }
@@ -158,7 +157,7 @@ export const EntityButtons = (props) => {
                         key={entity}
                         label={entity}
                         onToggle={onToggle}
-                        icon="fa-file-audio-o"
+                        icon="far fa-file-audio"
                         iconText=" Audio"
                     />
                 )
@@ -202,7 +201,7 @@ export const EntityButtons = (props) => {
                         onToggle={onToggle}
                         url={data ? data.url : ''}
                         text={data ? data.text : selectedText}
-                        icon="fa fa-link"
+                        icon="fas fa-link"
                         iconText=""
                     />
                 )
@@ -259,7 +258,7 @@ export const EntityButtons = (props) => {
                         label={entity}
                         onToggle={onToggle}
                         url={data ? data.url : ''}
-                        icon="fa fa-external-link"
+                        icon="fas fa-external-link-alt"
                         iconText=" ImgLink"
                     />
                 )

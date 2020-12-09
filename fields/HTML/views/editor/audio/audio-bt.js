@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import BtWrapper from '../base/bt-wrapper'
 import AudioEditingBlock from './audio-editing-block'
 

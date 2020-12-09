@@ -12,24 +12,17 @@
 /*jslint nomen: true, unparam: true, regexp: true */
 /*global define, window, document */
 
-(function (factory) {
-    'use strict';
+;(function(factory) {
+    // 'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
-        define([
-            'jquery',
-            'load-image',
-            './jquery.fileupload-process'
-        ], factory);
+        define(['jquery', 'load-image', './jquery.fileupload-process'], factory)
     } else {
         // Browser globals:
-        factory(
-            window.jQuery,
-            window.loadImage
-        );
+        factory(window.jQuery, window.loadImage)
     }
-}(function ($, loadImage) {
-    'use strict';
+})(function($, loadImage) {
+    // 'use strict';
 
     // Prepend to the default processQueue:
     $.blueimp.fileupload.prototype.options.processQueue.unshift(
@@ -39,68 +32,65 @@
             prefix: true,
             fileTypes: '@',
             maxFileSize: '@',
-            disabled: '@disableAudioPreview'
+            disabled: '@disableAudioPreview',
         },
         {
             action: 'setAudio',
             name: '@audioPreviewName',
-            disabled: '@disableAudioPreview'
+            disabled: '@disableAudioPreview',
         }
-    );
+    )
 
     // The File Upload Audio Preview plugin extends the fileupload widget
     // with audio preview functionality:
     $.widget('blueimp.fileupload', $.blueimp.fileupload, {
-
         options: {
             // The regular expression for the types of audio files to load,
             // matched against the file type:
-            loadAudioFileTypes: /^audio\/.*$/
+            loadAudioFileTypes: /^audio\/.*$/,
         },
 
         _audioElement: document.createElement('audio'),
 
         processActions: {
-
             // Loads the audio file given via data.files and data.index
             // as audio element if the browser supports playing it.
             // Accepts the options fileTypes (regular expression)
             // and maxFileSize (integer) to limit the files to load:
-            loadAudio: function (data, options) {
+            loadAudio: function(data, options) {
                 if (options.disabled) {
-                    return data;
+                    return data
                 }
                 var file = data.files[data.index],
                     url,
-                    audio;
-                if (this._audioElement.canPlayType &&
-                        this._audioElement.canPlayType(file.type) &&
-                        ($.type(options.maxFileSize) !== 'number' ||
-                            file.size <= options.maxFileSize) &&
-                        (!options.fileTypes ||
-                            options.fileTypes.test(file.type))) {
-                    url = loadImage.createObjectURL(file);
+                    audio
+                if (
+                    this._audioElement.canPlayType &&
+                    this._audioElement.canPlayType(file.type) &&
+                    ($.type(options.maxFileSize) !== 'number' ||
+                        file.size <= options.maxFileSize) &&
+                    (!options.fileTypes || options.fileTypes.test(file.type))
+                ) {
+                    url = loadImage.createObjectURL(file)
                     if (url) {
-                        audio = this._audioElement.cloneNode(false);
-                        audio.src = url;
-                        audio.controls = true;
-                        data.audio = audio;
-                        return data;
+                        audio = this._audioElement.cloneNode(false)
+                        audio.src = url
+                        audio.controls = true
+                        data.audio = audio
+                        return data
                     }
                 }
-                return data;
+                return data
             },
 
             // Sets the audio element as a property of the file object:
-            setAudio: function (data, options) {
+            setAudio: function(data, options) {
                 if (data.audio && !options.disabled) {
-                    data.files[data.index][options.name || 'preview'] = data.audio;
+                    data.files[data.index][options.name || 'preview'] =
+                        data.audio
                 }
-                return data;
-            }
-
-        }
-
-    });
-
-}));
+                return data
+            },
+        },
+    })
+})

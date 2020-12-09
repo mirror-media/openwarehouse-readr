@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import htmlParser from 'html-react-parser'

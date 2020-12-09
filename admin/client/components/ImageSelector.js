@@ -1,13 +1,18 @@
-'use strict'
+// 'use strict'
 // import { Button, Modal, Pagination } from 'elemental';
 import { Button, Dialog, Pagination } from 'element-react'
 
 import { parseImageAPIResponse } from '../../../lib/parseAPIResponse'
 // import ImagesEditor from './ImagesEditor'
-// import ImageSelection from './ImageSelection'
+import ImageSelection from './ImageSelection'
 import SelectorMixin from './mixins/SelectorMixin'
 import React, { Component } from 'react'
 import merge from 'lodash/merge'
+
+// import {
+//     setPages,
+//     fetchDataWithGql,
+// } from '../../../fields/HTML/views/editor/utils/fetchData'
 
 const _ = {
     merge,
@@ -19,6 +24,7 @@ export class ImageSelector extends SelectorMixin {
     constructor(props) {
         super(props)
         this.state = {
+            ...this.state,
             selectedItems: props.selectedImages,
             isSelectionOpen: props.isSelectionOpen,
         }
@@ -33,31 +39,42 @@ export class ImageSelector extends SelectorMixin {
     }
 
     loadItems(querstring = '') {
-        // return new Promise((resolve, reject) => {
-        //     super
-        //         .loadItems(querstring)
-        //         .then((images) => {
-        //             resolve(
-        //                 images.map((image) => {
-        //                     // return parseImageAPIResponse(image)
-        //                     return parseImageAPIResponse(image)
-        //                 })
-        //             )
-        //         })
-        //         .catch((err) => reject(err))
-        // })
+        console.log('loadItems in ImageSelector')
+
+        return new Promise((resolve, reject) => {
+            // call loadItems in SelectorMixin
+            const dataConfig = {
+                list: 'Image',
+                columns: ['title', 'urlDesktopSized'],
+                maxItemsPerPage: 12,
+            }
+
+            this.loadItemsFromGql(querstring, dataConfig)
+                .then((images) => {
+                    resolve(
+                        images.map((image) => {
+                            // return parseImageAPIResponse(image)
+
+                            return parseImageAPIResponse(image)
+                        })
+                    )
+                })
+                .catch((err) => reject(err))
+        })
     }
 
     render() {
         if (this.state.error) {
             return (
                 <span>
-                    There is an error, please reload the page.{this.state.error}
+                    There is an error, please reload the page.
+                    {/* {this.state.error} */}
                 </span>
             )
         }
 
         const { isSelectionOpen, items, selectedItems } = this.state
+        console.log(items)
         return (
             <Dialog
                 title="Select image"
@@ -68,25 +85,25 @@ export class ImageSelector extends SelectorMixin {
             >
                 <Dialog.Body>
                     <div
-                        style={{
-                            marginBottom: '30px',
-                            borderBottom: '3px solid',
-                        }}
+                    // style={{
+                    //     marginBottom: '30px',
+                    //     borderBottom: '3px solid',
+                    // }}
                     >
-                        {/* {this._renderSearchFilter()} */}
-                        {/* <ImageSelection
+                        {this._renderSearchFilter()}
+                        <ImageSelection
                             images={items}
                             selectedImages={selectedItems}
                             selectionLimit={this.props.selectionLimit}
                             updateSelection={this.updateSelection}
-                        /> */}
-                        {/* <Pagination
+                        />
+                        <Pagination
                             currentPage={this.state.currentPage}
                             onPageSelect={this.handlePageSelect}
                             pageSize={this.PAGE_SIZE}
                             total={this.state.total}
                             limit={PAGINATION_LIMIT}
-                        /> */}
+                        />
                     </div>
                     <div>
                         {/* <ImagesEditor

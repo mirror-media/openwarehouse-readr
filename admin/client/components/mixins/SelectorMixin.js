@@ -1,10 +1,15 @@
-'use strict'
+// 'use strict'
 // import { Button, FormInput, InputGroup } from 'elemental';
 import React, { Component } from 'react'
 import { Button, Input, Dialog, Pagination } from 'element-react'
 
 import qs from 'qs'
 import xhr from 'xhr'
+
+import {
+    setPages,
+    fetchDataWithGql,
+} from '../../../../fields/HTML/views/editor/utils/fetchData'
 
 export class SelectorMixin extends Component {
     constructor(props) {
@@ -31,6 +36,8 @@ export class SelectorMixin extends Component {
         this.searchByInput = this._searchByInput.bind(this)
         this.handleCancel = this._handleCancel.bind(this)
         this.handleSave = this._handleSave.bind(this)
+        this.setPageNumbers = this.setPageNumbers(this)
+        this.setPagedData = this.setPagedData.bind(this)
     }
 
     componentWillMount() {
@@ -43,6 +50,7 @@ export class SelectorMixin extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
+            ...this.state,
             isSelectionOpen: nextProps.isSelectionOpen,
             selectedItems: nextProps.selectedItems,
         })
@@ -65,12 +73,12 @@ export class SelectorMixin extends Component {
      * @return {Promise}
      */
     _buildQueryString(page = 0, limit = 6, input = '') {
-        // let queryString = {
-        //     search: input,
-        //     limit: limit,
-        //     skip: page === 0 ? 0 : (page - 1) * limit,
-        // }
-        // return Promise.resolve(qs.stringify(queryString))
+        let queryString = {
+            search: input,
+            limit: limit,
+            skip: page === 0 ? 0 : (page - 1) * limit,
+        }
+        return Promise.resolve(qs.stringify(queryString))
     }
 
     /** build query string for keystone api
@@ -91,28 +99,25 @@ export class SelectorMixin extends Component {
      * @param {string} [queryString=] - Query string for keystone api
      * @return {Promise}
      */
-    loadItems(queryString = '') {
-        // return new Promise((resolve, reject) => {
-        //     xhr(
-        //         {
-        //             url:
-        //                 Keystone.adminPath +
-        //                 this.API +
-        //                 this.props.apiPath +
-        //                 '?' +
-        //                 queryString,
-        //             responseType: 'json',
-        //         },
-        //         (err, resp, data) => {
-        //             if (err) {
-        //                 console.error('Error loading items:', err)
-        //                 return reject(err)
-        //             }
-        //             this.state.total = data.count
-        //             resolve(data.results)
-        //         }
-        //     )
-        // })
+    loadItemsFromGql(queryString = '', dataConfig) {
+        console.log('loadItems in SelectorMixin')
+
+        const searchText = this._searchInput
+        const page = this.state.currentPage
+
+        // setPages(dataConfig, searchText, this.setPageNumbers)
+
+        return new Promise((resolve, reject) => {
+            const data = fetchDataWithGql(dataConfig, searchText, 1)
+            resolve(data)
+        })
+    }
+
+    setPageNumbers(newPageNumber) {
+        this.setState({ ...this.state, currentPage: newPageNumber })
+    }
+    setPagedData(newData) {
+        this.setState({ ...this.state, items: newData })
     }
 
     _handlePageSelect(selectedPage) {
@@ -122,13 +127,13 @@ export class SelectorMixin extends Component {
         //     })
         //     .then(
         //         (items) => {
-        //             this.setState({
+        //             this.setState({...this.state,
         //                 items: items,
         //                 currentPage: selectedPage,
         //             })
         //         },
         //         (reason) => {
-        //             this.setState({
+        //             this.setState({...this.state,
         //                 error: reason,
         //             })
         //         }
@@ -137,34 +142,34 @@ export class SelectorMixin extends Component {
 
     _updateSelection(selectedItems) {
         this.setState({
+            ...this.state,
             selectedItems: selectedItems,
         })
     }
 
     toggleSelect(visible) {
         this.setState({
+            ...this.state,
             isSelectionOpen: visible,
         })
     }
 
     _getItems() {
-        // this._buildQueryString(this.state.currentPage, this.PAGE_SIZE)
-        //     .then((queryString) => {
-        //         return this.loadItems(queryString)
-        //     })
-        //     .then(
-        //         (items) => {
-        //             this.setState({
-        //                 items: items,
-        //             })
-        //         },
-        //         (reason) => {
-        //             console.warn(reason)
-        //             this.setState({
-        //                 error: reason,
-        //             })
-        //         }
-        //     )
+        console.log('getItems')
+        this._buildQueryString(this.state.currentPage, this.PAGE_SIZE)
+            .then((queryString) => {
+                // call loadItems in each selector's own loadItems
+                return this.loadItems(queryString)
+            })
+            .then(
+                (items) => {
+                    this.setState({ ...this.state, items: items })
+                },
+                (reason) => {
+                    console.warn(reason)
+                    this.setState({ ...this.state, error: reason })
+                }
+            )
     }
 
     _searchFilterChange(event) {

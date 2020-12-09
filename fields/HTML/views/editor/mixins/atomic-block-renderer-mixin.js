@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import React, { Component } from 'react'
 import get from 'lodash/get'
 import merge from 'lodash/merge'

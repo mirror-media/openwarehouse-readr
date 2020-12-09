@@ -1,30 +1,30 @@
-'use strict'
+// 'use strict'
 import { ImageGrid } from './ImageGrid'
 import SelectionMixin from './mixins/SelectionMixin'
 import React from 'react'
-import merge from 'lodash/merge'
+// import merge from 'lodash/merge'
 
-const _ = {
-    merge,
-}
+// const _ = {
+//     merge,
+// }
 
-class ImageSelection extends SelectionMixin(React.Component) {
+export class ImageSelection extends SelectionMixin {
     constructor(props) {
         super(props)
 
         this.state = {
+            ...this.state,
             items: props.images,
             selectedItems: props.selectedImages,
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        let props = {}
-        _.merge(props, {
+    // replacement of componentWillReceiveProps
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
             items: nextProps.images,
             selectedItems: nextProps.selectedImages,
-        })
-        super.componentWillReceiveProps(props)
+        }
     }
 
     render() {
@@ -32,18 +32,18 @@ class ImageSelection extends SelectionMixin(React.Component) {
             <ImageGrid
                 images={this.state.items}
                 onSelect={this.handleSelect}
-                selectedImages={this.state.selectedItems}
+                selectedImages={this.state.selectedImages}
             />
         )
     }
 }
 
-ImageSelection.propTypes = {
-    images: React.PropTypes.array,
-    selectedImages: React.PropTypes.array,
-    selectionLimit: React.PropTypes.number,
-    updateSelection: React.PropTypes.func.isRequired,
-}
+// ImageSelection.propTypes = {
+//     images: PropTypes.array,
+//     selectedImages: PropTypes.array,
+//     selectionLimit: PropTypes.number,
+//     updateSelection: PropTypes.func.isRequired,
+// }
 
 ImageSelection.defaultProps = {
     images: [],

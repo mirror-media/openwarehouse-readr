@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
 import React from 'react'
 import PropTypes from 'prop-types'
