@@ -147,20 +147,6 @@ export const EntityButtons = (props) => {
                         text={data ? data.text : selectedText}
                     />
                 )
-            case ENTITY.AUDIO.type:
-                return (
-                    // <span>{entity}</span>
-
-                    <AudioButton
-                        active={active}
-                        apiPath="audios"
-                        key={entity}
-                        label={entity}
-                        onToggle={onToggle}
-                        icon="far fa-file-audio"
-                        iconText=" Audio"
-                    />
-                )
             case ENTITY.BLOCKQUOTE.type:
                 return (
                     // <span>{entity}</span>
@@ -174,6 +160,21 @@ export const EntityButtons = (props) => {
                         iconText=""
                         quote={data ? data.quote : selectedText}
                         quoteBy={data ? data.quoteBy : ''}
+                    />
+                )
+
+            case ENTITY.LINK.type:
+                return (
+                    // <span>{entity}</span>
+                    <LinkButton
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        url={data ? data.url : ''}
+                        text={data ? data.text : selectedText}
+                        icon="fas fa-link"
+                        iconText=""
                     />
                 )
             case ENTITY.INFOBOX.type:
@@ -191,20 +192,34 @@ export const EntityButtons = (props) => {
                         iconText="infobox"
                     />
                 )
-            case ENTITY.LINK.type:
+            case ENTITY.EMBEDDEDCODE.type:
                 return (
-                    // <span>{entity}</span>
-                    <LinkButton
+                    <EmbeddedCodeBt
                         active={active}
                         key={entity}
                         label={entity}
                         onToggle={onToggle}
-                        url={data ? data.url : ''}
-                        text={data ? data.text : selectedText}
-                        icon="fas fa-link"
-                        iconText=""
+                        caption={data ? data.caption : ''}
+                        embeddedCode={data ? data.embeddedCode : ''}
+                        iconText=" Embed"
+                    />
+                    // <span>{entity}</span>
+                )
+            case ENTITY.AUDIO.type:
+                return (
+                    // <span>{entity}</span>
+
+                    <AudioButton
+                        active={active}
+                        apiPath="audios"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="far fa-file-audio"
+                        iconText=" Audio"
                     />
                 )
+
             case ENTITY.IMAGE.type:
                 return (
                     // <span>{entity}</span>
@@ -262,19 +277,7 @@ export const EntityButtons = (props) => {
                         iconText=" ImgLink"
                     />
                 )
-            case ENTITY.EMBEDDEDCODE.type:
-                return (
-                    <EmbeddedCodeBt
-                        active={active}
-                        key={entity}
-                        label={entity}
-                        onToggle={onToggle}
-                        caption={data ? data.caption : ''}
-                        embeddedCode={data ? data.embeddedCode : ''}
-                        iconText=" Embed"
-                    />
-                    // <span>{entity}</span>
-                )
+
             case ENTITY.YOUTUBE.type:
                 return (
                     <YoutubeBt
