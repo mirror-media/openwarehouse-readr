@@ -23,8 +23,6 @@ export const fetchDataWithGql = async (
     page,
     setCallBack
 ) => {
-    console.log('fetchDataWithGql')
-
     const selectString = generateSelectString(columns)
     const whereString = generateWhereString(columns)
 
@@ -42,56 +40,54 @@ export const fetchDataWithGql = async (
             first: maxItemsPerPage,
         },
     })
-    console.log('------------------------')
-    console.log(data[`all${list}s`][0].id)
-    console.log(page)
+
     // setCallBack(data[`all${list}s`])
     return data[`all${list}s`]
 }
 
-export const fetchAllDataCount = async (
-    { list, columns, maxItemsPerPage },
-    search
-) => {
-    console.log('setPages')
-    const whereString = generateWhereString(columns)
-    const {
-        data: {
-            [`_all${list}sMeta`]: { count },
-        },
-    } = await fetch({
-        query: `
-            query($search: String!) {
-                _all${list}sMeta(where: ${whereString}) {
-                  count
-                }
-            }`,
-        variables: {
-            search: search,
-        },
-    })
+// export const fetchAllDataCount = async (
+//     { list, columns, maxItemsPerPage },
+//     search
+// ) => {
+//     console.log('setPages')
+//     const whereString = generateWhereString(columns)
+//     const {
+//         data: {
+//             [`_all${list}sMeta`]: { count },
+//         },
+//     } = await fetch({
+//         query: `
+//             query($search: String!) {
+//                 _all${list}sMeta(where: ${whereString}) {
+//                   count
+//                 }
+//             }`,
+//         variables: {
+//             search: search,
+//         },
+//     })
 
-    return count
-}
+//     return count
+// }
 
-export const setPages = async ({ list, columns, maxItemsPerPage }, search) => {
-    console.log('setPages')
-    const whereString = generateWhereString(columns)
-    const {
-        data: {
-            [`_all${list}sMeta`]: { count },
-        },
-    } = await fetch({
-        query: `
-            query($search: String!) {
-                _all${list}sMeta(where: ${whereString}) {
-                  count
-                }
-            }`,
-        variables: {
-            search: search,
-        },
-    })
+// export const setPages = async ({ list, columns, maxItemsPerPage }, search) => {
+//     console.log('setPages')
+//     const whereString = generateWhereString(columns)
+//     const {
+//         data: {
+//             [`_all${list}sMeta`]: { count },
+//         },
+//     } = await fetch({
+//         query: `
+//             query($search: String!) {
+//                 _all${list}sMeta(where: ${whereString}) {
+//                   count
+//                 }
+//             }`,
+//         variables: {
+//             search: search,
+//         },
+//     })
 
-    return Math.ceil(count / maxItemsPerPage)
-}
+//     return Math.ceil(count / maxItemsPerPage)
+// }

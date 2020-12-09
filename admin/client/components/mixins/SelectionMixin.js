@@ -13,7 +13,17 @@ export class SelectionMixin extends Component {
         this.handleSelect = this._handleSelect.bind(this)
     }
 
+    // // replacement of componentWillReceiveProps
+    // static getDerivedStateFromProps(nextProps, prevState) {
+    //     console.log(nextProps.images)
+    //     return {
+    //         items: nextProps.items,
+    //         selectedItems: nextProps.selectedItems,
+    //     }
+    // }
+
     _handleSelect(item) {
+        console.log(item)
         let _selectItems = this.state.selectedItems
         let filtered = _selectItems.filter((selectedItem) => {
             return selectedItem.id !== item.id
@@ -33,14 +43,9 @@ export class SelectionMixin extends Component {
                 filtered = [item]
             }
         }
-        this.setState(
-            {
-                selectedItems: filtered,
-            },
-            () => {
-                this.props.updateSelection(filtered)
-            }
-        )
+        this.setState({ ...this.state, selectedItems: filtered }, () => {
+            this.props.updateSelection(filtered)
+        })
     }
 }
 

@@ -124,7 +124,6 @@ export class SelectorMixin extends Component {
     }
 
     _handlePageSelect(selectedPage) {
-        console.log(` in handlePageSelect:${selectedPage}`)
         this._buildQueryString(selectedPage, this.PAGE_SIZE, this._searchInput)
             .then((queryString) => {
                 return this.loadItems(queryString)

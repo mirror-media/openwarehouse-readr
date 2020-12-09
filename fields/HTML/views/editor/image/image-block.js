@@ -10,9 +10,7 @@ const _ = {
     get,
 }
 
-export default class ImageBlock extends AtomicBlockRendererMixin(
-    React.Component
-) {
+export default class ImageBlock extends AtomicBlockRendererMixin {
     constructor(props) {
         super(props)
     }
@@ -49,19 +47,41 @@ export default class ImageBlock extends AtomicBlockRendererMixin(
               })
             : null
 
+        const { id, title, url } = image
+        // return (
+        //     <div
+        //         contentEditable={false}
+        //         onClick={this.toggleEditMode}
+        //         style={{ cursor: 'pointer' }}
+        //     >
+        //         {/* <AlignedImage
+        // 			{...this.state.data}
+        // 			device={this.props.device}
+        // 		>
+        // 			{this.props.children}
+        // 		</AlignedImage>
+        // 		{EditBlock} */}
+        //     </div>
+        // )
+
         return (
             <div
-                contentEditable={false}
-                onClick={this.toggleEditMode}
-                style={{ cursor: 'pointer' }}
+                style={{
+                    // backgroundColor: 'GhostWhite',
+                    width: '100%',
+                    height: 'auto',
+                }}
             >
-                {/* <AlignedImage
-					{...this.state.data}
-					device={this.props.device}
-				>
-					{this.props.children}
-				</AlignedImage>
-				{EditBlock} */}
+                <img
+                    src={url}
+                    alt={title}
+                    style={{
+                        width: '60%',
+                        height: '60%',
+                        objectFit: 'cover',
+                    }}
+                />
+                <h6>{title}</h6>
             </div>
         )
     }
