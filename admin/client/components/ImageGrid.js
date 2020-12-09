@@ -60,25 +60,33 @@ class ImageItem extends Component {
                 textAlign: 'right',
                 width: '100%',
             },
+            iconWrapper: {
+                height: '2rem',
+                position: 'relative',
+            },
         }
 
         let btStyle = {
             fontSize: '2em',
-            backgroundColor: '#FFF',
+            color: 'red',
+            backgroundColor: 'white',
+            borderRadius: '1rem',
+            // position: 'absolute',
+            // top: '0',
+            // right: '0',
         }
 
         const bt = doShowRemove ? (
             <i
-                className="fa fa-times"
+                className="fas fa-times-circle"
                 onClick={this._handleRemove.bind(this)}
                 style={btStyle}
             />
         ) : isSelected ? (
-            <i className="fa fa-check-circle-o" style={btStyle} />
+            <i className="fas fa-check-circle" style={btStyle} />
         ) : (
             <i className="fa" />
         )
-
         return (
             <div
                 onClick={this._handleSelect.bind(this)}
@@ -86,7 +94,9 @@ class ImageItem extends Component {
                 style={styles.imageGridItem}
             >
                 <div className="imageWrapper" style={styles.imageWrapper}>
-                    {bt}
+                    <div className="iconWrapper" style={styles.iconWrapper}>
+                        {bt}
+                    </div>
                 </div>
                 {this.props.children}
             </div>
@@ -133,6 +143,7 @@ class ImageGrid extends Component {
     _handleSelect(image) {
         this.props.onSelect(image)
     }
+
     render() {
         const { images, selectedImages } = this.state
         const { columns, padding } = this.props
@@ -143,6 +154,7 @@ class ImageGrid extends Component {
             })
                 ? true
                 : false
+
             return (
                 <ImageItem
                     key={image.id}
@@ -168,7 +180,7 @@ class ImageGrid extends Component {
 // };
 
 ImageGrid.defaultProps = {
-    columns: 3,
+    columns: 4,
     images: [],
     padding: 10,
     selectedImages: [],

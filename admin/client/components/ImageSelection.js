@@ -32,7 +32,7 @@ export class ImageSelection extends SelectionMixin {
             <ImageGrid
                 images={this.state.items}
                 onSelect={this.handleSelect}
-                selectedImages={this.state.selectedImages}
+                selectedImages={this.state.selectedItems}
             />
         )
     }
