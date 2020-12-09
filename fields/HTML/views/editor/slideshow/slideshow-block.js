@@ -1,6 +1,9 @@
 // 'use strict';
 
-import { Slideshow } from '@twreporter/react-article-components/dist/components/article/index'
+// import { Slideshow } from '@twreporter/react-article-components/dist/components/article/index'
+import { Slide } from 'react-slideshow-image'
+import 'react-slideshow-image/dist/styles.css'
+
 import ENTITY from '../entities'
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import EditingBt from '../base/editing-bt'
@@ -12,9 +15,7 @@ const _ = {
     get,
 }
 
-export default class SlideshowBlock extends AtomicBlockRendererMixin(
-    React.Component
-) {
+export default class SlideshowBlock extends AtomicBlockRendererMixin {
     constructor(props) {
         super(props)
     }
@@ -41,17 +42,60 @@ export default class SlideshowBlock extends AtomicBlockRendererMixin(
               })
             : null
 
+        // return (
+        //     <div
+        //         contentEditable={false}
+        //         className="slideshow-container"
+        //         style={{
+        //             position: 'relative',
+        //         }}
+        //     >
+        //         <Slideshow {...this.state.data} device={this.props.device} />
+        //         <EditingBt onClick={this.toggleEditMode} />
+        //         {EditBlock}
+        //     </div>
+        // )
+
+        const properties = {
+            duration: 5000,
+            transitionDuration: 500,
+            infinite: true,
+            indicators: true,
+            arrows: true,
+            pauseOnHover: true,
+            onChange: (oldIndex, newIndex) => {},
+        }
+
+        console.log(images)
         return (
-            <div
-                contentEditable={false}
-                className="slideshow-container"
-                style={{
-                    position: 'relative',
-                }}
-            >
-                <Slideshow {...this.state.data} device={this.props.device} />
-                <EditingBt onClick={this.toggleEditMode} />
-                {EditBlock}
+            <div className="slide-container" style={{ width: '500px' }}>
+                <Slide {...properties} z>
+                    {images.map((image, index) => (
+                        <div key={`slideshow-${index}`} className="each-slide">
+                            <div
+                                className="image-wrapper"
+                                style={{
+                                    // backgroundColor: 'GhostWhite',
+                                    width: '100%',
+                                    height: 'auto',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <img
+                                    src={image.url}
+                                    alt={image.title}
+                                    style={{
+                                        width: '100%',
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            </div>
+                            <h6>{image.title}</h6>
+                        </div>
+                    ))}
+                </Slide>
             </div>
         )
     }

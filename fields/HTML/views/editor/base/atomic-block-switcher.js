@@ -10,7 +10,7 @@ import ImageBlock from '../image/image-block'
 // import ImageDiffBlock from '../image-diff/image-diff-block'
 // import ImageLinkBlock from '../image-link/image-link-block'
 import InfoBoxBlock from '../info-box/info-box-block'
-// import SlideshowBlock from '../slideshow/slideshow-block'
+import SlideshowBlock from '../slideshow/slideshow-block'
 import YoutubeBlock from '../youtube/youtube-block'
 import classNames from 'classnames'
 import get from 'lodash/get'
@@ -154,12 +154,12 @@ export class AtomicBlockSwitcher extends Component {
                 //     }
                 break
             case ENTITY.SLIDESHOW.type:
-                //     BlockComponent = SlideshowBlock
-                //     if (device === 'mobile') {
-                //         style = mobileStyle
-                //     } else {
-                //         style = tabletMaxStyle
-                //     }
+                BlockComponent = SlideshowBlock
+                if (device === 'mobile') {
+                    style = mobileStyle
+                } else {
+                    style = tabletMaxStyle
+                }
                 break
             case ENTITY.IMAGEDIFF.type:
                 //     BlockComponent = ImageDiffBlock
@@ -184,7 +184,7 @@ export class AtomicBlockSwitcher extends Component {
         //     return null
         // }
         return (
-            <div style={style}>
+            <div className="BlockComponent_wrapper" style={style}>
                 <BlockComponent
                     {...this.props}
                     device={device}

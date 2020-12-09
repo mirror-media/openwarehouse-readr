@@ -1,7 +1,9 @@
 // 'use strict'
 import { DragSource, DropTarget, DragDropContext } from 'react-dnd'
 import { ImageItem } from './ImageGrid'
-import { FormField, FormInput } from 'elemental'
+// import { FormField, FormInput } from 'elemental'
+import { Form, Input } from 'element-react'
+
 import React, { PropTypes, Component } from 'react'
 // import update from 'react/lib/update'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -64,13 +66,13 @@ class DnDItem extends Component {
     }
 }
 
-DnDItem.propTypes = {
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    findImage: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    moveImage: PropTypes.func.isRequired,
-}
+// DnDItem.propTypes = {
+//     connectDragSource: PropTypes.func.isRequired,
+//     connectDropTarget: PropTypes.func.isRequired,
+//     findImage: PropTypes.func.isRequired,
+//     isDragging: PropTypes.bool.isRequired,
+//     moveImage: PropTypes.func.isRequired,
+// }
 
 const ImageDnDItem = DropTarget('image', imageTarget, (connect) => ({
     connectDropTarget: connect.dropTarget(),
@@ -173,13 +175,13 @@ class DnDContainer extends Component {
                         url={image.url}
                         style={{ border: '1px solid gainsboro' }}
                     >
-                        <FormField
+                        <Form
                             key={image.id}
                             label=""
                             htmlFor="image-caption-input"
                             style={{ paddingTop: '5px' }}
                         >
-                            <FormInput
+                            <Input
                                 key={image.id}
                                 placeholder="input caption here"
                                 multiline
@@ -190,7 +192,7 @@ class DnDContainer extends Component {
                                     image
                                 )}
                             />
-                        </FormField>
+                        </Form>
                     </ImageItem>
                 </ImageDnDItem>
             )
@@ -203,21 +205,22 @@ class DnDContainer extends Component {
         )
     }
 }
-DnDContainer.propTypes = {
-    columns: PropTypes.number,
-    connectDropTarget: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-}
+// DnDContainer.propTypes = {
+//     columns: PropTypes.number,
+//     connectDropTarget: PropTypes.func.isRequired,
+//     onChange: PropTypes.func.isRequired,
+//     onRemove: PropTypes.func.isRequired,
+// }
 DnDContainer.defaultProps = {
     columns: 1,
 }
+const ImageDnDContainer = null
 
-const ImageDnDContainer = DragDropContext(HTML5Backend)(
-    DropTarget('image', containerTarget, (connect) => ({
-        connectDropTarget: connect.dropTarget(),
-    }))(DnDContainer)
-)
+// const ImageDnDContainer = DragDropContext(HTML5Backend)(
+//     DropTarget('image', containerTarget, (connect) => ({
+//         connectDropTarget: connect.dropTarget(),
+//     }))(DnDContainer)
+// )
 
 class ImagesEditor extends Component {
     constructor(props) {
@@ -268,19 +271,20 @@ class ImagesEditor extends Component {
     render() {
         const { images } = this.state
         return (
-            <ImageDnDContainer
-                images={images}
-                onRemove={this._handleRemove.bind(this)}
-                onChange={this._handleChange.bind(this)}
-            />
+            // <ImageDnDContainer
+            //     images={images}
+            //     onRemove={this._handleRemove.bind(this)}
+            //     onChange={this._handleChange.bind(this)}
+            // />
+            <h6>Here's ImageDnDContainer (coming soon...)</h6>
         )
     }
 }
 
-ImagesEditor.propTypes = {
-    images: PropTypes.array,
-    onChange: PropTypes.func.isRequired,
-}
+// ImagesEditor.propTypes = {
+//     images: PropTypes.array,
+//     onChange: PropTypes.func.isRequired,
+// }
 
 ImagesEditor.defaultProps = {
     images: [],

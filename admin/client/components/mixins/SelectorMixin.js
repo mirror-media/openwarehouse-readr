@@ -38,8 +38,6 @@ export class SelectorMixin extends Component {
         this.searchByInput = this._searchByInput.bind(this)
         this.handleCancel = this._handleCancel.bind(this)
         this.handleSave = this._handleSave.bind(this)
-        this.setPageNumbers = this.setPageNumbers(this)
-        this.setPagedData = this.setPagedData.bind(this)
     }
 
     componentDidMount() {
@@ -112,15 +110,8 @@ export class SelectorMixin extends Component {
             : this.state.currentPage
 
         const data = await fetchDataWithGql(dataConfig, searchText, currentPage)
-
+        console.log(data)
         return data
-    }
-
-    setPageNumbers(newPageNumber) {
-        this.setState({ ...this.state, currentPage: newPageNumber })
-    }
-    setPagedData(newData) {
-        this.setState({ ...this.state, items: newData })
     }
 
     _handlePageSelect(selectedPage) {

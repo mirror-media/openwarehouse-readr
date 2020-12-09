@@ -1,5 +1,5 @@
 // 'use strict'
-import { AudioGrid } from './AudioGrid'
+// import { AudioGrid } from './AudioGrid'
 import SelectionMixin from './mixins/SelectionMixin'
 import React, { Component } from 'react'
 import merge from 'lodash/merge'
@@ -8,7 +8,7 @@ const _ = {
     merge,
 }
 
-class AudioSelection extends SelectionMixin(Component) {
+class AudioSelection extends SelectionMixin {
     constructor(props) {
         super(props)
 
@@ -18,32 +18,32 @@ class AudioSelection extends SelectionMixin(Component) {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        let props = {}
-        _.merge(props, {
+    // replacement of componentWillReceiveProps
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
             items: nextProps.audios,
             selectedItems: nextProps.selectedAudios,
-        })
-        super.componentWillReceiveProps(props)
+        }
     }
 
     render() {
         return (
-            <AudioGrid
-                audios={this.state.items}
-                onSelect={this.handleSelect}
-                selectedAudios={this.state.selectedItems}
-            />
+            // <AudioGrid
+            //     audios={this.state.items}
+            //     onSelect={this.handleSelect}
+            //     selectedAudios={this.state.selectedItems}
+            // />
+            <h6>AudioGrid</h6>
         )
     }
 }
 
-AudioSelection.propTypes = {
-    audios: React.PropTypes.array,
-    selectedAudios: React.PropTypes.array,
-    selectionLimit: React.PropTypes.number,
-    updateSelection: React.PropTypes.func.isRequired,
-}
+// AudioSelection.propTypes = {
+//     audios: PropTypes.array,
+//     selectedAudios: PropTypes.array,
+//     selectionLimit: PropTypes.number,
+//     updateSelection: PropTypes.func.isRequired,
+// }
 
 AudioSelection.defaultProps = {
     audios: [],

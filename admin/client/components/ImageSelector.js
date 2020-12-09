@@ -3,7 +3,7 @@
 import { Button, Dialog, Pagination } from 'element-react'
 
 import { parseImageAPIResponse } from '../../../lib/parseAPIResponse'
-// import ImagesEditor from './ImagesEditor'
+import ImagesEditor from './ImagesEditor'
 import ImageSelection from './ImageSelection'
 import SelectorMixin from './mixins/SelectorMixin'
 import React, { Component } from 'react'
@@ -104,10 +104,10 @@ export class ImageSelector extends SelectorMixin {
                         />
                     </div>
                     <div>
-                        {/* <ImagesEditor
+                        <ImagesEditor
                             images={selectedItems}
                             onChange={this.updateSelection}
-                        /> */}
+                        />
                     </div>
                 </Dialog.Body>
                 <Dialog.Footer>

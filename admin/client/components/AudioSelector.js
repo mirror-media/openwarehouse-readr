@@ -6,9 +6,7 @@
 // import { Button, Modal, Pagination } from 'elemental'
 import { Button, Input, Dialog, Pagination } from 'element-react'
 
-import qs from 'qs'
-import xhr from 'xhr'
-// import AudioSelection from './AudioSelection'
+import AudioSelection from './AudioSelection'
 import SelectorMixin from './mixins/SelectorMixin'
 import React from 'react'
 
@@ -30,13 +28,42 @@ const PAGINATION_LIMIT = 10
 export class AudioSelector extends SelectorMixin {
     constructor(props) {
         super(props)
-        this.state.selectedItems = props.selectedAudios
+        this.state = {
+            ...this.state,
+            selectedItems: props.selectedAudios,
+        }
     }
 
-    componentWillReceiveProps(nextProps) {
-        let props = {}
-        _.merge(props, nextProps, { selectedItems: nextProps.selectedAudios })
-        super.componentWillReceiveProps(props)
+    // replacement of componentWillReceiveProps
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            selectedItems: nextProps.selectedAudios,
+        }
+    }
+
+    loadItems(querystring = '') {
+        console.log('loadItems in AudioSelector')
+
+        return new Promise((resolve, reject) => {
+            const dataConfig = {
+                list: 'Audio',
+                columns: ['title', 'url'],
+                maxItemsPerPage: 12,
+            }
+
+            // call loadItemsFromGql in SelectorMixin
+            this.loadItemsFromCMS(querstring, dataConfig)
+                .then((items) => {
+                    console.log(items)
+                    // const reFormatData = items.map((image) => {
+                    //     // format fetched data's format
+                    //     return parseImageAPIResponse(image)
+                    // })
+
+                    resolve(items)
+                })
+                .catch((err) => reject(err))
+        })
     }
 
     _loadImage(imageId) {
@@ -92,48 +119,9 @@ export class AudioSelector extends SelectorMixin {
         // })
     }
 
-    loadItems(querystring = '') {
-        // return new Promise((resolve, reject) => {
-        //     super
-        //         .loadItems(querystring)
-        //         .then((audios) => {
-        //             this._loadCoverPhotoForAudios(audios).then((audios) => {
-        //                 resolve(audios)
-        //             })
-        //         })
-        //         .catch((err) => reject(err))
-        // })
-    }
-
-    /** build query string filtered by title for keystone api
-     * @override
-     * @param {string[]} [filters=[]] - keywords for filtering
-     * @param {number} [page=0] - Page we used to calculate how many items we want to skip
-     * @param {limit} [limit=10] - The number of items we want to get
-     * @return {string} a query string
-     */
-    _buildFilters(filters = [], page = 0, limit = 10) {
-        // let filterQuery = {
-        //     title: {
-        //         value: filters,
-        //     },
-        // }
-        // let queryString = {
-        //     filters: JSON.stringify(filterQuery),
-        //     select: 'audio,description,title,coverPhoto',
-        //     limit: limit,
-        //     skip: page === 0 ? 0 : (page - 1) * limit,
-        // }
-        // return qs.stringify(queryString)
-    }
-
     render() {
         if (this.state.error) {
-            return (
-                <span>
-                    There is an error, please reload the page.{this.state.error}
-                </span>
-            )
+            return <span>There is an error, please reload the page.</span>
         }
 
         const { isSelectionOpen, items, selectedItems } = this.state
@@ -146,12 +134,12 @@ export class AudioSelector extends SelectorMixin {
                 <Dialog.Body>
                     <div>
                         {this._renderSearchFilter()}
-                        {/* <AudioSelection
+                        <AudioSelection
                             audios={items}
                             selectedAudios={selectedItems}
                             selectionLimit={this.props.selectionLimit}
                             updateSelection={this.updateSelection}
-                        /> */}
+                        />
                         {/* <Pagination
                             currentPage={this.state.currentPage}
                             onPageSelect={this.handlePageSelect}
