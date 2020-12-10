@@ -17,15 +17,13 @@ export default class VideoBlock extends AtomicBlockRendererMixin {
         const { title, url, id } = this.state.data.content[0]
         return (
             <div contentEditable={false}>
-                <h6>I am Video</h6>
-                {/* <ReactPlayer
-                    url="https://storage.googleapis.com/mirrormedia-files/assets/Videos/20180126180505-ae7de3a909dbcc72a6706b35209f302c.mp3"
+                <ReactPlayer
+                    url={url}
                     controls={true}
                     width="100%"
-                    height="55px"
                     style={{ margin: '5px 0' }}
                 />
-                <h6>{title}</h6> */}
+                <h6>{title}</h6>
             </div>
         )
     }
