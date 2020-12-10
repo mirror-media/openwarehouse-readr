@@ -170,33 +170,33 @@ export class SelectorMixin extends Component {
             )
     }
 
-    _searchFilterChange(event) {
-        this._searchInput = event.currentTarget.value
+    _searchFilterChange(value) {
+        this._searchInput = value
     }
 
     _searchByInput() {
-        // this.state.currentPage = 1
-        // this._buildQueryString(
-        //     this.state.currentPage,
-        //     this.PAGE_SIZE,
-        //     this._searchInput
-        // )
-        //     .then((queryString) => {
-        //         return this.loadItems(queryString)
-        //     })
-        //     .then(
-        //         (items) => {
-        //             this.setState({
-        //                 items: items,
-        //                 currentPage: 1,
-        //             })
-        //         },
-        //         (reason) => {
-        //             this.setState({
-        //                 error: reason,
-        //             })
-        //         }
-        //     )
+        this.state.currentPage = 1
+        this._buildQueryString(
+            this.state.currentPage,
+            this.PAGE_SIZE,
+            this._searchInput
+        )
+            .then((queryString) => {
+                return this.loadItems(queryString)
+            })
+            .then(
+                (items) => {
+                    this.setState({
+                        items: items,
+                        currentPage: 1,
+                    })
+                },
+                (reason) => {
+                    this.setState({
+                        error: reason,
+                    })
+                }
+            )
     }
 
     _renderSearchFilter() {
