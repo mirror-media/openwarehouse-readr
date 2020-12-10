@@ -149,7 +149,7 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.BLOCKQUOTE.type:
                 return (
-                    // <span>{entity}</span>
+                    // <span key={entity}>{entity}</span>
 
                     <BlockQuoteBt
                         active={active}
@@ -165,7 +165,7 @@ export const EntityButtons = (props) => {
 
             case ENTITY.LINK.type:
                 return (
-                    // <span>{entity}</span>
+                    // <span key={entity}>{entity}</span>
                     <LinkButton
                         active={active}
                         key={entity}
@@ -179,7 +179,7 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.INFOBOX.type:
                 return (
-                    // <span>{entity}</span>
+                    // <span key={entity}>{entity}</span>
 
                     <InfoBoxBt
                         active={active}
@@ -203,11 +203,11 @@ export const EntityButtons = (props) => {
                         embeddedCode={data ? data.embeddedCode : ''}
                         iconText=" Embed"
                     />
-                    // <span>{entity}</span>
+                    // <span key={entity}>{entity}</span>
                 )
             case ENTITY.AUDIO.type:
                 return (
-                    // <span>{entity}</span>
+                    // <span key={entity}>{entity}</span>
 
                     <AudioButton
                         active={active}
@@ -222,7 +222,7 @@ export const EntityButtons = (props) => {
 
             case ENTITY.IMAGE.type:
                 return (
-                    // <span>{entity}</span>
+                    // <span key={entity}>{entity}</span>
                     <ImageButton
                         active={active}
                         apiPath="images"
@@ -235,7 +235,7 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.SLIDESHOW.type:
                 return (
-                    // <span>{entity}</span>
+                    // <span key={entity}>{entity}</span>
                     <ImageButton
                         active={active}
                         apiPath="images"
@@ -265,7 +265,7 @@ export const EntityButtons = (props) => {
             //     )
             case ENTITY.IMAGELINK.type:
                 return (
-                    // <span>{entity}</span>
+                    // <span  key={entity}>{entity}</span>
                     <ImageLinkButton
                         active={active}
                         desc={data ? data.desc : ''}
@@ -290,7 +290,7 @@ export const EntityButtons = (props) => {
                         iconText=""
                         youtubeId={data ? data.youtubeId : ''}
                     />
-                    // <span>{entity}</span>
+                    // <span  key={entity}>{entity}</span>
                 )
             default:
                 return

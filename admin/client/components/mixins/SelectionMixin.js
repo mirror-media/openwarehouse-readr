@@ -42,7 +42,6 @@ export class SelectionMixin extends Component {
                 filtered = [item]
             }
         }
-
         this.setState({ ...this.state, selectedItems: filtered }, () => {
             this.props.updateSelection(filtered)
         })

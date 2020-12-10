@@ -11,12 +11,6 @@ class ImageItem extends Component {
         }
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     this.setState({
-    //         isSelected: nextProps.isSelected,
-    //     })
-    // }
-
     // replacement of componentWillReceiveProps
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
@@ -68,7 +62,7 @@ class ImageItem extends Component {
 
         let btStyle = {
             fontSize: '2em',
-            color: 'red',
+            color: 'rgb(44,162,252)',
             backgroundColor: 'white',
             borderRadius: '1rem',
             // position: 'absolute',

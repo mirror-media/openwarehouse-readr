@@ -3,25 +3,24 @@
 //     parseAudioAPIResponse,
 //     parseImageAPIResponse,
 // } from '../../../lib/parseAPIResponse'
-// import { Button, Modal, Pagination } from 'elemental'
 import { Button, Input, Dialog, Pagination } from 'element-react'
 
 import AudioSelection from './AudioSelection'
 import SelectorMixin from './mixins/SelectorMixin'
 import React from 'react'
 
-// lodash
-import forEach from 'lodash/forEach'
-import get from 'lodash/get'
-import merge from 'lodash/merge'
-import set from 'lodash/set'
+// // lodash
+// import forEach from 'lodash/forEach'
+// import get from 'lodash/get'
+// import merge from 'lodash/merge'
+// import set from 'lodash/set'
 
-const _ = {
-    forEach,
-    get,
-    merge,
-    set,
-}
+// const _ = {
+//     forEach,
+//     get,
+//     merge,
+//     set,
+// }
 
 const PAGINATION_LIMIT = 10
 
@@ -31,19 +30,19 @@ export class AudioSelector extends SelectorMixin {
         this.state = {
             ...this.state,
             selectedItems: props.selectedAudios,
+            isSelectionOpen: props.isSelectionOpen,
         }
     }
 
     // replacement of componentWillReceiveProps
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
-            selectedItems: nextProps.selectedAudios,
+            // selectedItems: nextProps.selectedAudios,
+            isSelectionOpen: nextProps.isSelectionOpen,
         }
     }
 
     loadItems(querystring = '') {
-        console.log('loadItems in AudioSelector')
-
         return new Promise((resolve, reject) => {
             const dataConfig = {
                 list: 'Audio',
@@ -52,9 +51,8 @@ export class AudioSelector extends SelectorMixin {
             }
 
             // call loadItemsFromGql in SelectorMixin
-            this.loadItemsFromCMS(querstring, dataConfig)
+            this.loadItemsFromCMS(querystring, dataConfig)
                 .then((items) => {
-                    console.log(items)
                     // const reFormatData = items.map((image) => {
                     //     // format fetched data's format
                     //     return parseImageAPIResponse(image)
@@ -140,13 +138,13 @@ export class AudioSelector extends SelectorMixin {
                             selectionLimit={this.props.selectionLimit}
                             updateSelection={this.updateSelection}
                         />
-                        {/* <Pagination
-                            currentPage={this.state.currentPage}
-                            onPageSelect={this.handlePageSelect}
+                        <Pagination
                             pageSize={this.PAGE_SIZE}
                             total={this.state.total}
-                            limit={PAGINATION_LIMIT}
-                        /> */}
+                            currentPage={this.state.currentPage}
+                            onCurrentChange={this.handlePageSelect}
+                            // limit={PAGINATION_LIMIT}
+                        />
                     </div>
                 </Dialog.Body>
                 <Dialog.Footer>

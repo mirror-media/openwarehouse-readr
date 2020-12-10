@@ -37,6 +37,7 @@ export class SelectorMixin extends Component {
         this.searchByInput = this._searchByInput.bind(this)
         this.handleCancel = this._handleCancel.bind(this)
         this.handleSave = this._handleSave.bind(this)
+        this.loadItemsFromCMS = this.loadItemsFromCMS.bind(this)
     }
 
     componentDidMount() {
@@ -100,7 +101,6 @@ export class SelectorMixin extends Component {
      * @return {Promise}
      */
     async loadItemsFromCMS(queryString = '', dataConfig) {
-        console.log('loadItems in SelectorMixin')
         const searchText = this._searchInput
 
         const pageInQueryString = parseInt(qs.parse(queryString).page)
@@ -110,8 +110,6 @@ export class SelectorMixin extends Component {
 
         const data = await fetchDataWithGql(dataConfig, searchText, currentPage)
         const totalData = await fetchDataCountWithGql(dataConfig, searchText)
-
-        console.log(totalData)
 
         this.setState({ ...this.state, total: totalData })
         return data
@@ -151,7 +149,6 @@ export class SelectorMixin extends Component {
     }
 
     _getItems() {
-        console.log('getItems')
         this._buildQueryString(this.state.currentPage, this.PAGE_SIZE)
             .then((queryString) => {
                 // call loadItems in each selector's own loadItems
@@ -163,7 +160,6 @@ export class SelectorMixin extends Component {
                     this.setState({
                         ...this.state,
                         items: items,
-                        total: 556,
                     })
                 },
                 (reason) => {

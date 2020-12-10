@@ -66,10 +66,9 @@ export default class SlideshowBlock extends AtomicBlockRendererMixin {
             onChange: (oldIndex, newIndex) => {},
         }
 
-        console.log(images)
         return (
             <div className="slide-container" style={{ width: '500px' }}>
-                <Slide {...properties} z>
+                <Slide {...properties}>
                     {images.map((image, index) => (
                         <div key={`slideshow-${index}`} className="each-slide">
                             <div

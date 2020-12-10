@@ -1,8 +1,9 @@
 // 'use strict';
-import { Audio } from '@twreporter/react-article-components/dist/components/article/index'
+// import { Audio } from '@twreporter/react-article-components/dist/components/article/index'
 import raf from 'raf' // requestAnimationFrame polyfill
-import React from 'react'
+import React, { Component } from 'react'
 import get from 'lodash/get'
+import ReactPlayer from 'react-player'
 
 const _ = {
     get,
@@ -84,15 +85,26 @@ class AudioItem extends React.Component {
         } = this.props
 
         let style = {
-            border: isSelected ? '1px solid' : '',
-            boxSizing: 'border-box',
-            display: 'inline-block',
-            padding: '10px',
-            width: `${width}%`,
+            AudioItem: {
+                border: isSelected ? '1px solid rgb(44,162,252)' : '',
+                borderRadius: '10px',
+                margin: '5px 0',
+                boxSizing: 'border-box',
+                display: 'inline-block',
+                padding: '10px',
+                width: `${width}%`,
+            },
+            infoTopic: {
+                display: 'flex',
+                flexDirection: 'row',
+            },
         }
         return (
-            <div onClick={this._handleSelect.bind(this)} style={style}>
-                <Audio
+            <div
+                onClick={this._handleSelect.bind(this)}
+                style={style.AudioItem}
+            >
+                {/* <Audio
                     content={[
                         {
                             url: audio,
@@ -101,23 +113,39 @@ class AudioItem extends React.Component {
                             description,
                         },
                     ]}
+                /> */}
+                <ReactPlayer
+                    url={audio}
+                    controls={true}
+                    width="100%"
+                    height="20px"
+                    style={{ margin: '5px 0' }}
                 />
+                <div className="info_container">
+                    <div className="info_topic" style={style.infoTopic}>
+                        <img src={coverPhoto} alt={title} />
+                        <h5>{title}</h5>
+                    </div>
+                    <div className="info_detail">
+                        <p>{description}</p>
+                    </div>
+                </div>
             </div>
         )
     }
 }
 
-AudioItem.propTypes = {
-    audio: React.PropTypes.string,
-    coverPhoto: React.PropTypes.object,
-    description: React.PropTypes.string,
-    doShowRemove: React.PropTypes.bool,
-    isSelected: React.PropTypes.bool,
-    onRemove: React.PropTypes.func,
-    onSelect: React.PropTypes.func,
-    title: React.PropTypes.string,
-    width: React.PropTypes.number.isRequired,
-}
+// AudioItem.propTypes = {
+//     audio: PropTypes.string,
+//     coverPhoto: PropTypes.object,
+//     description: PropTypes.string,
+//     doShowRemove: PropTypes.bool,
+//     isSelected: PropTypes.bool,
+//     onRemove: PropTypes.func,
+//     onSelect: PropTypes.func,
+//     title: PropTypes.string,
+//     width: PropTypes.number.isRequired,
+// }
 
 AudioItem.defaultProps = {
     audio: '',
@@ -144,6 +172,7 @@ class AudioGrid extends React.Component {
         })
     }
     _handleSelect(audio) {
+        console.log(audio)
         this.props.onSelect(audio)
     }
 
@@ -175,13 +204,13 @@ class AudioGrid extends React.Component {
     }
 }
 
-AudioGrid.propTypes = {
-    audios: React.PropTypes.array.isRequired,
-    columns: React.PropTypes.number,
-    onSelect: React.PropTypes.func,
-    padding: React.PropTypes.number,
-    selectedAudios: React.PropTypes.array,
-}
+// AudioGrid.propTypes = {
+//     audios: PropTypes.array.isRequired,
+//     columns: PropTypes.number,
+//     onSelect: PropTypes.func,
+//     padding: PropTypes.number,
+//     selectedAudios: PropTypes.array,
+// }
 
 AudioGrid.defaultProps = {
     audios: [],

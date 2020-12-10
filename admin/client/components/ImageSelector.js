@@ -1,5 +1,4 @@
 // 'use strict'
-// import { Button, Modal, Pagination } from 'elemental';
 import { Button, Dialog, Pagination } from 'element-react'
 
 import { parseImageAPIResponse } from '../../../lib/parseAPIResponse'
@@ -33,13 +32,12 @@ export class ImageSelector extends SelectorMixin {
     // replacement of componentWillReceiveProps
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
+            // selectedItems: nextProps.selectedAudios,
             isSelectionOpen: nextProps.isSelectionOpen,
         }
     }
 
-    loadItems(querstring = '') {
-        console.log('loadItems in ImageSelector')
-
+    loadItems(querystring = '') {
         return new Promise((resolve, reject) => {
             const dataConfig = {
                 list: 'Image',
@@ -49,7 +47,7 @@ export class ImageSelector extends SelectorMixin {
 
             // call loadItemsFromGql in SelectorMixin
 
-            this.loadItemsFromCMS(querstring, dataConfig)
+            this.loadItemsFromCMS(querystring, dataConfig)
                 .then((items) => {
                     const reFormatData = items.map((image) => {
                         // format fetched data's format

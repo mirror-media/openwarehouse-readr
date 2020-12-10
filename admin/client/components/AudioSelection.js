@@ -1,5 +1,5 @@
 // 'use strict'
-// import { AudioGrid } from './AudioGrid'
+import { AudioGrid } from './AudioGrid'
 import SelectionMixin from './mixins/SelectionMixin'
 import React, { Component } from 'react'
 import merge from 'lodash/merge'
@@ -28,12 +28,11 @@ class AudioSelection extends SelectionMixin {
 
     render() {
         return (
-            // <AudioGrid
-            //     audios={this.state.items}
-            //     onSelect={this.handleSelect}
-            //     selectedAudios={this.state.selectedItems}
-            // />
-            <h6>AudioGrid</h6>
+            <AudioGrid
+                audios={this.state.items}
+                onSelect={this.handleSelect}
+                selectedAudios={this.state.selectedItems}
+            />
         )
     }
 }
