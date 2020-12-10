@@ -1,9 +1,9 @@
 // 'use strict'
 
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
-// import EditingBt from '../base/editing-bt';
+import EditingBt from '../base/editing-bt'
 import React from 'react'
-// import YoutubeEditingBlock from './youtube-editing-block';
+import YoutubeEditingBlock from './youtube-editing-block'
 import get from 'lodash/get'
 
 const _ = {
@@ -24,15 +24,14 @@ export class YoutubeBlock extends AtomicBlockRendererMixin {
         let youtubeId = blockContent.youtubeId
         let description = blockContent.description
         const EditBlock = (
-            // <YoutubeEditingBlock
-            // 	description={description}
-            // 	label="youtube"
-            // 	isModalOpen={this.state.editMode}
-            // 	onToggle={this.handleEditingBlockChange}
-            // 	toggleModal={this.toggleEditMode}
-            // 	youtubeId={youtubeId}
-            // />
-            <h6>YoutubeEditingBlock</h6>
+            <YoutubeEditingBlock
+                description={description}
+                label="youtube"
+                isModalOpen={this.state.editMode}
+                onToggle={this.handleEditingBlockChange}
+                toggleModal={this.toggleEditMode}
+                youtubeId={youtubeId}
+            />
         )
 
         return (
@@ -41,14 +40,15 @@ export class YoutubeBlock extends AtomicBlockRendererMixin {
                 calssName="youtube-container"
                 style={{
                     position: 'relative',
+                    width: '560px',
                 }}
             >
                 <figure
-                    style={
-                        {
-                            // backgroundColor: 'GhostWhite'
-                        }
-                    }
+                    style={{
+                        margin: 'auto',
+
+                        // backgroundColor: 'GhostWhite'
+                    }}
                 >
                     <iframe
                         width="560"
@@ -62,10 +62,8 @@ export class YoutubeBlock extends AtomicBlockRendererMixin {
                 </figure>
                 {/* <h6>I am youtube</h6> */}
                 {/* <Youtube {...this.state.data} /> */}
-                {/* <EditingBt
-					onClick={this.toggleEditMode}
-				/> */}
-                {/* {EditBlock} */}
+                <EditingBt onClick={this.toggleEditMode} />
+                {EditBlock}
             </div>
         )
     }

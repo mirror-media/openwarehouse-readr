@@ -67,7 +67,10 @@ export default class SlideshowBlock extends AtomicBlockRendererMixin {
         }
 
         return (
-            <div className="slide-container" style={{ width: '500px' }}>
+            <div
+                className="slide-container"
+                style={{ width: '500px', position: 'relative' }}
+            >
                 <Slide {...properties}>
                     {images.map((image, index) => (
                         <div key={`slideshow-${index}`} className="each-slide">
@@ -95,6 +98,8 @@ export default class SlideshowBlock extends AtomicBlockRendererMixin {
                         </div>
                     ))}
                 </Slide>
+                <EditingBt onClick={this.toggleEditMode} />
+                {EditBlock}
             </div>
         )
     }

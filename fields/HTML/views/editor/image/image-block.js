@@ -2,7 +2,7 @@
 
 // import { AlignedImage } from '@twreporter/react-article-components/dist/components/article/index';
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
-// import ImageSelector from '../../../../../admin/client/components/ImageSelector'
+import ImageSelector from '../../../../../admin/client/components/ImageSelector'
 import React from 'react'
 import get from 'lodash/get'
 
@@ -16,8 +16,7 @@ export default class ImageBlock extends AtomicBlockRendererMixin {
     }
 
     _renderImageSelector(props) {
-        // return <ImageSelector {...props} />
-        return null
+        return <ImageSelector {...props} />
     }
 
     // override AtomicBlockRendererMixin._onValueChange
@@ -79,9 +78,12 @@ export default class ImageBlock extends AtomicBlockRendererMixin {
                         width: '60%',
                         height: '60%',
                         objectFit: 'cover',
+                        cursor: 'pointer',
                     }}
+                    onClick={this.toggleEditMode}
                 />
                 <h6>{title}</h6>
+                {EditBlock}
             </div>
         )
     }

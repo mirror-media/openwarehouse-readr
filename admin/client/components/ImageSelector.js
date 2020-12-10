@@ -76,7 +76,7 @@ export class ImageSelector extends SelectorMixin {
                 title="Select image"
                 visible={isSelectionOpen}
                 onCancel={this.handleCancel}
-                // width="large"
+                size="small"
                 // backdropClosesModal
             >
                 <Dialog.Body>
