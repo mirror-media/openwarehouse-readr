@@ -19,6 +19,9 @@ const ENTITY = {
     AUDIO: {
         type: 'AUDIO',
     },
+    VIDEO: {
+        type: 'VIDEO',
+    },
     IMAGE: {
         type: 'IMAGE',
     },

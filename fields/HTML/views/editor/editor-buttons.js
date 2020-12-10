@@ -9,6 +9,7 @@ import { Entity } from 'draft-js'
 import ENTITY from './entities'
 import AnnotationBt from './annotation/annotation-bt'
 import AudioButton from './audio/audio-bt'
+import VideoButton from './video/video-bt'
 import BlockQuoteBt from './quote/block-quote-bt'
 import EmbeddedCodeBt from './embedded-code/embedded-code-bt'
 import ImageButton from './image/image-button'
@@ -124,6 +125,7 @@ export const EntityButtons = (props) => {
     }
 
     function _onToggle(entity, changedValue) {
+        console.log(changedValue)
         props.onToggle(entity, changedValue)
     }
 
@@ -217,6 +219,21 @@ export const EntityButtons = (props) => {
                         onToggle={onToggle}
                         icon="far fa-file-audio"
                         iconText=" Audio"
+                    />
+                )
+
+            case ENTITY.VIDEO.type:
+                return (
+                    // <span key={entity}>{entity}</span>
+
+                    <VideoButton
+                        active={active}
+                        apiPath="videos"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="far fa-file-video"
+                        iconText=" Video"
                     />
                 )
 

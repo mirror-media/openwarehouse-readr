@@ -172,11 +172,21 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     }
 
     function _toggleAudio(entity, value) {
+        console.log(value)
         const audio = Array.isArray(value) ? value[0] : null
         if (!audio) {
             return
         }
         _toggleAtomicBlock(entity, audio)
+    }
+
+    function _toggleVideo(entity, value) {
+        console.log(value)
+        const video = Array.isArray(value) ? value[0] : null
+        if (!video) {
+            return
+        }
+        _toggleAtomicBlock(entity, video)
     }
 
     function _toggleInlineEntity(entity, value) {
@@ -212,6 +222,8 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
         switch (entity) {
             case ENTITY.AUDIO.type:
                 return _toggleAudio(entity, value)
+            case ENTITY.VIDEO.type:
+                return _toggleVideo(entity, value)
             case ENTITY.BLOCKQUOTE.type:
             case ENTITY.IMAGELINK.type:
             case ENTITY.INFOBOX.type:
