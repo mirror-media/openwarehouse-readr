@@ -7,8 +7,7 @@ import qs from 'qs'
 import xhr from 'xhr'
 
 import {
-    setPages,
-    fetchAllDataCount,
+    fetchDataCountWithGql,
     fetchDataWithGql,
 } from '../../../../fields/HTML/views/editor/utils/fetchData'
 
@@ -110,7 +109,11 @@ export class SelectorMixin extends Component {
             : this.state.currentPage
 
         const data = await fetchDataWithGql(dataConfig, searchText, currentPage)
-        console.log(data)
+        const totalData = await fetchDataCountWithGql(dataConfig, searchText)
+
+        console.log(totalData)
+
+        this.setState({ ...this.state, total: totalData })
         return data
     }
 

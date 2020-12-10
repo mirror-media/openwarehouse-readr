@@ -45,30 +45,29 @@ export const fetchDataWithGql = async (
     return data[`all${list}s`]
 }
 
-// export const fetchAllDataCount = async (
-//     { list, columns, maxItemsPerPage },
-//     search
-// ) => {
-//     console.log('setPages')
-//     const whereString = generateWhereString(columns)
-//     const {
-//         data: {
-//             [`_all${list}sMeta`]: { count },
-//         },
-//     } = await fetch({
-//         query: `
-//             query($search: String!) {
-//                 _all${list}sMeta(where: ${whereString}) {
-//                   count
-//                 }
-//             }`,
-//         variables: {
-//             search: search,
-//         },
-//     })
+export const fetchDataCountWithGql = async (
+    { list, columns, maxItemsPerPage },
+    search
+) => {
+    const whereString = generateWhereString(columns)
+    const {
+        data: {
+            [`_all${list}sMeta`]: { count },
+        },
+    } = await fetch({
+        query: `
+            query($search: String!) {
+                _all${list}sMeta(where: ${whereString}) {
+                  count
+                }
+            }`,
+        variables: {
+            search: search,
+        },
+    })
 
-//     return count
-// }
+    return count
+}
 
 // export const setPages = async ({ list, columns, maxItemsPerPage }, search) => {
 //     console.log('setPages')
