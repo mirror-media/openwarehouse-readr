@@ -76,13 +76,14 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     const [editorState, setEditorState] = useState(initialEditorState)
     const [isEnlarged, setIsEnlarged] = useState(false)
     const mainEditorRef = useRef()
+    const [readOnly, setReadOnly] = useState(false)
 
     // Handle both editorstate and keystone value change
     const onEditorStateChange = (newEditorState) => {
         const content = convertToRaw(editorState.getCurrentContent())
         const cHtml = DraftConverter.convertToHtml(content)
         const apiData = DraftConverter.convertToApiData(content)
-        console.log(content)
+        // console.log(content)
 
         const valueStr = JSON.stringify({
             draft: content,
@@ -267,6 +268,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                     // render desktop layout when editor is enlarged,
                     // otherwise render mobile layout
                     device: isEnlarged ? 'desktop' : 'mobile',
+                    setMainDraftReadOnly: (boolean) => setReadOnly(boolean),
                 },
             }
         }
@@ -422,6 +424,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                 placeholder="Enter HTML Here..."
                                 spellCheck={useSpellCheck}
                                 ref={mainEditorRef}
+                                readOnly={readOnly}
                             />
                         </div>
                     </div>

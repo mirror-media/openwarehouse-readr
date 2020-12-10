@@ -5,8 +5,8 @@ import htmlParser from 'html-react-parser'
 
 // import { AlignedEmbedded } from '@twreporter/react-article-components'
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
-// import EditingBt from '../base/editing-bt'
-// import EmbeddedEditingBlock from './embedded-code-editing-block';
+import EditingBt from '../base/editing-bt'
+import EmbeddedEditingBlock from './embedded-code-editing-block'
 import get from 'lodash/get'
 import merge from 'lodash/merge'
 
@@ -36,16 +36,17 @@ export class EmbeddedCodeBlock extends AtomicBlockRendererMixin {
             style.width = blockContent.width
         }
 
+        // this.props.blockProps.setReadOnly(this.state.editMode)
+
         const EditBlock = (
-            // <EmbeddedEditingBlock
-            // 	caption={description}
-            // 	embeddedCode={embeddedCode}
-            // 	label="embedded"
-            // 	isModalOpen={this.state.editMode}
-            // 	onToggle={this.handleEditingBlockChange}
-            // 	toggleModal={this.toggleEditMode}
-            // />
-            <h6>EditBlock</h6>
+            <EmbeddedEditingBlock
+                caption={description}
+                code={embeddedCode}
+                label="embedded"
+                isModalOpen={this.state.editMode}
+                onToggle={this.handleEditingBlockChange}
+                toggleModal={this.toggleEditMode}
+            />
         )
 
         const contentState = this.props.contentState
@@ -74,8 +75,8 @@ export class EmbeddedCodeBlock extends AtomicBlockRendererMixin {
                     {this.props.children}
                 </AlignedEmbedded> */}
                 {convertHtmlStringToReactComponent}
-                {/* <EditingBt onClick={this.toggleEditMode} /> */}
-                {/* {EditBlock} */}
+                <EditingBt onClick={this.toggleEditMode} />
+                {EditBlock}
             </div>
         )
     }

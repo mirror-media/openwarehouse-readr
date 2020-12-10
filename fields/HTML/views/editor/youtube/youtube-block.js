@@ -37,7 +37,7 @@ export class YoutubeBlock extends AtomicBlockRendererMixin {
         return (
             <div
                 contentEditable={false}
-                calssName="youtube-container"
+                className="youtube-container"
                 style={{
                     position: 'relative',
                     width: '560px',

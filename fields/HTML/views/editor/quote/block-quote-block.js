@@ -2,7 +2,7 @@
 
 // import { AlignedQuoteBy } from '@twreporter/react-article-components/dist/components/article/index';
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
-// import BlockQuoteEditingBlock from './block-quote-editing-block';
+import BlockQuoteEditingBlock from './block-quote-editing-block'
 import React from 'react'
 import get from 'lodash/get'
 
@@ -15,6 +15,15 @@ export default class BlockQuoteBlock extends AtomicBlockRendererMixin {
         super(props)
     }
 
+    componentDidUpdate() {
+        const { setMainDraftReadOnly } = this.props.blockProps
+        if (this.state.editMode) {
+            setMainDraftReadOnly(true)
+        } else {
+            setMainDraftReadOnly(false)
+        }
+    }
+
     render() {
         if (!this.state.data) {
             return null
@@ -25,15 +34,14 @@ export default class BlockQuoteBlock extends AtomicBlockRendererMixin {
         let quoteBy = blockContent.quoteBy
 
         const EditBlock = (
-            // <BlockQuoteEditingBlock
-            // 	label="blockquote"
-            // 	isModalOpen={this.state.editMode}
-            // 	onToggle={this.handleEditingBlockChange}
-            // 	quote={quote}
-            // 	quoteBy={quoteBy}
-            // 	toggleModal={this.toggleEditMode}
-            // />
-            <h6>EditBlock</h6>
+            <BlockQuoteEditingBlock
+                label="blockquote"
+                isModalOpen={this.state.editMode}
+                onToggle={this.handleEditingBlockChange}
+                quote={quote}
+                quoteBy={quoteBy}
+                toggleModal={this.toggleEditMode}
+            />
         )
 
         return (

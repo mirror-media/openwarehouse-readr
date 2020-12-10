@@ -2,7 +2,7 @@
 
 // import { AlignedInfoBox } from '@twreporter/react-article-components/dist/components/article/index';
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
-// import InfoBoxEditingBlock from './info-box-editing-block';
+import InfoBoxEditingBlock from './info-box-editing-block'
 import React from 'react'
 import get from 'lodash/get'
 
@@ -15,6 +15,15 @@ export class InfoBoxBlock extends AtomicBlockRendererMixin {
         super(props)
     }
 
+    componentDidUpdate() {
+        const { setMainDraftReadOnly } = this.props.blockProps
+        if (this.state.editMode) {
+            setMainDraftReadOnly(true)
+        } else {
+            setMainDraftReadOnly(false)
+        }
+    }
+
     render() {
         if (!this.state.data) {
             return null
@@ -24,23 +33,22 @@ export class InfoBoxBlock extends AtomicBlockRendererMixin {
         let title = blockContent.title
         let body = blockContent.body
         let draftRawObj = blockContent.draftRawObj
+
         const EditBlock = (
-            // <InfoBoxEditingBlock
-            // 	body={body}
-            // 	draftRawObj={draftRawObj}
-            // 	label="infobox"
-            // 	isModalOpen={this.state.editMode}
-            // 	title={title}
-            // 	onToggle={this.handleEditingBlockChange}
-            // 	toggleModal={this.toggleEditMode}
-            // />
-            <h6>InfoBoxEditingBlock</h6>
+            <InfoBoxEditingBlock
+                label="infobox"
+                onToggle={this.handleEditingBlockChange}
+                title={title}
+                body={body}
+                draftRawObj={draftRawObj}
+                isModalOpen={this.state.editMode}
+                toggleModal={this.toggleEditMode}
+            />
         )
 
         return (
             <div
                 contentEditable={false}
-                onClick={this.toggleEditMode}
                 className="info-box-container center"
                 style={{
                     backgroundColor: '#F7F7FF',
@@ -69,6 +77,7 @@ export class InfoBoxBlock extends AtomicBlockRendererMixin {
                 />
                 <div
                     className="info-box-text"
+                    onClick={this.toggleEditMode}
                     style={{
                         padding: '2rem 1.33333rem 1.33333rem 1.33333rem',
                     }}
@@ -96,6 +105,7 @@ export class InfoBoxBlock extends AtomicBlockRendererMixin {
                         }}
                     />
                 </div>
+                {EditBlock}
             </div>
         )
     }

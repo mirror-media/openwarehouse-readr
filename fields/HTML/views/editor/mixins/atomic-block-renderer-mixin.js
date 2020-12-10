@@ -22,6 +22,15 @@ export class AtomicBlockRendererMixin extends Component {
             this
         )
     }
+    // Make main draft read only to prevent cursor selection chaos
+    componentDidUpdate() {
+        const { setMainDraftReadOnly } = this.props.blockProps
+        if (this.state.editMode) {
+            setMainDraftReadOnly(true)
+        } else {
+            setMainDraftReadOnly(false)
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         this.setState({

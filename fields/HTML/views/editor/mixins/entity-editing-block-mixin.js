@@ -53,10 +53,16 @@ export class EntityEditingBlock extends Component {
 
     componentWillReceiveProps(nextProps) {
         this._editingFields = this.composeEditingFields(nextProps)
-        this.setState({
-            editingFields: this._editingFields,
-            editorState: this._initEditorState(nextProps.draftRawObj),
-        })
+        this.setState(
+            {
+                editingFields: this._editingFields,
+                editorState: this._initEditorState(nextProps.draftRawObj),
+            },
+            () => {
+                // console.log(this._editingFields)
+                // console.log(this.state.editingFields)
+            }
+        )
     }
 
     componentWillUnmount() {
@@ -80,6 +86,7 @@ export class EntityEditingBlock extends Component {
     }
 
     _handleKeyCommand(command) {
+        console.log('keycommand')
         const { editorState } = this.state
         let newState
         switch (command) {
@@ -155,10 +162,12 @@ export class EntityEditingBlock extends Component {
     }
 
     _focus() {
+        console.log(this.refs.subEditor)
         this.refs.subEditor.focus()
     }
 
     _handleEditingFieldChange(field, e) {
+        console.log('inputChange')
         this._editingFields[field].value = e
     }
 
