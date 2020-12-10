@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import ENTITY from '../entities'
 // import Wrapper from './block-wrapper'
-// import AudioBlock from '../audio/audio-block'
+import AudioBlock from '../audio/audio-block'
 import BlockQuoteBlock from '../quote/block-quote-block'
 import EmbeddedCodeBlock from '../embedded-code/embedded-code-block'
 import ImageBlock from '../image/image-block'
@@ -106,12 +106,12 @@ export class AtomicBlockSwitcher extends Component {
 
         switch (type) {
             case ENTITY.AUDIO.type:
-                //     BlockComponent = AudioBlock
-                //     if (device === 'mobile') {
-                //         style = mobileStyle
-                //     } else {
-                //         style = tabletMinStyle
-                //     }
+                BlockComponent = AudioBlock
+                if (device === 'mobile') {
+                    style = mobileStyle
+                } else {
+                    style = tabletMinStyle
+                }
                 break
             case ENTITY.BLOCKQUOTE.type:
                 BlockComponent = BlockQuoteBlock
