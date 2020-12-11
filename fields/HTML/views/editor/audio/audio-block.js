@@ -16,7 +16,7 @@ export default class AudioBlock extends AtomicBlockRendererMixin {
 
         const { title, url, id } = this.state.data.content[0]
         return (
-            <div contentEditable={false}>
+            <div contentEditable={false} style={{ userSelect: 'none' }}>
                 {/* <h6>I am audio</h6> */}
                 {/* {/* <Audio {...this.state.data} device={this.props.device} /> */}
                 <ReactPlayer

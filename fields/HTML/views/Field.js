@@ -467,5 +467,5 @@ var INLINE_STYLES = [
     { label: 'Bold', style: 'BOLD', icon: 'fa-bold', text: '' },
     { label: 'Italic', style: 'ITALIC', icon: 'fa-italic', text: '' },
     { label: 'Underline', style: 'UNDERLINE', icon: 'fa-underline', text: '' },
-    { label: 'Monospace', style: 'CODE', icon: 'fa-terminal', text: '' },
+    // { label: 'Monospace', style: 'CODE', icon: 'fa-terminal', text: '' },
 ]

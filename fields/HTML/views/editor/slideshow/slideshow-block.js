@@ -69,7 +69,12 @@ export default class SlideshowBlock extends AtomicBlockRendererMixin {
         return (
             <div
                 className="slide-container"
-                style={{ width: '500px', position: 'relative' }}
+                style={{
+                    width: '500px',
+                    position: 'relative',
+                    userSelect: 'none',
+                }}
+                contentEditable={false}
             >
                 <Slide {...properties}>
                     {images.map((image, index) => (

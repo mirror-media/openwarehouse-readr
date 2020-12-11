@@ -69,7 +69,10 @@ export default class ImageBlock extends AtomicBlockRendererMixin {
                     // backgroundColor: 'GhostWhite',
                     width: '100%',
                     height: 'auto',
+                    cursor: 'pointer',
+                    userSelect: 'none',
                 }}
+                contentEditable={false}
             >
                 <img
                     src={url}
@@ -82,6 +85,7 @@ export default class ImageBlock extends AtomicBlockRendererMixin {
                     }}
                     onClick={this.toggleEditMode}
                 />
+
                 <h6>{title}</h6>
                 {EditBlock}
             </div>

@@ -181,6 +181,8 @@ export class EntityEditingBlock extends Component {
                 this.props.onToggle(
                     this._decomposeEditingFields(this._editingFields)
                 )
+
+                console.log(this._editingFields)
             }
         )
     }
@@ -237,7 +239,7 @@ export class EntityEditingBlock extends Component {
                 <Input
                     type={type}
                     multiline={type === 'textarea' ? 'true' : 'false'}
-                    placeholder={'Enter' + field}
+                    placeholder={'Enter ' + field}
                     name={'form-input-' + field}
                     onChange={onChange}
                     defaultValue={value}

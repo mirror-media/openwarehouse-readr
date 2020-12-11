@@ -41,6 +41,7 @@ export class YoutubeBlock extends AtomicBlockRendererMixin {
                 style={{
                     position: 'relative',
                     width: '560px',
+                    userSelect: 'none',
                 }}
             >
                 <figure

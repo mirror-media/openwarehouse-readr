@@ -66,6 +66,7 @@ export class EmbeddedCodeBlock extends AtomicBlockRendererMixin {
                 style={_.merge(style, {
                     alignItem: 'center',
                     position: 'relative',
+                    userSelect: 'none',
                 })}
             >
                 {/* <AlignedEmbedded

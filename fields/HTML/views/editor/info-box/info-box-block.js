@@ -58,6 +58,7 @@ export class InfoBoxBlock extends AtomicBlockRendererMixin {
                     marginLeft: 0,
                     marginRight: 0,
                     cursor: 'pointer',
+                    userSelect: 'none',
                 }}
             >
                 <img
