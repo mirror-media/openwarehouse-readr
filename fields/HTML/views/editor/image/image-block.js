@@ -5,6 +5,7 @@ import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import ImageSelector from '../../../../../admin/client/components/ImageSelector'
 import React from 'react'
 import get from 'lodash/get'
+import AlignedWrapper from '../components/AlignedWrapper'
 
 const _ = {
     get,
@@ -74,17 +75,19 @@ export default class ImageBlock extends AtomicBlockRendererMixin {
                 }}
                 contentEditable={false}
             >
-                <img
-                    src={url}
-                    alt={title}
-                    style={{
-                        width: '60%',
-                        height: '60%',
-                        objectFit: 'cover',
-                        cursor: 'pointer',
-                    }}
-                    onClick={this.toggleEditMode}
-                />
+                <AlignedWrapper>
+                    <img
+                        src={url}
+                        alt={title}
+                        style={{
+                            width: '60%',
+                            height: '60%',
+                            objectFit: 'cover',
+                            cursor: 'pointer',
+                        }}
+                        onClick={this.toggleEditMode}
+                    />
+                </AlignedWrapper>
 
                 <h6>{title}</h6>
                 {EditBlock}
