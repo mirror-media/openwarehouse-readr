@@ -5,7 +5,6 @@ import {
     InlineStyleButtons,
     EntityButtons,
 } from './editor/editor-buttons'
-// import { Button, FormInput } from 'elemental';
 import { Button } from 'element-react'
 
 import {
@@ -32,14 +31,6 @@ import DraftConverter from './K3/draft-converter'
 import blockStyleFn from './editor/base/block-style-fn'
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
-
-import createAlignmentPlugin from 'draft-js-alignment-plugin'
-import createFocusPlugin from 'draft-js-focus-plugin'
-
-const focusPlugin = createFocusPlugin()
-const alignmentPlugin = createAlignmentPlugin()
-const { AlignmentTool } = alignmentPlugin
-const plugins = [focusPlugin, alignmentPlugin]
 
 // COMPONENTS
 // import '../../../admin/public/styles/keystone/wysiwyg.scss'
@@ -107,21 +98,34 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
         mainEditorRef.current.focus()
     }
 
-    function handleKeyCommand(command) {
-        let newState
-        switch (command) {
-            case 'insert-soft-newline':
-                newState = RichUtils.insertSoftNewline(editorState)
-                break
-            default:
-                newState = RichUtils.handleKeyCommand(editorState, command)
-        }
+    // After receiving key command, generate new state from RichUtils, and update state.
+    const handleKeyCommand = (command, editorState) => {
+        // RichUtils.handleKeyCommand will handle blocks in different cases which the default behavior of Editor does not handle.
+        const newState = RichUtils.handleKeyCommand(editorState, command)
+
         if (newState) {
             onEditorStateChange(newState)
-            return true
+            return 'handled'
+        } else {
+            // Upon receiving 'not-handled', Editor will fallback to the default behavior.
+            return 'not-handled'
         }
-        return false
     }
+    // function handleKeyCommand(command) {
+    //     let newState
+    //     switch (command) {
+    //         case 'insert-soft-newline':
+    //             newState = RichUtils.insertSoftNewline(editorState)
+    //             break
+    //         default:
+    //             newState = RichUtils.handleKeyCommand(editorState, command)
+    //     }
+    //     if (newState) {
+    //         onEditorStateChange(newState)
+    //         return true
+    //     }
+    //     return false
+    // }
 
     function keyBindingFn(e) {
         if (e.keyCode === 13 /* `enter` key */) {
@@ -296,7 +300,10 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
         onEditorStateChange(refreshEditorState(editorState))
     }
 
-    function handlePastedText(text, html) {
+    function handlePastedText(text, html, editorstate) {
+        console.log(text)
+        console.log(html)
+        console.log(editorstate)
         function insertFragment(editorState, fragment) {
             let newContent = Modifier.replaceWithFragment(
                 editorState.getCurrentContent(),
@@ -306,27 +313,28 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
             return EditorState.push(editorState, newContent, 'insert-fragment')
         }
 
-        if (html) {
-            // remove meta tag
-            html = html.replace(/<meta (.+?)>/g, '')
-            // replace p, h2 by div.
-            // TODO need to find out how many block tags we need to replace
-            // currently, just handle p, h1, h2, ..., h6 tag
-            // NOTE: I don't know why header style can not be parsed into ContentBlock,
-            // so I replace it by div temporarily
-            html = html
-                .replace(/<p|<h1|<h2|<h3|<h4|<h5|<h6/g, '<div')
-                .replace(/<\/p|<\/h1|<\/h2|<\/h3|<\/h4|<\/h5|<\/h6/g, '</div')
+        // if (html) {
+        //     // remove meta tag
+        //     html = html.replace(/<meta (.+?)>/g, '')
+        //     // replace p, h2 by div.
+        //     // TODO need to find out how many block tags we need to replace
+        //     // currently, just handle p, h1, h2, ..., h6 tag
+        //     // NOTE: I don't know why header style can not be parsed into ContentBlock,
+        //     // so I replace it by div temporarily
+        //     html = html
+        //         .replace(/<p|<h1|<h2|<h3|<h4|<h5|<h6/g, '<div')
+        //         .replace(/<\/p|<\/h1|<\/h2|<\/h3|<\/h4|<\/h5|<\/h6/g, '</div')
 
-            let newEditorState = editorState
-            var htmlFragment = convertFromHTML(html)
-            if (htmlFragment) {
-                var htmlMap = BlockMapBuilder.createFromArray(htmlFragment)
-                onEditorStateChange(insertFragment(newEditorState, htmlMap))
-                // prevent the default paste behavior.
-                return true
-            }
-        }
+        //     let newEditorState = editorState
+        //     var htmlFragment = convertFromHTML(html)
+        //     console.log(htmlFragment)
+        //     if (htmlFragment) {
+        //         var htmlMap = BlockMapBuilder.createFromArray(htmlFragment)
+        //         onEditorStateChange(insertFragment(newEditorState, htmlMap))
+        //         // prevent the default paste behavior.
+        //         return true
+        //     }
+        // }
         // use default paste behavior
         return false
     }
@@ -434,9 +442,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                 spellCheck={useSpellCheck}
                                 ref={mainEditorRef}
                                 readOnly={readOnly}
-                                // plugins={plugins}
                             />
-                            {/* <AlignmentTool /> */}
                         </div>
                     </div>
                 </div>
