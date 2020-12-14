@@ -32,6 +32,11 @@
     border-left: 0.1px solid transparent;
     position: relative;
     /* z-index: 0; */
+    /* background: red; */
+    max-width: 664px;
+    margin: 0 auto 40px auto;
+
+    line-height: 1.7;
 }
 
 .public-DraftEditor-content {

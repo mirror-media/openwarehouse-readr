@@ -1,0 +1,25 @@
+.AlignedWrapper {
+}
+
+.AlignWrapper__controller {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.AlignWrapper__controller_btn {
+    /* padding: 10px; */
+    width: 26px;
+    border-radius: 13px;
+    /* border: 1px solid black; */
+    text-align: center;
+    margin: 0 5px;
+
+    background: rgb(217, 217, 217);
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    z-index: 10;
+}

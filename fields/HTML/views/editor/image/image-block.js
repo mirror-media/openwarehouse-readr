@@ -5,7 +5,7 @@ import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import ImageSelector from '../../../../../admin/client/components/ImageSelector'
 import React from 'react'
 import get from 'lodash/get'
-import AlignedWrapper from '../components/AlignedWrapper'
+import AlignedWrapper from '../components/AlignedWrapper/AlignedWrapper'
 
 const _ = {
     get,
@@ -48,50 +48,34 @@ export default class ImageBlock extends AtomicBlockRendererMixin {
             : null
 
         const { id, title, url } = image
-        // return (
-        //     <div
-        //         contentEditable={false}
-        //         onClick={this.toggleEditMode}
-        //         style={{ cursor: 'pointer' }}
-        //     >
-        //         {/* <AlignedImage
-        // 			{...this.state.data}
-        // 			device={this.props.device}
-        // 		>
-        // 			{this.props.children}
-        // 		</AlignedImage>
-        // 		{EditBlock} */}
-        //     </div>
-        // )
 
         return (
-            <div
-                style={{
-                    // backgroundColor: 'GhostWhite',
-                    width: '100%',
-                    height: 'auto',
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                }}
-                contentEditable={false}
-            >
-                <AlignedWrapper>
+            <AlignedWrapper>
+                <div
+                    style={{
+                        // backgroundColor: 'GhostWhite',
+                        width: '100%',
+                        height: 'auto',
+                        cursor: 'pointer',
+                        userSelect: 'none',
+                    }}
+                    contentEditable={false}
+                >
                     <img
                         src={url}
                         alt={title}
                         style={{
-                            width: '60%',
-                            height: '60%',
+                            width: '100%',
                             objectFit: 'cover',
                             cursor: 'pointer',
                         }}
                         onClick={this.toggleEditMode}
                     />
-                </AlignedWrapper>
 
-                <h6>{title}</h6>
-                {EditBlock}
-            </div>
+                    <h6 style={{ margin: '0.944rem auto 0 auto' }}>{title}</h6>
+                    {EditBlock}
+                </div>
+            </AlignedWrapper>
         )
     }
 }
