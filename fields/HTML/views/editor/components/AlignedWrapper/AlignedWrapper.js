@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import './AlignedWrapper.style.css'
 
 function AlignedWrapper(props) {
+    // Hide align style and controller when not enlarged.
+    const { isEnlarged } = props
     const [float, setFloat] = useState('left')
 
     let style = {}
@@ -37,11 +39,15 @@ function AlignedWrapper(props) {
     const alignHandler = (position) => {
         setFloat(position)
     }
+
     return (
-        <div className="AlignedWrapper" style={style}>
+        <div className="AlignedWrapper" style={isEnlarged ? style : null}>
             {props.children}
 
-            <div className="AlignWrapper__controller">
+            <div
+                className="AlignWrapper__controller"
+                style={isEnlarged ? null : { display: 'none' }}
+            >
                 <div
                     className="AlignWrapper__controller_btn"
                     contentEditable={false}

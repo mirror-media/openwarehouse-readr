@@ -33,6 +33,14 @@ import blockStyleFn from './editor/base/block-style-fn'
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
+import createAlignmentPlugin from 'draft-js-alignment-plugin'
+import createFocusPlugin from 'draft-js-focus-plugin'
+
+const focusPlugin = createFocusPlugin()
+const alignmentPlugin = createAlignmentPlugin()
+const { AlignmentTool } = alignmentPlugin
+const plugins = [focusPlugin, alignmentPlugin]
+
 // COMPONENTS
 // import '../../../admin/public/styles/keystone/wysiwyg.scss'
 
@@ -269,6 +277,7 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                     // otherwise render mobile layout
                     device: isEnlarged ? 'desktop' : 'mobile',
                     setMainDraftReadOnly: (boolean) => setReadOnly(boolean),
+                    isEnlarged: isEnlarged,
                 },
             }
         }
@@ -425,7 +434,9 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                                 spellCheck={useSpellCheck}
                                 ref={mainEditorRef}
                                 readOnly={readOnly}
+                                // plugins={plugins}
                             />
+                            {/* <AlignmentTool /> */}
                         </div>
                     </div>
                 </div>
