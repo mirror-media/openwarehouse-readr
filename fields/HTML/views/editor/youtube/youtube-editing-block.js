@@ -42,7 +42,7 @@ YoutubeEditingBlock.displayName = 'YoutubeEditingBlock'
 YoutubeEditingBlock.propTypes = {
     description: PropTypes.string,
     isModalOpen: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired,
+    onToggle: PropTypes.func,
     toggleModal: PropTypes.func,
     youtubeId: PropTypes.string,
 }

@@ -60,7 +60,7 @@ AnnotationEditingBlock.propTypes = {
     annotation: PropTypes.string,
     draftRawObj: PropTypes.object,
     isModalOpen: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired,
+    onToggle: PropTypes.func,
     text: PropTypes.string,
     toggleModal: PropTypes.func,
 }

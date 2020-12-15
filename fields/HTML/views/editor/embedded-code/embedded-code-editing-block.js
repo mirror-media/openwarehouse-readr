@@ -40,7 +40,7 @@ EmbeddedCodeEditingBlock.propTypes = {
     caption: PropTypes.string,
     embeddedCode: PropTypes.string,
     isModalOpen: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired,
+    onToggle: PropTypes.func,
     toggleModal: PropTypes.func,
 }
 

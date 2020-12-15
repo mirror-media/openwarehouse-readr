@@ -36,7 +36,7 @@ BlockQuoteEditingBlock.displayName = 'BlockQuoteEditingBlock'
 
 BlockQuoteEditingBlock.propTypes = {
     isModalOpen: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired,
+    onToggle: PropTypes.func,
     quote: PropTypes.string,
     quoteBy: PropTypes.string,
     toggleModal: PropTypes.func,

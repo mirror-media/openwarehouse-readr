@@ -60,45 +60,45 @@ export class AtomicBlockSwitcher extends Component {
         // backward compatible. Old data type is lower case
         type = type && type.toUpperCase()
 
-        // const Buttons = (
-        //     <div style={{ textAlign: 'center' }}>
-        //         <span
-        //             className="alignmentButton"
-        //             onClick={this.alignLeft}
-        //             style={{ marginLeft: '-2.4em' }}
-        //             role="button"
-        //             key="left"
-        //         >
-        //             L
-        //         </span>
-        //         <span
-        //             className="alignmentButton"
-        //             onClick={this.alignCenter}
-        //             role="button"
-        //             key="center"
-        //         >
-        //             C
-        //         </span>
-        //         <span
-        //             className="alignmentButton"
-        //             onClick={this.alignRight}
-        //             style={{ marginLeft: '0.9em' }}
-        //             role="button"
-        //             key="right"
-        //         >
-        //             R
-        //         </span>
-        //         <span
-        //             className="alignmentButton"
-        //             onClick={this.alignCenterSmall}
-        //             style={{ marginLeft: '2.6em' }}
-        //             role="button"
-        //             key="center-small"
-        //         >
-        //             S
-        //         </span>
-        //     </div>
-        // )
+        const Buttons = (
+            <div style={{ textAlign: 'center' }}>
+                <span
+                    className="alignmentButton"
+                    onClick={this.alignLeft}
+                    style={{ marginLeft: '-2.4em' }}
+                    role="button"
+                    key="left"
+                >
+                    L
+                </span>
+                <span
+                    className="alignmentButton"
+                    onClick={this.alignCenter}
+                    role="button"
+                    key="center"
+                >
+                    C
+                </span>
+                <span
+                    className="alignmentButton"
+                    onClick={this.alignRight}
+                    style={{ marginLeft: '0.9em' }}
+                    role="button"
+                    key="right"
+                >
+                    R
+                </span>
+                <span
+                    className="alignmentButton"
+                    onClick={this.alignCenterSmall}
+                    style={{ marginLeft: '2.6em' }}
+                    role="button"
+                    key="center-small"
+                >
+                    S
+                </span>
+            </div>
+        )
 
         const device = _.get(this.props, ['blockProps', 'device'], 'mobile')
         let BlockComponent
@@ -191,6 +191,7 @@ export class AtomicBlockSwitcher extends Component {
         // if (!BlockComponent) {
         //     return null
         // }
+
         return (
             <div className="BlockComponent_wrapper" style={style}>
                 <BlockComponent
@@ -198,7 +199,7 @@ export class AtomicBlockSwitcher extends Component {
                     device={device}
                     entityKey={entityKey}
                 >
-                    {device !== 'mobile' ? Buttons : null}
+                    {/* {device !== 'mobile' ? Buttons : null} */}
                 </BlockComponent>
             </div>
         )
