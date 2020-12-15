@@ -8,8 +8,6 @@ export class BlockQuoteEditingBlock extends EntityEditingBlockMixin {
     }
     // overwrite EntityEditingBlock._composeEditingFields
     _composeEditingFields(props) {
-        console.log('_composeEditingFields')
-        console.log(props)
         return {
             quoteBy: {
                 type: 'text',

@@ -1,5 +1,4 @@
-import React, { PropTypes, Component } from 'react'
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { DragSource, DropTarget, DragDropContext } from 'react-dnd'

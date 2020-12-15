@@ -52,7 +52,6 @@ export class EntityEditingBlock extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps')
         this._editingFields = this.composeEditingFields(nextProps)
         this.setState(
             {
@@ -166,7 +165,7 @@ export class EntityEditingBlock extends Component {
     }
 
     _handleEditingFieldChange(field, e) {
-        this._editingFields[field].value = e
+        this._editingFields[field].value = e.target.value
     }
 
     _handleSave() {
@@ -236,13 +235,14 @@ export class EntityEditingBlock extends Component {
             // <Form label={field} htmlFor={'form-input-' + field} key={field}>
             // <Form.Item label={field} labelWidth="120">
             <div key={field}>
-                <Input
+                <input
                     type={type}
                     multiline={type === 'textarea' ? 'true' : 'false'}
                     placeholder={'Enter ' + field}
                     name={'form-input-' + field}
                     onChange={onChange}
                     defaultValue={value}
+                    // value={this.state.editingFields[field].value}
                 />
                 <div style={{ margin: '20px 0' }}></div>
             </div>
