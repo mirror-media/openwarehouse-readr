@@ -52,6 +52,7 @@ export class EntityEditingBlock extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps')
         this._editingFields = this.composeEditingFields(nextProps)
         this.setState(
             {
@@ -174,10 +175,14 @@ export class EntityEditingBlock extends Component {
                 editingFields: this._editingFields,
             },
             () => {
+                // call function in bt-wrapper, close edit screen
                 this.props.toggleModal()
+                // call function in Field, create/update entity data
                 this.props.onToggle(
                     this._decomposeEditingFields(this._editingFields)
                 )
+                //after updating entity, clear editingFields
+                this.editingFields = {}
             }
         )
     }

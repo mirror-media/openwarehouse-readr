@@ -124,7 +124,6 @@ export const EntityButtons = (props) => {
     }
 
     function _onToggle(entity, changedValue) {
-        console.log(changedValue)
         props.onToggle(entity, changedValue)
     }
 
