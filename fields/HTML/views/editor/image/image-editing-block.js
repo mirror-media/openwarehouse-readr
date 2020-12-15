@@ -1,7 +1,8 @@
 // 'use strict'
-import ImageSelector from '../../../../../admin/client/components/ImageSelector'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
+import ImageSelector from '../components/ImageSelector'
 
 export class ImageEditingBlock extends Component {
     constructor(props) {
@@ -24,25 +25,24 @@ export class ImageEditingBlock extends Component {
                 onFinish={toggleModal}
                 selectionLimit={selectionLimit}
             />
-            // <h6>I am image</h6>
         )
     }
 }
 
-// ImageEditingBlock.propTypes = {
-// 	apiPath: PropTypes.string,
-// 	isModalOpen: PropTypes.bool,
-// 	onToggle: PropTypes.func,
-// 	selectedImages: PropTypes.array,
-// 	selectionLimit: PropTypes.number,
-// 	toggleModal: PropTypes.func,
-// };
+ImageEditingBlock.propTypes = {
+    apiPath: PropTypes.string,
+    isModalOpen: PropTypes.bool,
+    onToggle: PropTypes.func,
+    selectedImages: PropTypes.array,
+    selectionLimit: PropTypes.number,
+    toggleModal: PropTypes.func,
+}
 
-// ImageEditingBlock.defaultProps = {
-//     apiPath: 'images',
-//     isModalOpen: false,
-//     selectedImages: [],
-//     selectionLimit: 1,
-// }
+ImageEditingBlock.defaultProps = {
+    apiPath: 'images',
+    isModalOpen: false,
+    selectedImages: [],
+    selectionLimit: 1,
+}
 
 export default ImageEditingBlock

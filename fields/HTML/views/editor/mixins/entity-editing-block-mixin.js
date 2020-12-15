@@ -26,7 +26,7 @@ import React, { Component } from 'react'
 import blockStyleFn from '../base/block-style-fn'
 import decorator from '../entity-decorator'
 
-import '../../../../../admin/public/styles/draftjs/editor.css'
+import '../styles/editor.css'
 
 const { isCtrlKeyCommand } = KeyBindingUtil
 
@@ -86,7 +86,6 @@ export class EntityEditingBlock extends Component {
     }
 
     _handleKeyCommand(command) {
-        console.log('keycommand')
         const { editorState } = this.state
         let newState
         switch (command) {
@@ -162,12 +161,10 @@ export class EntityEditingBlock extends Component {
     }
 
     _focus() {
-        console.log(this.refs.subEditor)
         this.refs.subEditor.focus()
     }
 
     _handleEditingFieldChange(field, e) {
-        console.log('inputChange')
         this._editingFields[field].value = e
     }
 
@@ -181,8 +178,6 @@ export class EntityEditingBlock extends Component {
                 this.props.onToggle(
                     this._decomposeEditingFields(this._editingFields)
                 )
-
-                console.log(this._editingFields)
             }
         )
     }

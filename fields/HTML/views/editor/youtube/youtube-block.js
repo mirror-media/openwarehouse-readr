@@ -1,8 +1,7 @@
-// 'use strict'
+import React from 'react'
 
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import EditingBt from '../base/editing-bt'
-import React from 'react'
 import YoutubeEditingBlock from './youtube-editing-block'
 import get from 'lodash/get'
 
@@ -61,8 +60,7 @@ export class YoutubeBlock extends AtomicBlockRendererMixin {
                     />
                     <figcaption>{description}</figcaption>
                 </figure>
-                {/* <h6>I am youtube</h6> */}
-                {/* <Youtube {...this.state.data} /> */}
+
                 <EditingBt onClick={this.toggleEditMode} />
                 {EditBlock}
             </div>

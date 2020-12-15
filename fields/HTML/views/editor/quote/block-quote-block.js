@@ -60,17 +60,19 @@ export default class BlockQuoteBlock extends AtomicBlockRendererMixin {
             // </div>
             <div
                 contentEditable={false}
-                onClick={this.toggleEditMode}
                 style={{
                     // backgroundColor: 'GhostWhite',
                     cursor: 'pointer',
                     // padding: '16px 0',
                 }}
             >
-                <blockquote>
-                    <div>{quote}</div>
-                    <h6>{`- ${quoteBy}`}</h6>
-                </blockquote>
+                <div className="Blockquote__text" onClick={this.toggleEditMode}>
+                    <blockquote>
+                        <div>{quote}</div>
+                        <h6>{`- ${quoteBy}`}</h6>
+                    </blockquote>
+                </div>
+                {EditBlock}
             </div>
         )
     }

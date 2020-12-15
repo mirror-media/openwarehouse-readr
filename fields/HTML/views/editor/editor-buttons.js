@@ -1,5 +1,4 @@
 // 'use strict'
-// import { Button, ButtonGroup } from 'elemental'
 import { Button } from 'element-react'
 import 'element-theme-default'
 
@@ -151,8 +150,6 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.BLOCKQUOTE.type:
                 return (
-                    // <span key={entity}>{entity}</span>
-
                     <BlockQuoteBt
                         active={active}
                         key={entity}
@@ -167,7 +164,6 @@ export const EntityButtons = (props) => {
 
             case ENTITY.LINK.type:
                 return (
-                    // <span key={entity}>{entity}</span>
                     <LinkButton
                         active={active}
                         key={entity}
@@ -181,8 +177,6 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.INFOBOX.type:
                 return (
-                    // <span key={entity}>{entity}</span>
-
                     <InfoBoxBt
                         active={active}
                         key={entity}
@@ -205,12 +199,9 @@ export const EntityButtons = (props) => {
                         embeddedCode={data ? data.embeddedCode : ''}
                         iconText=" Embed"
                     />
-                    // <span key={entity}>{entity}</span>
                 )
             case ENTITY.AUDIO.type:
                 return (
-                    // <span key={entity}>{entity}</span>
-
                     <AudioButton
                         active={active}
                         apiPath="audios"
@@ -224,8 +215,6 @@ export const EntityButtons = (props) => {
 
             case ENTITY.VIDEO.type:
                 return (
-                    // <span key={entity}>{entity}</span>
-
                     <VideoButton
                         active={active}
                         apiPath="videos"
@@ -239,7 +228,6 @@ export const EntityButtons = (props) => {
 
             case ENTITY.IMAGE.type:
                 return (
-                    // <span key={entity}>{entity}</span>
                     <ImageButton
                         active={active}
                         apiPath="images"
@@ -252,7 +240,6 @@ export const EntityButtons = (props) => {
                 )
             case ENTITY.SLIDESHOW.type:
                 return (
-                    // <span key={entity}>{entity}</span>
                     <ImageButton
                         active={active}
                         apiPath="images"
@@ -282,7 +269,6 @@ export const EntityButtons = (props) => {
             //     )
             case ENTITY.IMAGELINK.type:
                 return (
-                    // <span  key={entity}>{entity}</span>
                     <ImageLinkButton
                         active={active}
                         desc={data ? data.desc : ''}
@@ -307,14 +293,12 @@ export const EntityButtons = (props) => {
                         iconText=""
                         youtubeId={data ? data.youtubeId : ''}
                     />
-                    // <span  key={entity}>{entity}</span>
                 )
             default:
                 return
         }
     }
 
-    //    return <span>{_.map(entities, (entity) => chooseButton(entity))}</span>
     const buttons = entities.map((entity) => {
         const button = chooseButton(entity)
         return button

@@ -1,4 +1,3 @@
-// 'use strict';
 import { Entity } from 'draft-js'
 import ENTITY from '../entities'
 import React from 'react'

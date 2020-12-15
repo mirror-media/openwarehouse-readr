@@ -1,9 +1,8 @@
-// 'use strict'
+// Aligned
+
 import React, { Component } from 'react'
-import { Helmet } from 'react-helmet'
 import htmlParser from 'html-react-parser'
 
-// import { AlignedEmbedded } from '@twreporter/react-article-components'
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import EditingBt from '../base/editing-bt'
 import EmbeddedEditingBlock from './embedded-code-editing-block'
@@ -69,12 +68,6 @@ export class EmbeddedCodeBlock extends AtomicBlockRendererMixin {
                     userSelect: 'none',
                 })}
             >
-                {/* <AlignedEmbedded
-                    {...this.state.data}
-                    device={this.props.device}
-                >
-                    {this.props.children}
-                </AlignedEmbedded> */}
                 {convertHtmlStringToReactComponent}
                 <EditingBt onClick={this.toggleEditMode} />
                 {EditBlock}

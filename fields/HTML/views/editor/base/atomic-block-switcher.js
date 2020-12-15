@@ -1,5 +1,3 @@
-// 'use strict'
-
 import React, { Component } from 'react'
 import ENTITY from '../entities'
 // import Wrapper from './block-wrapper'
@@ -30,31 +28,31 @@ const _ = {
 export class AtomicBlockSwitcher extends Component {
     constructor(props) {
         super(props)
-        this.alignLeft = this._alignLeft.bind(this)
-        this.alignCenter = this._alignCenter.bind(this)
-        this.alignRight = this._alignRight.bind(this)
-        this.alignCenterSmall = this._alignCenterSmall.bind(this)
+        // this.alignLeft = this._alignLeft.bind(this)
+        // this.alignCenter = this._alignCenter.bind(this)
+        // this.alignRight = this._alignRight.bind(this)
+        // this.alignCenterSmall = this._alignCenterSmall.bind(this)
     }
 
-    _alignLeft(e) {
-        e.stopPropagation()
-        this.props.align('left')
-    }
+    // _alignLeft(e) {
+    //     e.stopPropagation()
+    //     this.props.align('left')
+    // }
 
-    _alignCenter(e) {
-        e.stopPropagation()
-        this.props.align('center')
-    }
+    // _alignCenter(e) {
+    //     e.stopPropagation()
+    //     this.props.align('center')
+    // }
 
-    _alignRight(e) {
-        e.stopPropagation()
-        this.props.align('right')
-    }
+    // _alignRight(e) {
+    //     e.stopPropagation()
+    //     this.props.align('right')
+    // }
 
-    _alignCenterSmall(e) {
-        e.stopPropagation()
-        this.props.align('center-small')
-    }
+    // _alignCenterSmall(e) {
+    //     e.stopPropagation()
+    //     this.props.align('center-small')
+    // }
 
     render() {
         const entityKey = this.props.block.getEntityAt(0)
@@ -62,45 +60,45 @@ export class AtomicBlockSwitcher extends Component {
         // backward compatible. Old data type is lower case
         type = type && type.toUpperCase()
 
-        const Buttons = (
-            <div style={{ textAlign: 'center' }}>
-                <span
-                    className="alignmentButton"
-                    onClick={this.alignLeft}
-                    style={{ marginLeft: '-2.4em' }}
-                    role="button"
-                    key="left"
-                >
-                    L
-                </span>
-                <span
-                    className="alignmentButton"
-                    onClick={this.alignCenter}
-                    role="button"
-                    key="center"
-                >
-                    C
-                </span>
-                <span
-                    className="alignmentButton"
-                    onClick={this.alignRight}
-                    style={{ marginLeft: '0.9em' }}
-                    role="button"
-                    key="right"
-                >
-                    R
-                </span>
-                <span
-                    className="alignmentButton"
-                    onClick={this.alignCenterSmall}
-                    style={{ marginLeft: '2.6em' }}
-                    role="button"
-                    key="center-small"
-                >
-                    S
-                </span>
-            </div>
-        )
+        // const Buttons = (
+        //     <div style={{ textAlign: 'center' }}>
+        //         <span
+        //             className="alignmentButton"
+        //             onClick={this.alignLeft}
+        //             style={{ marginLeft: '-2.4em' }}
+        //             role="button"
+        //             key="left"
+        //         >
+        //             L
+        //         </span>
+        //         <span
+        //             className="alignmentButton"
+        //             onClick={this.alignCenter}
+        //             role="button"
+        //             key="center"
+        //         >
+        //             C
+        //         </span>
+        //         <span
+        //             className="alignmentButton"
+        //             onClick={this.alignRight}
+        //             style={{ marginLeft: '0.9em' }}
+        //             role="button"
+        //             key="right"
+        //         >
+        //             R
+        //         </span>
+        //         <span
+        //             className="alignmentButton"
+        //             onClick={this.alignCenterSmall}
+        //             style={{ marginLeft: '2.6em' }}
+        //             role="button"
+        //             key="center-small"
+        //         >
+        //             S
+        //         </span>
+        //     </div>
+        // )
 
         const device = _.get(this.props, ['blockProps', 'device'], 'mobile')
         let BlockComponent
@@ -163,14 +161,6 @@ export class AtomicBlockSwitcher extends Component {
                 //         style = tabletMaxStyle
                 //     }
                 break
-            case ENTITY.SLIDESHOW.type:
-                BlockComponent = SlideshowBlock
-                if (device === 'mobile') {
-                    style = mobileStyle
-                } else {
-                    style = tabletMaxStyle
-                }
-                break
             case ENTITY.IMAGEDIFF.type:
                 //     BlockComponent = ImageDiffBlock
                 //     if (device === 'mobile') {
@@ -178,6 +168,14 @@ export class AtomicBlockSwitcher extends Component {
                 //     } else {
                 //         style = tabletMaxStyle
                 //     }
+                break
+            case ENTITY.SLIDESHOW.type:
+                BlockComponent = SlideshowBlock
+                if (device === 'mobile') {
+                    style = mobileStyle
+                } else {
+                    style = tabletMaxStyle
+                }
                 break
             case ENTITY.YOUTUBE.type:
                 BlockComponent = YoutubeBlock
@@ -209,11 +207,3 @@ export class AtomicBlockSwitcher extends Component {
 
 // export default Wrapper(AtomicBlockSwitcher)
 export default AtomicBlockSwitcher
-
-// function EmbeddedCodeBlock() {
-//     return (
-//         <div>
-//             <h6>EmbeddedCodeBlock</h6>
-//         </div>
-//     )
-// }

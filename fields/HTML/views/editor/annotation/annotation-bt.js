@@ -1,5 +1,3 @@
-/**/
-// 'use strict'
 import BtWrapper from '../base/bt-wrapper'
 import AnnotationEditingBlock from './annotation-editing-block'
 

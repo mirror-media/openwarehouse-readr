@@ -1,10 +1,9 @@
-// 'use strict'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
-import React from 'react'
 import get from 'lodash/get'
-import PropTypes from 'prop-types'
 
 const _ = {
     get,
@@ -57,14 +56,14 @@ export class AnnotationEditingBlock extends EntityEditingBlockMixin {
 
 AnnotationEditingBlock.displayName = 'AnnotationEditingBlock'
 
-// AnnotationEditingBlock.propTypes = {
-// 	annotation: PropTypes.string,
-// 	draftRawObj: PropTypes.object,
-// 	isModalOpen: PropTypes.bool,
-// 	onToggle: PropTypes.func.isRequired,
-// 	text: PropTypes.string,
-// 	toggleModal: PropTypes.func,
-// };
+AnnotationEditingBlock.propTypes = {
+    annotation: PropTypes.string,
+    draftRawObj: PropTypes.object,
+    isModalOpen: PropTypes.bool,
+    onToggle: PropTypes.func.isRequired,
+    text: PropTypes.string,
+    toggleModal: PropTypes.func,
+}
 
 AnnotationEditingBlock.defaultProps = {
     annotation: '',

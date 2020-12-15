@@ -1,5 +1,3 @@
-// 'use strict';
-// import { Audio } from '@twreporter/react-article-components/dist/components/article/index'
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import React from 'react'
 import ReactPlayer from 'react-player'
@@ -17,10 +15,8 @@ export default class AudioBlock extends AtomicBlockRendererMixin {
         const { title, url, id } = this.state.data.content[0]
         return (
             <div contentEditable={false} style={{ userSelect: 'none' }}>
-                {/* <h6>I am audio</h6> */}
-                {/* {/* <Audio {...this.state.data} device={this.props.device} /> */}
                 <ReactPlayer
-                    url="https://storage.googleapis.com/mirrormedia-files/assets/audios/20180126180505-ae7de3a909dbcc72a6706b35209f302c.mp3"
+                    url="url"
                     controls={true}
                     width="100%"
                     height="55px"

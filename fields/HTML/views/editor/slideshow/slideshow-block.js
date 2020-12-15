@@ -7,7 +7,7 @@ import 'react-slideshow-image/dist/styles.css'
 import ENTITY from '../entities'
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import EditingBt from '../base/editing-bt'
-import ImageSelector from '../../../../../admin/client/components/ImageSelector'
+import ImageSelector from '../components/ImageSelector'
 import React from 'react'
 import get from 'lodash/get'
 

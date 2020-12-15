@@ -1,7 +1,6 @@
-// 'use strict'
-import AudioSelector from '../../../../../admin/client/components/AudioSelector'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import AudioSelector from '../components/AudioSelector'
 
 export class AudioEditingBlock extends Component {
     constructor(props) {
@@ -28,14 +27,14 @@ export class AudioEditingBlock extends Component {
     }
 }
 
-// AudioEditingBlock.propTypes = {
-// 	apiPath: PropTypes.string,
-// 	isModalOpen: PropTypes.bool,
-// 	onToggle: PropTypes.func,
-// 	selectedAudios: PropTypes.array,
-// 	selectionLimit: PropTypes.number,
-// 	toggleModal: PropTypes.func,
-// };
+AudioEditingBlock.propTypes = {
+    apiPath: PropTypes.string,
+    isModalOpen: PropTypes.bool,
+    onToggle: PropTypes.func,
+    selectedAudios: PropTypes.array,
+    selectionLimit: PropTypes.number,
+    toggleModal: PropTypes.func,
+}
 
 AudioEditingBlock.defaultProps = {
     apiPath: 'audios',

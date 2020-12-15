@@ -36,7 +36,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 // import '../../../admin/public/styles/keystone/wysiwyg.scss'
 
 // DRAFT
-import '../../../admin/public/styles/draftjs/editor.css'
+import './editor/styles/editor.css'
 
 let lastId = 0
 function getId() {

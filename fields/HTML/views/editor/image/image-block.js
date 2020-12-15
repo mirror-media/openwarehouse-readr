@@ -1,9 +1,7 @@
-// 'use strict'
-
-// import { AlignedImage } from '@twreporter/react-article-components/dist/components/article/index';
-import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
-import ImageSelector from '../../../../../admin/client/components/ImageSelector'
 import React from 'react'
+
+import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
+import ImageSelector from '../components/ImageSelector'
 import get from 'lodash/get'
 import AlignedWrapper from '../components/AlignedWrapper/AlignedWrapper'
 

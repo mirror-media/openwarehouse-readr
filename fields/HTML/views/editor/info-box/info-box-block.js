@@ -1,9 +1,7 @@
-// 'use strict'
-
-// import { AlignedInfoBox } from '@twreporter/react-article-components/dist/components/article/index';
+// Aligned
+import React from 'react'
 import AtomicBlockRendererMixin from '../mixins/atomic-block-renderer-mixin'
 import InfoBoxEditingBlock from './info-box-editing-block'
-import React from 'react'
 import get from 'lodash/get'
 
 const _ = {

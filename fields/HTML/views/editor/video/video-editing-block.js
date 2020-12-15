@@ -1,5 +1,5 @@
 // 'use strict'
-import VideoSelector from '../../../../../admin/client/components/VideoSelector'
+import VideoSelector from '../components/VideoSelector'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 

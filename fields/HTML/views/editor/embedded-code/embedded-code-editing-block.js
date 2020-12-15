@@ -1,6 +1,6 @@
-// 'use strict'
-import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
 import React from 'react'
+import PropTypes from 'prop-types'
+import EntityEditingBlockMixin from '../mixins/entity-editing-block-mixin'
 
 export class EmbeddedCodeEditingBlock extends EntityEditingBlockMixin {
     constructor(props) {
@@ -36,13 +36,13 @@ export class EmbeddedCodeEditingBlock extends EntityEditingBlockMixin {
 
 EmbeddedCodeEditingBlock.displayName = 'EmbeddedCodeEditingBlock'
 
-// EmbeddedCodeEditingBlock.propTypes = {
-// 	caption: React.PropTypes.string,
-// 	embeddedCode: React.PropTypes.string,
-// 	isModalOpen: React.PropTypes.bool,
-// 	onToggle: React.PropTypes.func.isRequired,
-// 	toggleModal: React.PropTypes.func,
-// };
+EmbeddedCodeEditingBlock.propTypes = {
+    caption: PropTypes.string,
+    embeddedCode: PropTypes.string,
+    isModalOpen: PropTypes.bool,
+    onToggle: PropTypes.func.isRequired,
+    toggleModal: PropTypes.func,
+}
 
 EmbeddedCodeEditingBlock.defaultProps = {
     caption: '',
