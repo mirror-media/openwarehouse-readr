@@ -1,7 +1,4 @@
-// 'use strict'
-// import { Button, FormField, FormInput, Modal } from 'elemental'
-// import { Modal } from 'elemental'
-import { Dialog, Button, Form, Input } from 'element-react'
+import { Dialog, Button, Input } from 'element-react'
 import 'element-theme-default'
 import {
     BlockMapBuilder,
@@ -53,16 +50,10 @@ export class EntityEditingBlock extends Component {
 
     componentWillReceiveProps(nextProps) {
         this._editingFields = this.composeEditingFields(nextProps)
-        this.setState(
-            {
-                editingFields: this._editingFields,
-                editorState: this._initEditorState(nextProps.draftRawObj),
-            },
-            () => {
-                // console.log(this._editingFields)
-                // console.log(this.state.editingFields)
-            }
-        )
+        this.setState({
+            editingFields: this._editingFields,
+            editorState: this._initEditorState(nextProps.draftRawObj),
+        })
     }
 
     componentWillUnmount() {
@@ -164,8 +155,13 @@ export class EntityEditingBlock extends Component {
         this.refs.subEditor.focus()
     }
 
-    _handleEditingFieldChange(field, e) {
-        this._editingFields[field].value = e.target.value
+    _handleEditingFieldChange(field, value) {
+        this._editingFields[field].value = value
+
+        this.setState({
+            ...this.state,
+            editingFields: this._editingFields,
+        })
     }
 
     _handleSave() {
@@ -232,22 +228,17 @@ export class EntityEditingBlock extends Component {
         let onChange = this._handleEditingFieldChange.bind(this, field)
 
         return (
-            // <Form label={field} htmlFor={'form-input-' + field} key={field}>
-            // <Form.Item label={field} labelWidth="120">
             <div key={field}>
-                <input
+                <Input
                     type={type}
                     multiline={type === 'textarea' ? 'true' : 'false'}
                     placeholder={'Enter ' + field}
                     name={'form-input-' + field}
                     onChange={onChange}
-                    defaultValue={value}
-                    // value={this.state.editingFields[field].value}
+                    value={value}
                 />
                 <div style={{ margin: '20px 0' }}></div>
             </div>
-            //</Form.Item>
-            // </Form>
         )
     }
 
@@ -258,6 +249,7 @@ export class EntityEditingBlock extends Component {
 
             return this._renderEditingField(field, type, value)
         })
+
         return Fields
     }
 
@@ -325,34 +317,8 @@ export class EntityEditingBlock extends Component {
         this._handleEditorStateChange(_editorState)
     }
 
-    // render() {
-    //     return <div>EntityEditingBlockMixin</div>
-    // }
     render() {
         return (
-            // <Modal
-            //     isOpen={this.props.isModalOpen}
-            //     onCancel={this.toggleModal}
-            //     backdropClosesModal
-            // >
-            //     <Modal.Header
-            //         text={'Insert ' + this.props.label}
-            //         showCloseButton
-            //         onClose={this.toggleModal}
-            //     />
-            //     <Modal.Body>
-            //         {this._renderEditingFields(this.state.editingFields)}
-            //     </Modal.Body>
-            //     <Modal.Footer>
-            //         <Button type="primary" onClick={this.handleSave}>
-            //             Save
-            //         </Button>
-            //         <Button type="link-cancel" onClick={this.toggleModal}>
-            //             Cancel
-            //         </Button>
-            //     </Modal.Footer>
-            // </Modal>
-
             <Dialog
                 title={`Insert ${this.props.label}`}
                 visible={this.props.isModalOpen}

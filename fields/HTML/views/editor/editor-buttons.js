@@ -133,20 +133,6 @@ export const EntityButtons = (props) => {
             : false
         let onToggle = _onToggle.bind(null, entity)
         switch (entity) {
-            // case ENTITY.ANNOTATION.type:
-            //     return (
-            //         <AnnotationBt
-            //             active={active}
-            //             annotation={data ? data.annotation : ''}
-            //             draftRawObj={data ? data.draftRawObj : null}
-            //             icon="fas fa-edit"
-            //             iconText=""
-            //             key={entity}
-            //             label={entity}
-            //             onToggle={onToggle}
-            //             text={data ? data.text : selectedText}
-            //         />
-            //     )
             case ENTITY.BLOCKQUOTE.type:
                 return (
                     <BlockQuoteBt
@@ -160,141 +146,155 @@ export const EntityButtons = (props) => {
                         quoteBy={data ? data.quoteBy : ''}
                     />
                 )
+            case ENTITY.ANNOTATION.type:
+                return (
+                    <AnnotationBt
+                        active={active}
+                        annotation={data ? data.annotation : ''}
+                        draftRawObj={data ? data.draftRawObj : null}
+                        icon="fas fa-edit"
+                        iconText=""
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        text={data ? data.text : selectedText}
+                    />
+                )
 
-            //         case ENTITY.LINK.type:
-            //             return (
-            //                 <LinkButton
-            //                     active={active}
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     url={data ? data.url : ''}
-            //                     text={data ? data.text : selectedText}
-            //                     icon="fas fa-link"
-            //                     iconText=""
-            //                 />
-            //             )
-            //         case ENTITY.INFOBOX.type:
-            //             return (
-            //                 <InfoBoxBt
-            //                     active={active}
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     title={data ? data.title : selectedText}
-            //                     body={data ? data.body : ''}
-            //                     icon=""
-            //                     iconText="infobox"
-            //                 />
-            //             )
-            //         case ENTITY.EMBEDDEDCODE.type:
-            //             return (
-            //                 <EmbeddedCodeBt
-            //                     active={active}
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     caption={data ? data.caption : ''}
-            //                     embeddedCode={data ? data.embeddedCode : ''}
-            //                     iconText=" Embed"
-            //                 />
-            //             )
-            //         case ENTITY.AUDIO.type:
-            //             return (
-            //                 <AudioButton
-            //                     active={active}
-            //                     apiPath="audios"
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     icon="far fa-file-audio"
-            //                     iconText=" Audio"
-            //                 />
-            //             )
+            case ENTITY.LINK.type:
+                return (
+                    <LinkButton
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        url={data ? data.url : ''}
+                        text={data ? data.text : selectedText}
+                        icon="fas fa-link"
+                        iconText=""
+                    />
+                )
+            case ENTITY.INFOBOX.type:
+                return (
+                    <InfoBoxBt
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        title={data ? data.title : selectedText}
+                        body={data ? data.body : ''}
+                        icon=""
+                        iconText="infobox"
+                    />
+                )
+            case ENTITY.EMBEDDEDCODE.type:
+                return (
+                    <EmbeddedCodeBt
+                        active={active}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        caption={data ? data.caption : ''}
+                        embeddedCode={data ? data.embeddedCode : ''}
+                        iconText=" Embed"
+                    />
+                )
+            case ENTITY.AUDIO.type:
+                return (
+                    <AudioButton
+                        active={active}
+                        apiPath="audios"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="far fa-file-audio"
+                        iconText=" Audio"
+                    />
+                )
 
-            //         case ENTITY.VIDEO.type:
-            //             return (
-            //                 <VideoButton
-            //                     active={active}
-            //                     apiPath="videos"
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     icon="far fa-file-video"
-            //                     iconText=" Video"
-            //                 />
-            //             )
+            case ENTITY.VIDEO.type:
+                return (
+                    <VideoButton
+                        active={active}
+                        apiPath="videos"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="far fa-file-video"
+                        iconText=" Video"
+                    />
+                )
 
-            //         case ENTITY.IMAGE.type:
-            //             return (
-            //                 <ImageButton
-            //                     active={active}
-            //                     apiPath="images"
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     icon="far fa-image"
-            //                     iconText=" Img"
-            //                 />
-            //             )
-            //         case ENTITY.SLIDESHOW.type:
-            //             return (
-            //                 <ImageButton
-            //                     active={active}
-            //                     apiPath="images"
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     selectionLimit={
-            //                         ENTITY.SLIDESHOW.slideshowSelectionLimit
-            //                     }
-            //                     icon="fa fa-images"
-            //                     iconText=" Slideshow"
-            //                 />
-            //             )
-            //         // case ENTITY.IMAGEDIFF.type:
-            //         //     return (
-            //         //         <ImageButton
-            //         //             active={active}
-            //         //             apiPath="images"
-            //         //             key={entity}
-            //         //             label={entity}
-            //         //             onToggle={onToggle}
-            //         //             selectionLimit={2}
-            //         //             icon="fa fa-object-ungroup"
-            //         //             // iconText=" Diff"
-            //         //             iconText=" Diff"
-            //         //         />
-            //         //     )
-            //         case ENTITY.IMAGELINK.type:
-            //             return (
-            //                 <ImageLinkButton
-            //                     active={active}
-            //                     desc={data ? data.desc : ''}
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     url={data ? data.url : ''}
-            //                     icon="fas fa-external-link-alt"
-            //                     iconText=" ImgLink"
-            //                 />
-            //             )
+            case ENTITY.IMAGE.type:
+                return (
+                    <ImageButton
+                        active={active}
+                        apiPath="images"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="far fa-image"
+                        iconText=" Img"
+                    />
+                )
+            case ENTITY.SLIDESHOW.type:
+                return (
+                    <ImageButton
+                        active={active}
+                        apiPath="images"
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        selectionLimit={
+                            ENTITY.SLIDESHOW.slideshowSelectionLimit
+                        }
+                        icon="fa fa-images"
+                        iconText=" Slideshow"
+                    />
+                )
+            // case ENTITY.IMAGEDIFF.type:
+            //     return (
+            //         <ImageButton
+            //             active={active}
+            //             apiPath="images"
+            //             key={entity}
+            //             label={entity}
+            //             onToggle={onToggle}
+            //             selectionLimit={2}
+            //             icon="fa fa-object-ungroup"
+            //             // iconText=" Diff"
+            //             iconText=" Diff"
+            //         />
+            //     )
+            // case ENTITY.IMAGELINK.type:
+            //     return (
+            //         <ImageLinkButton
+            //             active={active}
+            //             desc={data ? data.desc : ''}
+            //             key={entity}
+            //             label={entity}
+            //             onToggle={onToggle}
+            //             url={data ? data.url : ''}
+            //             icon="fas fa-external-link-alt"
+            //             iconText=" ImgLink"
+            //         />
+            //     )
 
-            //         case ENTITY.YOUTUBE.type:
-            //             return (
-            //                 <YoutubeBt
-            //                     active={active}
-            //                     description={data ? data.description : ''}
-            //                     key={entity}
-            //                     label={entity}
-            //                     onToggle={onToggle}
-            //                     icon="fab fa-youtube fa-2"
-            //                     iconText=""
-            //                     youtubeId={data ? data.youtubeId : ''}
-            //                 />
-            //             )
-            //         default:
-            //             return
+            case ENTITY.YOUTUBE.type:
+                return (
+                    <YoutubeBt
+                        active={active}
+                        description={data ? data.description : ''}
+                        key={entity}
+                        label={entity}
+                        onToggle={onToggle}
+                        icon="fab fa-youtube fa-2"
+                        iconText=""
+                        youtubeId={data ? data.youtubeId : ''}
+                    />
+                )
+            default:
+                return
         }
     }
 
