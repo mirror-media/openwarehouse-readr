@@ -103,11 +103,11 @@ module.exports = {
         },
         summary: {
             label: '重點摘要',
-            type: Text,
+            type: HTML,
         },
         brief: {
             label: '前言',
-            type: Text,
+            type: HTML,
         },
         content: {
             label: '內文',

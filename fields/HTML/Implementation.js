@@ -12,6 +12,10 @@ class HtmlImplementation extends Text.implementation {
             editorConfig: this.editorConfig,
         }
     }
+
+    render() {
+        console.log(editorConfig)
+    }
 }
 
 module.exports = {

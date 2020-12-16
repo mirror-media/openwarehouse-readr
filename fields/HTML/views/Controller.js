@@ -1,9 +1,8 @@
 import FieldController from '@keystonejs/fields/Controller'
-import { convertToEditorState, fetchData } from './dataConverter'
 import {
-    createEditorStateFromRaw,
-    serialiseEditorStateToRaw,
-} from 'draftjs-conductor'
+    convertDbDataToEditorState,
+    convertEditorStateToDbData,
+} from './editorToBackendUtil/dataConverter'
 
 // controller defines how front-end features work
 class HtmlController extends FieldController {
@@ -11,14 +10,16 @@ class HtmlController extends FieldController {
         super(config, ...args)
     }
 
+    // when save post, format data from editorState to specified object, then return to db.
     serialize = (data) => {
         return data[this.path]
-            ? JSON.stringify(fetchData(data[this.path]))
+            ? JSON.stringify(convertEditorStateToDbData(data[this.path]))
             : undefined
     }
 
+    // when lode post, format data from db object to editorState, then return to editor.
     deserialize = (data) => {
-        return convertToEditorState(
+        return convertDbDataToEditorState(
             data[this.path] ? JSON.parse(data[this.path]) : undefined
         )
     }

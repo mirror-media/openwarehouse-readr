@@ -30,44 +30,7 @@ import DraftConverter from './K3/draft-converter'
 import blockStyleFn from './editor/base/block-style-fn'
 
 import '../../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
-
-// COMPONENTS
-// import '../../../admin/public/styles/keystone/wysiwyg.scss'
-
-// DRAFT
 import './editor/styles/editor.css'
-
-let lastId = 0
-function getId() {
-    return 'keystone-html-' + lastId++
-}
-function getInitialState(value) {
-    let editorState
-    try {
-        if (value) {
-            // create an EditorState from the raw Draft data
-            let contentState = value.getCurrentContent()
-            editorState = EditorState.createWithContent(contentState, decorator)
-        } else {
-            // create empty draft object
-            editorState = EditorState.createEmpty(decorator)
-        }
-    } catch (error) {
-        // create empty EditorState
-        editorState = EditorState.createEmpty(decorator)
-    }
-
-    return editorState
-
-    // return value ? value : EditorState.createEmpty()
-}
-
-function refreshEditorState(editorState) {
-    return EditorState.forceSelection(
-        editorState,
-        editorState.getCurrentContent().getSelectionAfter()
-    )
-}
 
 function HtmlDraftEditor({ onChange, autoFocus, field, value, errors }) {
     const initialEditorState = getInitialState(value)
@@ -78,23 +41,43 @@ function HtmlDraftEditor({ onChange, autoFocus, field, value, errors }) {
 
     // Handle both editorstate and keystone value change
     const onEditorStateChange = (newEditorState) => {
-        const content = convertToRaw(editorState.getCurrentContent())
-        const cHtml = DraftConverter.convertToHtml(content)
-        const apiData = DraftConverter.convertToApiData(content)
-        // console.log(content)
-
-        const valueStr = JSON.stringify({
-            draft: content,
-            html: cHtml,
-            apiData,
-        })
-
         setEditorState(newEditorState)
         onChange(newEditorState)
     }
 
     function focus() {
         mainEditorRef.current.focus()
+    }
+
+    function getInitialState(value) {
+        let editorState
+        try {
+            if (value) {
+                // create an EditorState from the raw Draft data
+                let contentState = value.getCurrentContent()
+                editorState = EditorState.createWithContent(
+                    contentState,
+                    decorator
+                )
+            } else {
+                // create empty draft object
+                editorState = EditorState.createEmpty(decorator)
+            }
+        } catch (error) {
+            // create empty EditorState
+            editorState = EditorState.createEmpty(decorator)
+        }
+
+        return editorState
+
+        // return value ? value : EditorState.createEmpty()
+    }
+
+    function refreshEditorState(editorState) {
+        return EditorState.forceSelection(
+            editorState,
+            editorState.getCurrentContent().getSelectionAfter()
+        )
     }
 
     // After receiving key command, generate new state from RichUtils, and update state.
@@ -287,6 +270,7 @@ function HtmlDraftEditor({ onChange, autoFocus, field, value, errors }) {
         return null
     }
 
+    // for some reason, it'll make audio/video availible to get media data.
     function _convertToApiData(editorState) {
         const content = convertToRaw(editorState.getCurrentContent())
         const apiData = DraftConverter.convertToApiData(content)
