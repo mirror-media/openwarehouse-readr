@@ -17,11 +17,10 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                 <FieldDescription text={field.adminDoc} />
 
                 <HtmlDraftEditor
-                    onChange={onChange}
+                    KeyStoneOnChange={onChange}
                     autoFocus={autoFocus}
                     field={field}
                     value={value}
-                    errors={errors}
                 />
             </div>
         </FieldContainer>

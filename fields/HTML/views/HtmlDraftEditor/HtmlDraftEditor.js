@@ -32,7 +32,7 @@ import blockStyleFn from './editor/base/block-style-fn'
 import '../../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
 import './editor/styles/editor.css'
 
-function HtmlDraftEditor({ onChange, autoFocus, field, value, errors }) {
+function HtmlDraftEditor({ KeyStoneOnChange, autoFocus, field, value }) {
     const initialEditorState = getInitialState(value)
     const [editorState, setEditorState] = useState(initialEditorState)
     const [isEnlarged, setIsEnlarged] = useState(false)
@@ -42,7 +42,7 @@ function HtmlDraftEditor({ onChange, autoFocus, field, value, errors }) {
     // Handle both editorstate and keystone value change
     const onEditorStateChange = (newEditorState) => {
         setEditorState(newEditorState)
-        onChange(newEditorState)
+        KeyStoneOnChange(newEditorState)
     }
 
     function focus() {
@@ -131,114 +131,6 @@ function HtmlDraftEditor({ onChange, autoFocus, field, value, errors }) {
         onEditorStateChange(newEditorState)
     }
 
-    function _toggleTextWithEntity(entityKey, text) {
-        const selection = editorState.getSelection()
-        let contentState = editorState.getCurrentContent()
-
-        if (selection.isCollapsed()) {
-            contentState = Modifier.removeRange(
-                editorState.getCurrentContent(),
-                selection,
-                'backward'
-            )
-        }
-        contentState = Modifier.replaceText(
-            contentState,
-            selection,
-            text,
-            null,
-            entityKey
-        )
-        const _editorState = EditorState.push(
-            editorState,
-            contentState,
-            editorState.getLastChangeType()
-        )
-        onEditorStateChange(_editorState)
-    }
-
-    function _toggleAtomicBlock(entity, value) {
-        const _editorState = BlockModifier.insertAtomicBlock(
-            editorState,
-            entity,
-            value
-        )
-        onEditorStateChange(_editorState)
-    }
-
-    function _toggleAudio(entity, value) {
-        console.log(value)
-        const audio = Array.isArray(value) ? value[0] : null
-        if (!audio) {
-            return
-        }
-        _toggleAtomicBlock(entity, audio)
-    }
-
-    function _toggleVideo(entity, value) {
-        console.log(value)
-        const video = Array.isArray(value) ? value[0] : null
-        if (!video) {
-            return
-        }
-        _toggleAtomicBlock(entity, video)
-    }
-
-    function _toggleInlineEntity(entity, value) {
-        const entityKey = Entity.create(entity, 'IMMUTABLE', value)
-        _toggleTextWithEntity(entityKey, _.get(value, 'text'))
-    }
-
-    function _toggleImage(entity, value) {
-        const image = Array.isArray(value) ? value[0] : null
-        if (!image) {
-            return
-        }
-        _toggleAtomicBlock(entity, image)
-    }
-
-    function _toggleImageDiff(entity, value) {
-        const images = Array.isArray(value) && value.length === 2 ? value : null
-        if (!images) {
-            return
-        }
-        _toggleAtomicBlock(entity, images)
-    }
-
-    function _toggleSlideshow(entity, value) {
-        const images = Array.isArray(value) && value.length > 0 ? value : null
-        if (!images) {
-            return
-        }
-        _toggleAtomicBlock(entity, images)
-    }
-
-    function toggleEntity(entity, value) {
-        switch (entity) {
-            case ENTITY.AUDIO.type:
-                return _toggleAudio(entity, value)
-            case ENTITY.VIDEO.type:
-                return _toggleVideo(entity, value)
-            case ENTITY.BLOCKQUOTE.type:
-            case ENTITY.IMAGELINK.type:
-            case ENTITY.INFOBOX.type:
-            case ENTITY.EMBEDDEDCODE.type:
-            case ENTITY.YOUTUBE.type:
-                return _toggleAtomicBlock(entity, value)
-            case ENTITY.ANNOTATION.type:
-            case ENTITY.LINK.type:
-                return _toggleInlineEntity(entity, value)
-            case ENTITY.IMAGE.type:
-                return _toggleImage(entity, value)
-            case ENTITY.SLIDESHOW.type:
-                return _toggleSlideshow(entity, value)
-            case ENTITY.IMAGEDIFF.type:
-                return _toggleImageDiff(entity, value)
-            default:
-                return
-        }
-    }
-
     function _blockRenderer(block) {
         if (block.getType() === 'atomic') {
             return {
@@ -320,6 +212,114 @@ function HtmlDraftEditor({ onChange, autoFocus, field, value, errors }) {
         // }
         // use default paste behavior
         return false
+    }
+
+    function toggleEntity(entity, value) {
+        switch (entity) {
+            case ENTITY.AUDIO.type:
+                return _toggleAudio(entity, value)
+            case ENTITY.VIDEO.type:
+                return _toggleVideo(entity, value)
+            case ENTITY.BLOCKQUOTE.type:
+            case ENTITY.IMAGELINK.type:
+            case ENTITY.INFOBOX.type:
+            case ENTITY.EMBEDDEDCODE.type:
+            case ENTITY.YOUTUBE.type:
+                return _toggleAtomicBlock(entity, value)
+            case ENTITY.ANNOTATION.type:
+            case ENTITY.LINK.type:
+                return _toggleInlineEntity(entity, value)
+            case ENTITY.IMAGE.type:
+                return _toggleImage(entity, value)
+            case ENTITY.SLIDESHOW.type:
+                return _toggleSlideshow(entity, value)
+            case ENTITY.IMAGEDIFF.type:
+                return _toggleImageDiff(entity, value)
+            default:
+                return
+        }
+    }
+
+    function _toggleAudio(entity, value) {
+        console.log(value)
+        const audio = Array.isArray(value) ? value[0] : null
+        if (!audio) {
+            return
+        }
+        _toggleAtomicBlock(entity, audio)
+    }
+
+    function _toggleVideo(entity, value) {
+        console.log(value)
+        const video = Array.isArray(value) ? value[0] : null
+        if (!video) {
+            return
+        }
+        _toggleAtomicBlock(entity, video)
+    }
+
+    function _toggleAtomicBlock(entity, value) {
+        const _editorState = BlockModifier.insertAtomicBlock(
+            editorState,
+            entity,
+            value
+        )
+        onEditorStateChange(_editorState)
+    }
+
+    function _toggleInlineEntity(entity, value) {
+        const entityKey = Entity.create(entity, 'IMMUTABLE', value)
+        _toggleTextWithEntity(entityKey, _.get(value, 'text'))
+    }
+
+    function _toggleImage(entity, value) {
+        const image = Array.isArray(value) ? value[0] : null
+        if (!image) {
+            return
+        }
+        _toggleAtomicBlock(entity, image)
+    }
+
+    function _toggleImageDiff(entity, value) {
+        const images = Array.isArray(value) && value.length === 2 ? value : null
+        if (!images) {
+            return
+        }
+        _toggleAtomicBlock(entity, images)
+    }
+
+    function _toggleSlideshow(entity, value) {
+        const images = Array.isArray(value) && value.length > 0 ? value : null
+        if (!images) {
+            return
+        }
+        _toggleAtomicBlock(entity, images)
+    }
+
+    function _toggleTextWithEntity(entityKey, text) {
+        const selection = editorState.getSelection()
+        let contentState = editorState.getCurrentContent()
+
+        if (selection.isCollapsed()) {
+            contentState = Modifier.removeRange(
+                editorState.getCurrentContent(),
+                selection,
+                'backward'
+            )
+        }
+        contentState = Modifier.replaceText(
+            contentState,
+            selection,
+            text,
+            null,
+            entityKey
+        )
+        const _editorState = EditorState.push(
+            editorState,
+            contentState,
+            editorState.getLastChangeType()
+        )
+        onEditorStateChange(_editorState)
     }
 
     const useSpellCheck = true

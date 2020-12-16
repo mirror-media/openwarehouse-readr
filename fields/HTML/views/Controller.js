@@ -12,15 +12,15 @@ class HtmlController extends FieldController {
 
     // when save post, format data from editorState to specified object, then return to db.
     serialize = (data) => {
-        return data[this.path]
-            ? JSON.stringify(convertEditorStateToDbData(data[this.path]))
+        return data.content
+            ? JSON.stringify(convertEditorStateToDbData(data.content))
             : undefined
     }
 
     // when lode post, format data from db object to editorState, then return to editor.
     deserialize = (data) => {
         return convertDbDataToEditorState(
-            data[this.path] ? JSON.parse(data[this.path]) : undefined
+            data.content ? JSON.parse(data.content) : undefined
         )
     }
 
