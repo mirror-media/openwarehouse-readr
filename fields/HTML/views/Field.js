@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
-import HtmlDraftEditor from './HtmlDraftEditor/HtmlDraftEditor'
+import HtmlDraftEditor from '@liyibass/html-draft-editor'
 
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     return (
