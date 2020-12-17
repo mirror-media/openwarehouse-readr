@@ -2187,10 +2187,10 @@
     p-reflect "^2.1.0"
     semver "^5.7.1"
 
-"@liyibass/html-draft-editor@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@liyibass/html-draft-editor/-/html-draft-editor-0.1.0.tgz#d49e2776d3d3bfce8202dbb147001713ef90cea4"
-  integrity sha512-ZoftKXu1f6sPXQ9HMtDguKxGZDGZVDlHLZ/XwmMjnyuF0iTICu+Ytp2YnwXPF1XfG9oNR3w5Q6Ft2+QlFhS0mg==
+"@liyibass/html-draft-editor@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@liyibass/html-draft-editor/-/html-draft-editor-0.1.1.tgz#91366285ec3bcf6fe4f75f178c673002075bf040"
+  integrity sha512-mzdyqMSPYwKfbtOFXT3T3onqT7jXolIIUywj3GWVvlq6JW4w3ZEaRpXDzNDVL/Yt1FWi4J7EsyAXzsSHVihRkw==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.1"
     apollo-fetch "^0.7.0"
