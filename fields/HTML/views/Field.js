@@ -1,19 +1,7 @@
 import React, { useState } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
 import HtmlDraftEditor from '@liyibass/html-draft-editor'
-import {
-    BlockMapBuilder,
-    Editor,
-    EditorState,
-    KeyBindingUtil,
-    Modifier,
-    Entity,
-    RichUtils,
-    convertFromHTML,
-    convertFromRaw,
-    convertToRaw,
-    getDefaultKeyBinding,
-} from 'draft-js'
+
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     return (
         <FieldContainer>

@@ -18,8 +18,9 @@ class HtmlController extends FieldController {
             : undefined
     }
 
-    // when lode post, format data from db object to editorState, then return to editor.
+    // when load post, format data from db object to editorState, then return to editor.
     deserialize = (data) => {
+        // console.log(data[this.path])
         return convertDbDataToEditorState(
             data[this.path] ? JSON.parse(data[this.path]) : undefined
         )

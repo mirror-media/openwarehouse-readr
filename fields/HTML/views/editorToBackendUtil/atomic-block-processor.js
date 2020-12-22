@@ -2,7 +2,8 @@ import _ from 'lodash'
 // import sizeOf from 'image-size';
 import ApiDataInstance from './api-data-instance'
 import ENTITY from './entities'
-import htmlparser from 'htmlparser2'
+// import htmlparser2 from 'htmlparser2'
+const htmlparser2 = require('htmlparser2')
 
 const processor = {
     convertBlock(entityMap, block) {
@@ -58,7 +59,7 @@ const processor = {
                 let scriptTagStart = false
                 let height
                 let width
-                let parser = new htmlparser.Parser({
+                let parser = new htmlparser2.Parser({
                     onopentag: (name, attribs) => {
                         if (name === 'script') {
                             scriptTagStart = true
