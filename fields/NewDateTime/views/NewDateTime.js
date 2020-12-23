@@ -6,7 +6,7 @@ import './DateFormat'
 import moment from 'moment'
 
 function NewDateTime({ value, onChange }) {
-    const [inputField, setInputField] = useState('')
+    const [inputField, setInputField] = useState(value)
 
     // react-datetime accept integer unix timestamp
     // transform ISO 8601 to unix timestamp
@@ -19,7 +19,6 @@ function NewDateTime({ value, onChange }) {
         if (typeof momentObj !== 'object') {
             edittedMomentObj = moment(momentObj)
         }
-
         const selectUnixTimestamp = parseInt(edittedMomentObj.format('x'))
         const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
 

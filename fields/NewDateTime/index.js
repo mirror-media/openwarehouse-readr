@@ -14,7 +14,8 @@ module.exports = {
     implementation: NewDateTime, // back-end code used by Keystone
     views: {
         // front-end code used in either the Admin UI or GraphQL apps
-        Controller: Text.views.Controller,
+        Controller: require.resolve('./views/Controller'),
+        // Controller: Text.views.Controller,
         Field: require.resolve('./views/Field'),
         // Field: Text.views.Field,
 
