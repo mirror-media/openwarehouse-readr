@@ -33,7 +33,7 @@
     "@keystonejs/file-adapters": "^7.0.0",
     "@keystonejs/keystone": "^11.1.2",
     "@keystonejs/list-plugins": "^7.0.0",
-    "@liyibass/html-draft-editor": "^0.1.6",
+    "@liyibass/html-draft-editor": "^0.1.9",
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",

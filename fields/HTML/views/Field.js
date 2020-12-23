@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
 import HtmlDraftEditor from '@liyibass/html-draft-editor'
+import './fixStyle.css'
 
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
     return (
