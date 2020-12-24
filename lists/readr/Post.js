@@ -35,6 +35,18 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
+            hooks: {
+                validateInput: async ({
+                    resolvedData,
+                    addFieldValidationError,
+                }) => {
+                    console.log('I am validateInput in publishTime')
+                    console.log(resolvedData.publishTime)
+                    console.log(typeof resolvedData.publishTime)
+
+                    const { state, publishTime } = resolvedData
+                },
+            },
         },
         categories: {
             label: '分類',
@@ -103,15 +115,15 @@ module.exports = {
         },
         summary: {
             label: '重點摘要',
-            type: Text,
+            type: HTML,
         },
         brief: {
             label: '前言',
-            type: Text,
+            type: HTML,
         },
         content: {
             label: '內文',
-            type: Text,
+            type: HTML,
         },
         wordCount: {
             label: '字數',
@@ -174,21 +186,18 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        // validateInput: ({
-        //     existingItem,
-        //     resolvedData,
-        //     addFieldValidationError,
-        // }) => {
-        //     console.log('-----Check post state-----')
-        //     const { state, publishTime } = resolvedData
-        //     if (state === 'draft' && typeof publishTime === 'undefined') {
-        //         console.log('verify fail, because of empity time')
-        //         addFieldValidationError('verify fail, because of empity time')
-        //     } else {
-        //         console.log('verify success')
-        //     }
-        //     console.log('-----Check post state end-----')
-        // },
+        validateInput: async ({ resolvedData, addFieldValidationError }) => {
+            console.log('I am validateInput in post list')
+            console.log(resolvedData)
+            console.log(typeof resolvedData.publishTime)
+
+            const { state, publishTime } = resolvedData
+            addFieldValidationError('time is not undefined')
+
+            if (typeof publishTime === 'undefined') {
+                addFieldValidationError('time is undefined')
+            }
+        },
         // beforeChange: async ({ existingItem, resolvedData }) => {
         //     try {
         //         content = JSON.parse(
@@ -211,25 +220,6 @@ module.exports = {
         //         console.log(resolvedData)
         //     }
         // },
-        // Used to modify the resolvedData and return it back
-        resolveInput: ({ resolvedData }) => {
-            console.log('I am resolveInput of Post')
-            return resolvedData
-        },
-        validateInput: async ({ resolvedData, addFieldValidationError }) => {
-            console.log('I am validateInput of Post')
-            addFieldValidationError(`ERROR!!!!!!!!!`, {
-                value: 'YOYO',
-                dateFrom: 'yaya',
-            })
-            return
-        },
-        beforeChange: () => {
-            console.log('I am beforeChange of Post')
-        },
-        afterChange: () => {
-            console.log('I am afterChange of Post')
-        },
     },
     labelField: 'title',
     cacheHint: cacheHint,

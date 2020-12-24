@@ -25,19 +25,17 @@ module.exports = (project) => async (keystone) => {
         const password = 'mirrormedia'
         // const password = (process.env.NODE_ENV === 'development') ? 'mirrormedia' : randomString();
 
-        await keystone.executeQuery(
-            `mutation initialUser($password: String, $email: String) {
+        await keystone.executeGraphQL({
+            mutation: `mutation initialUser($password: String, $email: String) {
                 createUser(data: {name: "admin", email: $email, password: $password, ${projectAdminRole}}) {
                 id
                 }
             }`,
-            {
-                variables: {
-                    password,
-                    email,
-                },
-            }
-        )
+            variables: {
+                password,
+                email,
+            },
+        })
 
         console.log(`
             User created:
