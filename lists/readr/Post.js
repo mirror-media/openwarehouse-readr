@@ -103,15 +103,15 @@ module.exports = {
         },
         summary: {
             label: '重點摘要',
-            type: HTML,
+            type: Text,
         },
         brief: {
             label: '前言',
-            type: HTML,
+            type: Text,
         },
         content: {
             label: '內文',
-            type: HTML,
+            type: Text,
         },
         wordCount: {
             label: '字數',
@@ -174,27 +174,61 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        beforeChange: async ({ existingItem, resolvedData }) => {
-            try {
-                content = JSON.parse(
-                    resolvedData.content || existingItem.content
-                )
-                resolvedData.contentHtml = JSON.parse(resolvedData.content).html
-                resolvedData.contentApiData = JSON.stringify(
-                    JSON.parse(resolvedData.content).apiData
-                )
-                console.log(typeof content.apiData)
-                delete content['html']
-                delete content['apiData']
-                resolvedData.content = content
-                return { existingItem, resolvedData }
-            } catch (err) {
-                console.log(err)
-                console.log('EXISTING ITEM')
-                console.log(existingItem)
-                console.log('RESOLVED DATA')
-                console.log(resolvedData)
-            }
+        // validateInput: ({
+        //     existingItem,
+        //     resolvedData,
+        //     addFieldValidationError,
+        // }) => {
+        //     console.log('-----Check post state-----')
+        //     const { state, publishTime } = resolvedData
+        //     if (state === 'draft' && typeof publishTime === 'undefined') {
+        //         console.log('verify fail, because of empity time')
+        //         addFieldValidationError('verify fail, because of empity time')
+        //     } else {
+        //         console.log('verify success')
+        //     }
+        //     console.log('-----Check post state end-----')
+        // },
+        // beforeChange: async ({ existingItem, resolvedData }) => {
+        //     try {
+        //         content = JSON.parse(
+        //             resolvedData.content || existingItem.content
+        //         )
+        //         resolvedData.contentHtml = JSON.parse(resolvedData.content).html
+        //         resolvedData.contentApiData = JSON.stringify(
+        //             JSON.parse(resolvedData.content).apiData
+        //         )
+        //         console.log(typeof content.apiData)
+        //         delete content['html']
+        //         delete content['apiData']
+        //         resolvedData.content = content
+        //         return { existingItem, resolvedData }
+        //     } catch (err) {
+        //         console.log(err)
+        //         console.log('EXISTING ITEM')
+        //         console.log(existingItem)
+        //         console.log('RESOLVED DATA')
+        //         console.log(resolvedData)
+        //     }
+        // },
+        // Used to modify the resolvedData and return it back
+        resolveInput: ({ resolvedData }) => {
+            console.log('I am resolveInput of Post')
+            return resolvedData
+        },
+        validateInput: async ({ resolvedData, addFieldValidationError }) => {
+            console.log('I am validateInput of Post')
+            addFieldValidationError(`ERROR!!!!!!!!!`, {
+                value: 'YOYO',
+                dateFrom: 'yaya',
+            })
+            return
+        },
+        beforeChange: () => {
+            console.log('I am beforeChange of Post')
+        },
+        afterChange: () => {
+            console.log('I am afterChange of Post')
         },
     },
     labelField: 'title',

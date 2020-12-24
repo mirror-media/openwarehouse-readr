@@ -1,8 +1,13 @@
-const { Text, Relationship, File, Url } = require('@keystonejs/fields');
-const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { GCSAdapter } = require('../../lib/GCSAdapter');
-const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr');
-const cacheHint = require('../../helpers/cacheHint');
+const { Text, Relationship, File, Url } = require('@keystonejs/fields')
+const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { GCSAdapter } = require('../../lib/GCSAdapter')
+const {
+    admin,
+    moderator,
+    editor,
+    allowRoles,
+} = require('../../helpers/access/readr')
+const cacheHint = require('../../helpers/cacheHint')
 
 const gcsDir = 'assets/videos/'
 
@@ -51,19 +56,16 @@ module.exports = {
                 update: false,
             },
         },
-        duration: {
-            label: '影片長度（秒）',
-            type: Number,
-            access: {
-                create: false,
-                update: false,
-            },
-        }
+        // duration: {
+        //     label: '影片長度（秒）',
+        //     type: Number,
+        //     access: {
+        //         create: false,
+        //         update: false,
+        //     },
+        // }
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator, editor),
         create: allowRoles(admin, moderator, editor),
@@ -74,7 +76,12 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: ({ operation, existingItem, resolvedData, originalInput }) => {
+        resolveInput: ({
+            operation,
+            existingItem,
+            resolvedData,
+            originalInput,
+        }) => {
             if (resolvedData.file) {
                 resolvedData.meta = resolvedData.file._meta
                 resolvedData.url = resolvedData.file._meta.url
