@@ -1,11 +1,16 @@
-const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields');
-const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { ImageAdapter } = require('../../lib/ImageAdapter');
-const { LocalFileAdapter } = require('@keystonejs/file-adapters');
+const { Text, Select, Relationship, File, Url } = require('@keystonejs/fields')
+const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { ImageAdapter } = require('../../lib/ImageAdapter')
+const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const fs = require('fs')
-const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr');
-const cacheHint = require('../../helpers/cacheHint');
-const gcsDir = 'assets/images/';
+const {
+    admin,
+    moderator,
+    editor,
+    allowRoles,
+} = require('../../helpers/access/readr')
+const cacheHint = require('../../helpers/cacheHint')
+const gcsDir = 'assets/images/'
 
 module.exports = {
     fields: {
@@ -18,8 +23,9 @@ module.exports = {
             label: '檔案',
             type: File,
             adapter: new LocalFileAdapter({
-			  src: './images', path: '/images', //function({id, }){}
-			}),
+                src: './public/images',
+                path: '/images', //function({id, }){}
+            }),
             isRequired: true,
         },
         copyright: {
@@ -44,7 +50,7 @@ module.exports = {
             access: {
                 create: false,
                 update: false,
-            }
+            },
         },
         urlDesktopSized: {
             type: Url,
@@ -75,10 +81,7 @@ module.exports = {
             },
         },
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator, editor),
         create: allowRoles(admin, moderator, editor),
@@ -90,31 +93,38 @@ module.exports = {
     },
     hooks: {
         beforeChange: async ({ existingItem, resolvedData }) => {
-            console.log("BEFORE CHANGE")
-            console.log("EXISTING ITEM", existingItem)
-            console.log("RESOLVED DATA", resolvedData)
-
-			var origFilename;
-            if (typeof resolvedData.file != 'undefined') {
-                var stream = fs.createReadStream(`./images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`)
+            console.log('BEFORE CHANGE')
+            console.log('EXISTING ITEM', existingItem)
+            console.log('RESOLVED DATA', resolvedData)
+            var origFilename
+            if (typeof resolvedData.file !== 'undefined') {
+                var stream = fs.createReadStream(
+                    `./public/images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`
+                )
                 var id = resolvedData.file.id
-				origFilename = resolvedData.file.originalFilename
+                origFilename = resolvedData.file.originalFilename
                 if (resolvedData.needWatermark) {
-                    stream = await addWatermark(stream, resolvedData.file.id, resolvedData.file.originalFilename)
+                    // stream = await addWatermark(
+                    //     stream,
+                    //     resolvedData.file.id,
+                    //     resolvedData.file.originalFilename
+                    // )
                 }
-
-            } else if (typeof existingItem.file != 'undefined') {
-
-                var stream = fs.createReadStream(`./images/${existingItem.file.id}-${existingItem.file.originalFilename}`)
+            } else if (typeof existingItem.file !== 'undefined') {
+                var stream = fs.createReadStream(
+                    `./public/images/${existingItem.file.id}-${existingItem.file.originalFilename}`
+                )
                 var id = existingItem.file.id
-				origFilename = existingItem.file.originalFilename
+                origFilename = existingItem.file.originalFilename
                 if (existingItem.needWatermark) {
-                    stream = await addWatermark(stream, existingItem.file.id, existingItem.file.originalFilename)
+                    // stream = await addWatermark(
+                    //     stream,
+                    //     existingItem.file.id,
+                    //     existingItem.file.originalFilename
+                    // )
                 }
             }
-
             const image_adapter = new ImageAdapter(gcsDir)
-
             let _meta = image_adapter.sync_save(stream, id, origFilename)
             if (resolvedData.file) {
                 resolvedData.urlOriginal = _meta.url.urlOriginal
@@ -123,11 +133,10 @@ module.exports = {
                 resolvedData.urlTabletSized = _meta.url.urlTabletSized
                 resolvedData.urlTinySized = _meta.url.urlTinySized
             }
-
             return { existingItem, resolvedData }
-        }
+        },
         // Hooks for create and update operations
-		/*
+        /*
         resolveInput: ({ operation, existingItem, resolvedData, originalInput }) => {
             if (resolvedData.file) {
                 resolvedData.urlOriginal = resolvedData.file._meta.url.urlOriginal

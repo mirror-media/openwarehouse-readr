@@ -3,6 +3,7 @@ const { GraphQLApp } = require('@keystonejs/app-graphql')
 const { AdminUIApp } = require('@keystonejs/app-admin-ui')
 const { KnexAdapter: Adapter } = require('@keystonejs/adapter-knex')
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password')
+const { StaticApp } = require('@keystonejs/app-static')
 
 const {
     app,
@@ -139,7 +140,8 @@ if (!!app.isAdminAppRequired) {
             enableDefaultRoute: true,
             hooks: require.resolve(`./hooks/${app.project}`),
             authStrategy,
-        })
+        }),
+        new StaticApp({ path: '/', src: 'public' })
     )
 }
 
