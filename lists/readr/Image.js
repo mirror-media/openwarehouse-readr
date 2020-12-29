@@ -11,6 +11,7 @@ const {
 } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
+const addWatermark = require('../../helpers/watermark')
 
 module.exports = {
     fields: {
@@ -110,22 +111,25 @@ module.exports = {
                     //     resolvedData.file.originalFilename
                     // )
                 }
-            } else if (typeof existingItem.file !== 'undefined') {
-                var stream = fs.createReadStream(
-                    `./public/images/${existingItem.file.id}-${existingItem.file.originalFilename}`
-                )
-                var id = existingItem.file.id
-                origFilename = existingItem.file.originalFilename
-                if (existingItem.needWatermark) {
-                    // stream = await addWatermark(
-                    //     stream,
-                    //     existingItem.file.id,
-                    //     existingItem.file.originalFilename
-                    // )
-                }
             }
+
+            // if (existingItem && typeof existingItem.file !== 'undefined') {
+            //     var stream = fs.createReadStream(
+            //         `./public/images/${existingItem.file.id}-${existingItem.file.originalFilename}`
+            //     )
+            //     var id = existingItem.file.id
+            //     origFilename = existingItem.file.originalFilename
+            //     if (existingItem.needWatermark) {
+            //         // stream = await addWatermark(
+            //         //     stream,
+            //         //     existingItem.file.id,
+            //         //     existingItem.file.originalFilename
+            //         // )
+            //     }
+            // }
             const image_adapter = new ImageAdapter(gcsDir)
             let _meta = image_adapter.sync_save(stream, id, origFilename)
+
             if (resolvedData.file) {
                 resolvedData.urlOriginal = _meta.url.urlOriginal
                 resolvedData.urlDesktopSized = _meta.url.urlDesktopSized
