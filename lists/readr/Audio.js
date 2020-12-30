@@ -1,4 +1,4 @@
-const { Text, Relationship, File } = require('@keystonejs/fields')
+const { Text, Relationship, File, Integer } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { GCSAdapter } = require('../../lib/GCSAdapter')
 const {
@@ -50,14 +50,14 @@ module.exports = {
                 update: false,
             },
         },
-        // duration: {
-        //     label: '音檔長度（秒）',
-        //     type: Number,
-        //     access: {
-        //         create: false,
-        //         update: false,
-        //     },
-        // }
+        duration: {
+            label: '音檔長度（秒）',
+            type: Text,
+            access: {
+                create: false,
+                update: false,
+            },
+        },
     },
     plugins: [atTracking(), byTracking()],
     access: {

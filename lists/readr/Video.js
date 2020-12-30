@@ -56,14 +56,14 @@ module.exports = {
                 update: false,
             },
         },
-        // duration: {
-        //     label: '影片長度（秒）',
-        //     type: Number,
-        //     access: {
-        //         create: false,
-        //         update: false,
-        //     },
-        // }
+        duration: {
+            label: '影片長度（秒）',
+            type: Text,
+            access: {
+                create: false,
+                update: false,
+            },
+        },
     },
     plugins: [atTracking(), byTracking()],
     access: {
