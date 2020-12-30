@@ -13,7 +13,6 @@ async function addWatermark(stream, id, filename) {
     )
 
     console.log('===end addWatermark===')
-
     return fs.createReadStream(newLocalMarked)
     //composite -gravity SouthEast ./public/images/2020-mirror-logo.png ./fuckkmt.jpg ./watermarked.jpg
 }
