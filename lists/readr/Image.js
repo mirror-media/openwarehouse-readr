@@ -93,11 +93,14 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
+        // Hooks for create and update operations
+
         beforeChange: async ({ existingItem, resolvedData }) => {
             console.log('BEFORE CHANGE')
             console.log('EXISTING ITEM', existingItem)
             console.log('RESOLVED DATA', resolvedData)
             var origFilename
+            // when create image or update newer image
             if (typeof resolvedData.file !== 'undefined') {
                 var stream = fs.createReadStream(
                     `./public/images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`
@@ -113,22 +116,35 @@ module.exports = {
                 }
             }
 
-            // if (existingItem && typeof existingItem.file !== 'undefined') {
-            //     var stream = fs.createReadStream(
-            //         `./public/images/${existingItem.file.id}-${existingItem.file.originalFilename}`
-            //     )
-            //     var id = existingItem.file.id
-            //     origFilename = existingItem.file.originalFilename
-            //     if (existingItem.needWatermark) {
-            //         // stream = await addWatermark(
-            //         //     stream,
-            //         //     existingItem.file.id,
-            //         //     existingItem.file.originalFilename
-            //         // )
-            //     }
-            // }
+            // when update image, newer image's name date is enherit to the old one(Todo)
+            if (existingItem && typeof existingItem.file !== 'undefined') {
+                // var stream = fs.createReadStream(
+                //     `./public/images/${existingItem.file.id}-${existingItem.file.originalFilename}`
+                // )
+                console.log('update stream')
+                // var id = existingItem.file.id
+                // origFilename = existingItem.file.originalFilename
+                if (existingItem.needWatermark) {
+                    // stream = await addWatermark(
+                    //     stream,
+                    //     existingItem.file.id,
+                    //     existingItem.file.originalFilename
+                    // )
+                }
+            }
             const image_adapter = new ImageAdapter(gcsDir)
             let _meta = image_adapter.sync_save(stream, id, origFilename)
+
+            if (existingItem && typeof existingItem.file !== 'undefined') {
+                // console.log(`existingItem:${existingItem.file.id}`)
+                // console.log(`resolvedData:${resolvedData.file.id}`)
+
+                await image_adapter.delete(
+                    existingItem.file.id,
+                    existingItem.file.originalFilename
+                )
+                console.log('deleted old one')
+            }
 
             if (resolvedData.file) {
                 resolvedData.urlOriginal = _meta.url.urlOriginal
@@ -139,7 +155,18 @@ module.exports = {
             }
             return { existingItem, resolvedData }
         },
-        // Hooks for create and update operations
+        // When delete image, delete image in gcs as well
+        beforeDelete: async ({ existingItem }) => {
+            const image_adapter = new ImageAdapter(gcsDir)
+
+            if (existingItem && typeof existingItem.file !== 'undefined') {
+                await image_adapter.delete(
+                    existingItem.file.id,
+                    existingItem.file.originalFilename
+                )
+                console.log('deleted old one')
+            }
+        },
         /*
         resolveInput: ({ operation, existingItem, resolvedData, originalInput }) => {
             if (resolvedData.file) {
