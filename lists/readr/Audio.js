@@ -10,6 +10,7 @@ const {
 const cacheHint = require('../../helpers/cacheHint')
 
 const gcsDir = 'assets/audios/'
+const fileAdapter = new GCSAdapter(gcsDir)
 
 module.exports = {
     fields: {
@@ -19,9 +20,20 @@ module.exports = {
             isRequired: true,
         },
         file: {
+            label: '檔案',
             type: File,
-            adapter: new GCSAdapter(gcsDir),
+            adapter: fileAdapter,
             isRequired: true,
+            hooks: {
+                beforeChange: async ({ existingItem }) => {
+                    if (existingItem && existingItem.file) {
+                        await fileAdapter.delete(
+                            existingItem.file.id,
+                            existingItem.file.originalFilename
+                        )
+                    }
+                },
+            },
         },
         coverPhoto: {
             label: '封面照片',
@@ -82,6 +94,15 @@ module.exports = {
                 resolvedData.duration = resolvedData.file._meta.duration
             }
             return resolvedData
+        },
+
+        afterDelete: async ({ existingItem }) => {
+            if (existingItem.file) {
+                await fileAdapter.delete(
+                    existingItem.file.id,
+                    existingItem.file.originalFilename
+                )
+            }
         },
     },
     plural: 'Audios',
