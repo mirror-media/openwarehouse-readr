@@ -186,40 +186,42 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        validateInput: async ({ resolvedData, addFieldValidationError }) => {
-            console.log('I am validateInput in post list')
-            console.log(resolvedData)
-            console.log(typeof resolvedData.publishTime)
+        // validateInput: async ({ resolvedData, addFieldValidationError }) => {
+        //     console.log('I am validateInput in post list')
+        //     console.log(resolvedData)
+        //     console.log(typeof resolvedData.publishTime)
 
-            const { state, publishTime } = resolvedData
-            addFieldValidationError('time is not undefined')
+        //     const { state, publishTime } = resolvedData
+        //     addFieldValidationError('time is not undefined')
 
-            if (typeof publishTime === 'undefined') {
-                addFieldValidationError('time is undefined')
-            }
-        },
-        // beforeChange: async ({ existingItem, resolvedData }) => {
-        //     try {
-        //         content = JSON.parse(
-        //             resolvedData.content || existingItem.content
-        //         )
-        //         resolvedData.contentHtml = JSON.parse(resolvedData.content).html
-        //         resolvedData.contentApiData = JSON.stringify(
-        //             JSON.parse(resolvedData.content).apiData
-        //         )
-        //         console.log(typeof content.apiData)
-        //         delete content['html']
-        //         delete content['apiData']
-        //         resolvedData.content = content
-        //         return { existingItem, resolvedData }
-        //     } catch (err) {
-        //         console.log(err)
-        //         console.log('EXISTING ITEM')
-        //         console.log(existingItem)
-        //         console.log('RESOLVED DATA')
-        //         console.log(resolvedData)
+        //     if (typeof publishTime === 'undefined') {
+        //         addFieldValidationError('time is undefined')
         //     }
         // },
+
+        beforeChange: async ({ existingItem, resolvedData }) => {
+            console.log('---beforeChange---')
+            try {
+                const waitingForParse =
+                    resolvedData.content || existingItem.content
+
+                resolvedData.contentHtml = JSON.parse(waitingForParse).html
+                resolvedData.contentApiData = JSON.stringify(
+                    JSON.parse(waitingForParse).apiData
+                )
+                console.log(typeof content.apiData)
+                delete content['html']
+                delete content['apiData']
+                resolvedData.content = content
+                return { existingItem, resolvedData }
+            } catch (err) {
+                console.log(err)
+                console.log('EXISTING ITEM')
+                console.log(existingItem)
+                console.log('RESOLVED DATA')
+                console.log(resolvedData)
+            }
+        },
     },
     labelField: 'title',
     cacheHint: cacheHint,

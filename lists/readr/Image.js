@@ -100,7 +100,9 @@ module.exports = {
             console.log('EXISTING ITEM', existingItem)
             console.log('RESOLVED DATA', resolvedData)
             var origFilename
-            // when create image or update newer image
+
+            // resolvedData = true
+            // when create or update newer image
             if (typeof resolvedData.file !== 'undefined') {
                 var stream = fs.createReadStream(
                     `./public/images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`
@@ -114,46 +116,49 @@ module.exports = {
                     //     resolvedData.file.originalFilename
                     // )
                 }
-            }
 
-            // when update image, newer image's name date is enherit to the old one(Todo)
-            if (existingItem && typeof existingItem.file !== 'undefined') {
-                // var stream = fs.createReadStream(
-                //     `./public/images/${existingItem.file.id}-${existingItem.file.originalFilename}`
-                // )
-                console.log('update stream')
-                // var id = existingItem.file.id
-                // origFilename = existingItem.file.originalFilename
-                if (existingItem.needWatermark) {
-                    // stream = await addWatermark(
-                    //     stream,
-                    //     existingItem.file.id,
-                    //     existingItem.file.originalFilename
-                    // )
-                }
-            }
-            const image_adapter = new ImageAdapter(gcsDir)
-            let _meta = image_adapter.sync_save(stream, id, origFilename)
-
-            if (existingItem && typeof existingItem.file !== 'undefined') {
-                // console.log(`existingItem:${existingItem.file.id}`)
-                // console.log(`resolvedData:${resolvedData.file.id}`)
-
-                await image_adapter.delete(
-                    existingItem.file.id,
-                    existingItem.file.originalFilename
-                )
-                console.log('deleted old one')
-            }
-
-            if (resolvedData.file) {
+                // upload image to gcs,and generate corespond meta data(url )
+                const image_adapter = new ImageAdapter(gcsDir)
+                let _meta = image_adapter.sync_save(stream, id, origFilename)
                 resolvedData.urlOriginal = _meta.url.urlOriginal
                 resolvedData.urlDesktopSized = _meta.url.urlDesktopSized
                 resolvedData.urlMobileSized = _meta.url.urlMobileSized
                 resolvedData.urlTabletSized = _meta.url.urlTabletSized
                 resolvedData.urlTinySized = _meta.url.urlTinySized
+
+                // existingItem = true
+                // create image
+                if (existingItem.file === 'undefined') {
+                } else {
+                    // existingItem = true
+                    // update image
+                    // need to delete old image in gcs
+                    await image_adapter.delete(
+                        existingItem.file.id,
+                        existingItem.file.originalFilename
+                    )
+                    console.log('deleted old one')
+                }
+
+                // // update stored filename
+                // // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
+                // const filename = resolvedData.file.filename
+                // const folderName = filename.split('-')[0]
+                // // check whether file has contained folder path in filename
+                // if (folderName === resolvedData.file.id) {
+                //     return { existingItem, resolvedData }
+                // }
+
+                // const newFilename = `${folderName}/${filename}`
+                // resolvedData.filename = newFilename
+
+                return { existingItem, resolvedData }
+            } else {
+                // resolvedData = false
+                // image is no needed to update
+                console.log('no need to update stream')
+                return { existingItem, resolvedData }
             }
-            return { existingItem, resolvedData }
         },
         // When delete image, delete image in gcs as well
         beforeDelete: async ({ existingItem }) => {
