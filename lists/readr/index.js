@@ -13,4 +13,5 @@ module.exports = {
     Tag: require('./Tag'),
     User: require('./User'),
     Video: require('./Video'),
+    // EditorLog: require('./EditorLog'),
 }

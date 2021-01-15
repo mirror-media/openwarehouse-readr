@@ -5,6 +5,8 @@ const { KnexAdapter: Adapter } = require('@keystonejs/adapter-knex')
 const { PasswordAuthStrategy } = require('@keystonejs/auth-password')
 const { StaticApp } = require('@keystonejs/app-static')
 
+var bodyParser = require('body-parser')
+
 const {
     app,
     database,
@@ -150,6 +152,7 @@ module.exports = {
     apps: [new GraphQLApp(graphQLOptions), ...optionalApps],
     configureExpress: (app) => {
         app.set('trust proxy', true)
+        app.use(bodyParser.json({ limit: '2mb' }))
     },
 }
 
