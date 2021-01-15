@@ -1,87 +1,156 @@
-const { Keystone } = require('@keystonejs/keystone');
-const { GraphQLApp } = require('@keystonejs/app-graphql');
-const { AdminUIApp } = require('@keystonejs/app-admin-ui');
-const { KnexAdapter: Adapter } = require('@keystonejs/adapter-knex');
-const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
+const { Keystone } = require('@keystonejs/keystone')
+const { GraphQLApp } = require('@keystonejs/app-graphql')
+const { AdminUIApp } = require('@keystonejs/app-admin-ui')
+const { KnexAdapter: Adapter } = require('@keystonejs/adapter-knex')
+const { PasswordAuthStrategy } = require('@keystonejs/auth-password')
+const { StaticApp } = require('@keystonejs/app-static')
 
-const { app, database, session, redis: redisConf } = require('./configs/config.js')
-const lists = require(`./lists/index.js`);
+const {
+    app,
+    database,
+    session,
+    redis: redisConf,
+} = require('./configs/config.js')
+const lists = require(`./lists/${app.project}`)
 const createDefaultAdmin = require('./helpers/createDefaultAdmin')
 
-const redis = require('redis');
-const expressSession = require('express-session');
-const RedisStore = require('connect-redis')(expressSession);
-const { RedisCache } = require('apollo-server-cache-redis');
-const responseCachePlugin = require('apollo-server-plugin-response-cache');
+const redis = require('redis')
+const expressSession = require('express-session')
+const RedisStore = require('connect-redis')(expressSession)
+const { RedisCache, RedisClusterCache } = require('apollo-server-cache-redis')
+const responseCachePlugin = require('apollo-server-plugin-response-cache')
+const ioredis = require('ioredis')
 
 const adapterConfig = {
-  dropDatabase: app.dropDatabase,
-  knexOptions: {
-    client: 'postgres',
-    connection: `postgresql://${database.acc}:${database.pass}@${database.host}/${database.db}`,
-  }
-};
-
-const keystone = new Keystone({
-  name: app.applicationName,
-  adapter: new Adapter(adapterConfig),
-  cookieSecret: session.cookieSecret,
-  onConnect: createDefaultAdmin(app.project),
-  sessionStore: new RedisStore({
-    client: redis.createClient({
-      host: redisConf.host,
-      port: redisConf.port,
-      auth_pass: redisConf.authPass,
-      prefix: `${app.uuid}-`,
-    }),
-    options: {
-      ttl: session.ttl
-    }
-  })
-});
-
-for (var name in lists) {
-  // Remove cacheHint if we want users to reach realtime data
-  if (!app.isRedisCacheRequired) {
-    delete lists[name].cacheHint;
-  }
-  keystone.createList(name, lists[name]);
+    dropDatabase: app.dropDatabase,
+    knexOptions: {
+        client: 'postgres',
+        connection: `postgresql://${database.acc}:${database.pass}@${database.host}/${database.db}`,
+    },
 }
 
+const newRedisClient = (redisConf) => {
+    const { options } = redisConf
+    switch (redisConf.type) {
+        case 'single':
+            return new ioredis(
+                {
+                    port: redisConf.nodes[0].port, // First Redis port
+                    host: redisConf.nodes[0].host, // First Redis host
+                },
+                {
+                    password: options.authPass,
+                }
+            )
+        case 'cluster':
+            return new ioredis.Cluster(redisConf.nodes, {
+                scaleReads: options.scaleReads,
+                redisOptions: {
+                    password: options.authPass,
+                },
+            })
+        default:
+            return null
+    }
+}
+
+const keystone = new Keystone({
+    name: app.applicationName,
+    adapter: new Adapter(adapterConfig),
+    cookie: {
+        // If it's explicitly configured to use insecure cookies, overwrite the default setting.
+        // Anything else will be fallback to the default of true in production.
+        secure:
+            session.secure === false
+                ? false
+                : process.env.NODE_ENV === 'production',
+    },
+    cookieSecret: session.cookieSecret,
+    onConnect: createDefaultAdmin(app.project),
+    sessionStore: new RedisStore({
+        client: newRedisClient(redisConf),
+        ttl: session.ttl,
+        prefix: `${app.uuid}-ss:`,
+    }),
+})
+
+for (var name in lists) {
+    // Remove cacheHint if we want users to reach realtime data
+    if (!app.isGraphQLCached) {
+        delete lists[name].cacheHint
+    }
+    keystone.createList(name, lists[name])
+}
 
 const authStrategy = keystone.createAuthStrategy({
-  type: PasswordAuthStrategy,
-  list: app.authList,
-});
+    type: PasswordAuthStrategy,
+    list: app.authList,
+})
 
+// Default apollo options
+const apolloDftOptions = {
+    introspection: true,
+}
 
-const graphQLOptions = app.isRedisCacheRequired ? {
-  apollo: {
-    cache: new RedisCache({
-      // Default ttl is 300. Change it to tweek performance
-      host: redisConf.host,
-      port: redisConf.port,
-      password: redisConf.authPass,
-      keyPrefix: `${app.uuid}-cache:`,
-    }),
-    plugins: [responseCachePlugin()],
-  },
-} : {};
+// apollo Redis cache options
+const apolloRedisCacheOptions = {}
+if (!!app.isGraphQLCached) {
+    const { options } = redisConf
+    const keyPrefix = `${app.uuid}-cache:`
+    switch (redisConf.type) {
+        case 'single':
+            apolloRedisCacheOptions.plugins = [responseCachePlugin()]
+            apolloRedisCacheOptions.cache = new RedisCache({
+                host: redisConf.nodes[0].host,
+                port: redisConf.nodes[0].port,
+                password: options.authPass,
+                keyPrefix: keyPrefix,
+            })
+            break
+        case 'cluster':
+            apolloRedisCacheOptions.plugins = [responseCachePlugin()]
+            apolloRedisCacheOptions.cache = new RedisClusterCache(
+                redisConf.nodes,
+                {
+                    scaleReads: options.scaleReads,
+                    redisOptions: {
+                        password: options.authPass,
+                        prefix: keyPrefix,
+                    },
+                }
+            )
+            break
+        default:
+            throw 'wrong redis type'
+    }
+}
+
+const graphQLOptions = {
+    apollo: {
+        ...apolloDftOptions,
+        ...apolloRedisCacheOptions,
+    },
+}
 
 let optionalApps = []
 
-if (app.isAdminAppRequired) {
-  optionalApps.push(new AdminUIApp({
-    enableDefaultRoute: true,
-    hooks: require.resolve(`./hooks/${app.project}`),
-    authStrategy,
-  }));
+if (!!app.isAdminAppRequired) {
+    optionalApps.push(
+        new AdminUIApp({
+            enableDefaultRoute: true,
+            hooks: require.resolve(`./hooks/${app.project}`),
+            authStrategy,
+        }),
+        new StaticApp({ path: '/', src: 'public' })
+    )
 }
 
 module.exports = {
-  keystone,
-  apps: [
-    new GraphQLApp(graphQLOptions),
-    ...optionalApps,
-  ],
-};
+    keystone,
+    apps: [new GraphQLApp(graphQLOptions), ...optionalApps],
+    configureExpress: (app) => {
+        app.set('trust proxy', true)
+    },
+}
+
+// [CI SKIP]

@@ -1,7 +1,10 @@
-const { Text } = require('@keystonejs/fields');
-const { importView } = require('@keystonejs/build-field-types');
-const { Implementation, MongoIntegerInterface, KnexIntegerInterface } = require('./Implementation');
-
+const { Text } = require('@keystonejs/fields')
+const { importView } = require('@keystonejs/build-field-types')
+const {
+    Implementation,
+    MongoIntegerInterface,
+    KnexIntegerInterface,
+} = require('./Implementation')
 
 module.exports = {
     type: 'HTML',
@@ -16,4 +19,4 @@ module.exports = {
         mongoose: MongoIntegerInterface,
         knex: KnexIntegerInterface,
     },
-};
+}
