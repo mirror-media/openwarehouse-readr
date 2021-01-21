@@ -17,7 +17,7 @@ module.exports = {
             type: Text,
             isRequired: false,
         },
-        title: {
+        name: {
             label: '標題',
             type: Text,
             isRequired: true,
@@ -182,7 +182,7 @@ module.exports = {
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'sortOrder,title, state, publishTime, createdAt',
+        defaultColumns: 'sortOrder,name, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
     hooks: {
@@ -223,6 +223,6 @@ module.exports = {
             }
         },
     },
-    labelField: 'title',
+    labelField: 'name',
     cacheHint: cacheHint,
 }

@@ -36,7 +36,7 @@ const formatImagePath = (data) => {
 
 module.exports = {
     fields: {
-        title: {
+        name: {
             label: '標題',
             type: Text,
             isRequired: true,
@@ -107,7 +107,7 @@ module.exports = {
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'title, image, createdAt',
+        defaultColumns: 'name, image, createdAt',
         defaultSort: '-createdAt',
     },
     hooks: {
@@ -219,6 +219,6 @@ module.exports = {
         },
 		*/
     },
-    labelField: 'title',
+    labelField: 'name',
     cacheHint: cacheHint,
 }

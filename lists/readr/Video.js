@@ -14,7 +14,7 @@ const fileAdapter = new GCSAdapter(gcsDir)
 
 module.exports = {
     fields: {
-        title: {
+        name: {
             label: '標題',
             type: Text,
             isRequired: true,
@@ -83,7 +83,7 @@ module.exports = {
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'title, tags, state, publishTime, createdAt',
+        defaultColumns: 'name, tags, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
     hooks: {
@@ -109,6 +109,6 @@ module.exports = {
             }
         },
     },
-    labelField: 'title',
+    labelField: 'name',
     cacheHint: cacheHint,
 }

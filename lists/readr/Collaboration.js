@@ -17,7 +17,7 @@ module.exports = {
             type: Integer,
             isUnique: true,
         },
-        title: {
+        name: {
             label: '標題',
             type: Text,
             isRequired: true,
@@ -73,7 +73,7 @@ module.exports = {
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'title, description, progress, state, createdAt',
+        defaultColumns: 'name, description, progress, state, createdAt',
         defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,

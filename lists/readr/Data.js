@@ -17,7 +17,7 @@ module.exports = {
             type: Integer,
             isUnique: true,
         },
-        title: {
+        name: {
             label: '標題',
             type: Text,
             isRequired: true,
