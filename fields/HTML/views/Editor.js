@@ -1,17 +1,5 @@
-import React, { Component, useState, useEffect } from 'react'
-import {
-    BlockMapBuilder,
-    Editor,
-    EditorState,
-    KeyBindingUtil,
-    Modifier,
-    Entity,
-    RichUtils,
-    convertFromHTML,
-    convertFromRaw,
-    convertToRaw,
-    getDefaultKeyBinding,
-} from 'draft-js'
+import React, { useState, useEffect } from 'react'
+import { Editor, EditorState } from 'draft-js'
 
 function DraftEditor(props) {
     const { value, onChange } = props
@@ -35,6 +23,7 @@ function DraftEditor(props) {
             onChange={onEditorStateChange}
             placeholder="Enter HTML Here..."
         />
+        // <input type="text" />
     )
 }
 

@@ -5,6 +5,10 @@ const cacheHint = require('../../helpers/cacheHint')
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
+const { parseContent } = require('../../lib/parseContent')
+const { logging } = require('@keystonejs/list-plugins')
+const { handleEditLog } = require('../../lib/handleEditLog')
+
 module.exports = {
     fields: {
         sortOrder: {
@@ -41,8 +45,6 @@ module.exports = {
                     addFieldValidationError,
                 }) => {
                     console.log('I am validateInput in publishTime')
-                    console.log(resolvedData.publishTime)
-                    console.log(typeof resolvedData.publishTime)
 
                     const { state, publishTime } = resolvedData
                 },
@@ -175,7 +177,11 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking(),
+        byTracking(),
+        logging((args) => handleEditLog(args)),
+    ],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),
@@ -201,26 +207,7 @@ module.exports = {
 
         beforeChange: async ({ existingItem, resolvedData }) => {
             console.log('---beforeChange---')
-            try {
-                const waitingForParse =
-                    resolvedData.content || existingItem.content
-
-                resolvedData.contentHtml = JSON.parse(waitingForParse).html
-                resolvedData.contentApiData = JSON.stringify(
-                    JSON.parse(waitingForParse).apiData
-                )
-                console.log(typeof content.apiData)
-                delete content['html']
-                delete content['apiData']
-                resolvedData.content = content
-                return { existingItem, resolvedData }
-            } catch (err) {
-                console.log(err)
-                console.log('EXISTING ITEM')
-                console.log(existingItem)
-                console.log('RESOLVED DATA')
-                console.log(resolvedData)
-            }
+            return parseContent(existingItem, resolvedData)
         },
     },
     labelField: 'name',
