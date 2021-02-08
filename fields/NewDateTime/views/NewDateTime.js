@@ -16,14 +16,20 @@ function NewDateTime({ value, onChange }) {
     const changeHandler = (momentObj) => {
         let edittedMomentObj = momentObj
 
+        // when user edit field's content by keyboard
         if (typeof momentObj !== 'object') {
-            edittedMomentObj = moment(momentObj)
-        }
-        const selectUnixTimestamp = parseInt(edittedMomentObj.format('x'))
-        const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
+            // edittedMomentObj = moment()
+            setInputField(null)
+            onChange(null)
+        } else {
+            const selectUnixTimestamp = parseInt(edittedMomentObj.format('x'))
+            // const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
 
-        setInputField(selectUnixTimestamp)
-        onChange(selectISO8601)
+            const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
+
+            setInputField(selectUnixTimestamp)
+            onChange(selectISO8601)
+        }
     }
 
     // get current unix timestamp
