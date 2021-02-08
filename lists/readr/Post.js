@@ -207,7 +207,9 @@ module.exports = {
 
         beforeChange: async ({ existingItem, resolvedData }) => {
             console.log('---beforeChange---')
-            return parseContent(existingItem, resolvedData)
+            const response = parseContent(existingItem, resolvedData)
+            console.log(response)
+            return response
         },
     },
     labelField: 'name',

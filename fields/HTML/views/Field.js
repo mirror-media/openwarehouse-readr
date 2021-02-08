@@ -17,12 +17,6 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                 <FieldLabel field={field} errors={errors} />
                 <FieldDescription text={field.adminDoc} />
 
-                <HtmlDraftEditor
-                    KeyStoneOnChange={onChange}
-                    autoFocus={autoFocus}
-                    field={field}
-                    value={value}
-                />
                 {/* <DraftEditor value={value} onChange={onChange} /> */}
             </div>
         </FieldContainer>
