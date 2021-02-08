@@ -1,6 +1,7 @@
 const { Text, DateTime } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { admin, allowRoles } = require('../../helpers/access/mirror-tv')
+const HTML = require('../../fields/HTML')
 
 module.exports = {
     fields: {
@@ -15,14 +16,6 @@ module.exports = {
         operation: {
             label: '動作',
             type: Text,
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        editTime: {
-            label: '編輯時間',
-            type: DateTime,
-            format: 'dd/MM/yyyy HH:mm Z',
             adminConfig: {
                 isReadOnly: true,
             },
@@ -42,6 +35,13 @@ module.exports = {
                 isReadOnly: true,
             },
         },
+        // content: {
+        //     label: '內文',
+        //     type: HTML,
+        //     adminConfig: {
+        //         isReadOnly: true,
+        //     },
+        // },
     },
     plugins: [atTracking({ format: 'MM/DD/YYYY h:mm OOOO' }), byTracking()],
     access: {

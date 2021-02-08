@@ -182,23 +182,29 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        validateInput: async ({
-            existingItem,
-            resolvedData,
-            addValidationError,
-        }) => {
-            let currentState = resolvedData.state || existingItem.state
-            let currentPublishTime =
-                resolvedData.publishTime || existingItem.publishTime
+        // validateInput: async ({
+        //     existingItem,
+        //     resolvedData,
+        //     addValidationError,
+        // }) => {
+        //     let currentState = resolvedData.state || existingItem.state
+        //     let currentPublishTime =
+        //         resolvedData.publishTime || resolvedData.publishTime
+        //     console.log('-----currentState-----')
+        //     console.log(currentState)
+        //     console.log('-----currentPublishTime-----')
+        //     console.log(currentPublishTime)
+        //     console.log('-----typeof currentPublishTime-----')
+        //     console.log(typeof currentPublishTime)
 
-            if (currentState === 'published' || currentState === 'scheduled') {
-                if (currentPublishTime === null) {
-                    addValidationError(
-                        '若狀態為「Published」、「Scheduled」,則發佈時間不能空白'
-                    )
-                }
-            }
-        },
+        //     if (currentState === 'published' || currentState === 'scheduled') {
+        //         if (currentPublishTime === null) {
+        //             addValidationError(
+        //                 '若狀態為「Published」、「Scheduled」,則發佈時間不能空白'
+        //             )
+        //         }
+        //     }
+        // },
         beforeChange: async ({ existingItem, resolvedData }) => {
             console.log('---beforeChange---')
             resolvedData = parseResolvedData(existingItem, resolvedData)
