@@ -170,7 +170,7 @@ module.exports = {
     plugins: [
         atTracking(),
         byTracking(),
-        // logging((args) => handleEditLog(args)),
+        logging((args) => handleEditLog(args)),
     ],
     access: {
         update: allowRoles(admin, moderator),
@@ -182,29 +182,26 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        // validateInput: async ({
-        //     existingItem,
-        //     resolvedData,
-        //     addValidationError,
-        // }) => {
-        //     let currentState = resolvedData.state || existingItem.state
-        //     let currentPublishTime =
-        //         resolvedData.publishTime || resolvedData.publishTime
-        //     console.log('-----currentState-----')
-        //     console.log(currentState)
-        //     console.log('-----currentPublishTime-----')
-        //     console.log(currentPublishTime)
-        //     console.log('-----typeof currentPublishTime-----')
-        //     console.log(typeof currentPublishTime)
+        validateInput: async ({
+            existingItem,
+            resolvedData,
+            addValidationError,
+        }) => {
+            let currentState = resolvedData.state || existingItem.state
+            let currentPublishTime =
+                resolvedData.publishTime || resolvedData.publishTime
 
-        //     if (currentState === 'published' || currentState === 'scheduled') {
-        //         if (currentPublishTime === null) {
-        //             addValidationError(
-        //                 '若狀態為「Published」、「Scheduled」,則發佈時間不能空白'
-        //             )
-        //         }
-        //     }
-        // },
+            if (currentState === 'published' || currentState === 'scheduled') {
+                if (
+                    currentPublishTime === null ||
+                    typeof currentPublishTime === 'undefined'
+                ) {
+                    addValidationError(
+                        '若狀態為「Published」、「Scheduled」,則發佈時間不能空白'
+                    )
+                }
+            }
+        },
         beforeChange: async ({ existingItem, resolvedData }) => {
             console.log('---beforeChange---')
             resolvedData = parseResolvedData(existingItem, resolvedData)
