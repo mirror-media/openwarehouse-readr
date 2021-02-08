@@ -39,16 +39,6 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
-            hooks: {
-                validateInput: async ({
-                    resolvedData,
-                    addFieldValidationError,
-                }) => {
-                    console.log('I am validateInput in publishTime')
-
-                    const { state, publishTime } = resolvedData
-                },
-            },
         },
         categories: {
             label: '分類',
@@ -192,42 +182,23 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        // validateInput: async ({ resolvedData, addFieldValidationError }) => {
-        //     console.log('I am validateInput in post list')
-        //     console.log(resolvedData)
-        //     console.log(typeof resolvedData.publishTime)
+        validateInput: async ({
+            existingItem,
+            resolvedData,
+            addValidationError,
+        }) => {
+            let currentState = resolvedData.state || existingItem.state
+            let currentPublishTime =
+                resolvedData.publishTime || existingItem.publishTime
 
-        //     const { state, publishTime } = resolvedData
-        //     addFieldValidationError('time is not undefined')
-
-        //     if (typeof publishTime === 'undefined') {
-        //         addFieldValidationError('time is undefined')
-        //     }
-        // },
-        // beforeChange: async ({ existingItem, resolvedData }) => {
-        //     console.log('---beforeChange---')
-        //     try {
-        //         const waitingForParse =
-        //             resolvedData.content || existingItem.content
-
-        //         resolvedData.contentHtml = JSON.parse(waitingForParse).html
-        //         resolvedData.contentApiData = JSON.stringify(
-        //             JSON.parse(waitingForParse).apiData
-        //         )
-        //         console.log(typeof content.apiData)
-        //         delete content['html']
-        //         delete content['apiData']
-        //         resolvedData.content = content
-        //         return { existingItem, resolvedData }
-        //     } catch (err) {
-        //         console.log(err)
-        //         console.log('EXISTING ITEM')
-        //         console.log(existingItem)
-        //         console.log('RESOLVED DATA')
-        //         console.log(resolvedData)
-        //     }
-        // },
-
+            if (currentState === 'published' || currentState === 'scheduled') {
+                if (currentPublishTime === null) {
+                    addValidationError(
+                        '若狀態為「Published」、「Scheduled」,則發佈時間不能空白'
+                    )
+                }
+            }
+        },
         beforeChange: async ({ existingItem, resolvedData }) => {
             console.log('---beforeChange---')
             resolvedData = parseResolvedData(existingItem, resolvedData)
