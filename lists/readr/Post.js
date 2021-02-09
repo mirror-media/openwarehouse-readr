@@ -152,6 +152,34 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
+        // summaryHtml: {
+        //     type: Text,
+        //     label: 'Content HTML',
+        //     adminConfig: {
+        //         isReadOnly: true,
+        //     },
+        // },
+        // summaryApiData: {
+        //     type: Text,
+        //     label: 'Content API Data',
+        //     adminConfig: {
+        //         isReadOnly: true,
+        //     },
+        // },
+        // briefHtml: {
+        //     type: Text,
+        //     label: 'Content HTML',
+        //     adminConfig: {
+        //         isReadOnly: true,
+        //     },
+        // },
+        // briefApiData: {
+        //     type: Text,
+        //     label: 'Content API Data',
+        //     adminConfig: {
+        //         isReadOnly: true,
+        //     },
+        // },
         contentHtml: {
             type: Text,
             label: 'Content HTML',
@@ -182,6 +210,21 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
+        resolveInput: ({
+            operation,
+            existingItem,
+            originalInput,
+            resolvedData,
+            context,
+            listKey,
+            fieldPath, // Field hooks only
+        }) => {
+            // Input resolution logic. Object returned is used in place of `resolvedData`.
+            console.log('---resolveInput---')
+
+            parseResolvedData(existingItem, resolvedData)
+            return resolvedData
+        },
         validateInput: async ({
             existingItem,
             resolvedData,
@@ -202,10 +245,7 @@ module.exports = {
                 }
             }
         },
-        beforeChange: async ({ existingItem, resolvedData }) => {
-            console.log('---beforeChange---')
-            resolvedData = parseResolvedData(existingItem, resolvedData)
-        },
+        beforeChange: async ({ existingItem, resolvedData }) => {},
     },
     labelField: 'name',
     cacheHint: cacheHint,
