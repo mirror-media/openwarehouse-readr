@@ -3,12 +3,7 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { ImageAdapter } = require('../../lib/ImageAdapter')
 const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const fs = require('fs')
-const {
-    admin,
-    moderator,
-    editor,
-    allowRoles,
-} = require('../../helpers/access/readr')
+const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
 const addWatermark = require('../../helpers/watermark')
@@ -114,19 +109,13 @@ module.exports = {
         // Hooks for create and update operations
 
         beforeChange: async ({ existingItem, resolvedData }) => {
-            console.log('BEFORE CHANGE')
-            console.log('EXISTING ITEM', existingItem)
-            console.log('RESOLVED DATA', resolvedData)
             var origFilename
-
-            // resolvedData = true
-            // when create or update newer image
             if (typeof resolvedData.file !== 'undefined') {
-                var stream = fs.createReadStream(
-                    `./public/images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`
-                )
+                // resolvedData = true
+                // when create or update newer image
+                let fullFileName = resolvedData.file.filename
+                let origFilename = resolvedData.file.originalFilename
                 var id = resolvedData.file.id
-                origFilename = resolvedData.file.originalFilename
 
                 // add needWatermark to image (Todo)
                 if (resolvedData.needWatermark) {
@@ -137,13 +126,14 @@ module.exports = {
                     // )
                 }
 
+                var stream = fs.createReadStream(`./public/images/${fullFileName}`)
+                // upload image to gcs,and generate corespond meta data(url )
+                const imageAdapter = new ImageAdapter(fullFileName)
+                await imageAdapter.uploadImages(stream)
+
                 // upload image to gcs,and generate corespond meta data(url )
                 const image_adapter = new ImageAdapter(gcsDir)
-                let _meta = await image_adapter.sync_save(
-                    stream,
-                    id,
-                    origFilename
-                )
+                let _meta = await image_adapter.sync_save(stream, id, origFilename)
 
                 resolvedData.urlOriginal = _meta.url.urlOriginal
                 resolvedData.urlDesktopSized = _meta.url.urlDesktopSized
@@ -197,10 +187,7 @@ module.exports = {
             const image_adapter = new ImageAdapter(gcsDir)
 
             if (existingItem && typeof existingItem.file !== 'undefined') {
-                await image_adapter.delete(
-                    existingItem.file.id,
-                    existingItem.file.originalFilename
-                )
+                await image_adapter.delete(existingItem.file.id, existingItem.file.originalFilename)
                 console.log('deleted old one')
             }
         },

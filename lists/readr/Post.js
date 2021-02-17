@@ -195,11 +195,7 @@ module.exports = {
             },
         },
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-        logging((args) => handleEditLog(args)),
-    ],
+    plugins: [atTracking(), byTracking(), logging((args) => handleEditLog(args))],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),
@@ -221,27 +217,16 @@ module.exports = {
         }) => {
             // Input resolution logic. Object returned is used in place of `resolvedData`.
             console.log('---resolveInput---')
-
             parseResolvedData(existingItem, resolvedData)
             return resolvedData
         },
-        validateInput: async ({
-            existingItem,
-            resolvedData,
-            addValidationError,
-        }) => {
+        validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
             let currentState = resolvedData.state || existingItem.state
-            let currentPublishTime =
-                resolvedData.publishTime || resolvedData.publishTime
+            let currentPublishTime = resolvedData.publishTime || resolvedData.publishTime
 
             if (currentState === 'published' || currentState === 'scheduled') {
-                if (
-                    currentPublishTime === null ||
-                    typeof currentPublishTime === 'undefined'
-                ) {
-                    addValidationError(
-                        '若狀態為「Published」、「Scheduled」,則發佈時間不能空白'
-                    )
+                if (currentPublishTime === null || typeof currentPublishTime === 'undefined') {
+                    addValidationError('若狀態為「Published」、「Scheduled」,則發佈時間不能空白')
                 }
             }
         },

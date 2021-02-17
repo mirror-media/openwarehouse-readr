@@ -28,15 +28,29 @@ module.exports = {
             },
         },
         changedList: {
-            label: '更動內容',
+            label: '欄位更動內容',
             type: Text,
             isMultiline: true,
             adminConfig: {
                 isReadOnly: true,
             },
         },
+        // summary: {
+        //     label: '已更動重點摘要',
+        //     type: HTML,
+        //     adminConfig: {
+        //         isReadOnly: true,
+        //     },
+        // },
+        // brief: {
+        //     label: '已更動前言',
+        //     type: HTML,
+        //     adminConfig: {
+        //         isReadOnly: true,
+        //     },
+        // },
         // content: {
-        //     label: '內文',
+        //     label: '已更動內文',
         //     type: HTML,
         //     adminConfig: {
         //         isReadOnly: true,
