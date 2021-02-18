@@ -1,7 +1,7 @@
-const { Text, Checkbox, Password, Select } = require('@keystonejs/fields');
-const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, owner, allowRoles } = require('../../helpers/access/readr');
-const cacheHint = require('../../helpers/cacheHint');
+const { Text, Checkbox, Password, Select } = require('@keystonejs/fields')
+const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { admin, moderator, editor, owner, allowRoles } = require('../../helpers/access/readr')
+const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
     fields: {
@@ -37,33 +37,30 @@ module.exports = {
             access: {
                 update: allowRoles(admin),
             },
-        }
+        },
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-    ],
-    access: {
-        read: allowRoles(admin, moderator, editor, owner),
-        update: allowRoles(admin, moderator, owner),
-        create: allowRoles(admin, moderator),
-        delete: allowRoles(admin),
-        auth: true,
-    },
+    plugins: [atTracking(), byTracking()],
+    // access: {
+    //     read: allowRoles(admin, moderator, editor, owner),
+    //     update: allowRoles(admin, moderator, owner),
+    //     create: allowRoles(admin, moderator),
+    //     delete: allowRoles(admin),
+    //     auth: true,
+    // },
     hooks: {
         resolveInput: async ({ operation, existingItem, resolvedData }) => {
             if (operation === 'update' && existingItem.isProtected) {
-                const protectedFields = ['name', 'email', 'role'];
-                protectedFields.forEach(field => {
-                    resolvedData[field] = existingItem[field];
+                const protectedFields = ['name', 'email', 'role']
+                protectedFields.forEach((field) => {
+                    resolvedData[field] = existingItem[field]
                 })
             }
-            return resolvedData;
-        }
+            return resolvedData
+        },
     },
     adminConfig: {
         defaultColumns: 'name, email, role, isProtected, createdAt',
-        defaultSort: '-createdAt'
+        defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,
 }

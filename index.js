@@ -7,12 +7,7 @@ const { StaticApp } = require('@keystonejs/app-static')
 
 var bodyParser = require('body-parser')
 
-const {
-    app,
-    database,
-    session,
-    redis: redisConf,
-} = require('./configs/config.js')
+const { app, database, session, redis: redisConf } = require('./configs/config.js')
 const lists = require(`./lists/${app.project}`)
 const createDefaultAdmin = require('./helpers/createDefaultAdmin')
 
@@ -62,10 +57,7 @@ const keystone = new Keystone({
     cookie: {
         // If it's explicitly configured to use insecure cookies, overwrite the default setting.
         // Anything else will be fallback to the default of true in production.
-        secure:
-            session.secure === false
-                ? false
-                : process.env.NODE_ENV === 'production',
+        secure: session.secure === false ? false : process.env.NODE_ENV === 'production',
     },
     cookieSecret: session.cookieSecret,
     onConnect: createDefaultAdmin(app.project),
@@ -111,16 +103,13 @@ if (!!app.isGraphQLCached) {
             break
         case 'cluster':
             apolloRedisCacheOptions.plugins = [responseCachePlugin()]
-            apolloRedisCacheOptions.cache = new RedisClusterCache(
-                redisConf.nodes,
-                {
-                    scaleReads: options.scaleReads,
-                    redisOptions: {
-                        password: options.authPass,
-                        prefix: keyPrefix,
-                    },
-                }
-            )
+            apolloRedisCacheOptions.cache = new RedisClusterCache(redisConf.nodes, {
+                scaleReads: options.scaleReads,
+                redisOptions: {
+                    password: options.authPass,
+                    prefix: keyPrefix,
+                },
+            })
             break
         default:
             throw 'wrong redis type'

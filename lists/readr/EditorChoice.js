@@ -1,10 +1,4 @@
-const {
-    Integer,
-    Text,
-    Select,
-    Relationship,
-    Url,
-} = require('@keystonejs/fields')
+const { Integer, Text, Select, Relationship, Url } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
@@ -49,6 +43,10 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
+        },
+        test: {
+            label: 'test',
+            type: Text,
         },
     },
     plugins: [atTracking(), byTracking()],

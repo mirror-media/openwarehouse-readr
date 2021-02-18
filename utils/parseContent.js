@@ -37,11 +37,9 @@ const parseResolvedData = (existingItem, resolvedData) => {
 
         storedEditorContentsArray.forEach((editorContent, index) => {
             // for now, only handle content field(Todo)
-            if (fieldsArray[index] !== 'content') return
+            // if (fieldsArray[index] !== 'content') return
 
-            let currentEditorContentValve = _getEditorContentValue(
-                editorContent
-            )
+            let currentEditorContentValve = _getEditorContentValue(editorContent)
             _feedFieldValueToResolvedData(index, currentEditorContentValve)
         })
     } catch (err) {
@@ -65,10 +63,7 @@ const parseResolvedData = (existingItem, resolvedData) => {
         }
     }
 
-    function _feedFieldValueToResolvedData(
-        currentFieldIndex,
-        currentEditorContent
-    ) {
+    function _feedFieldValueToResolvedData(currentFieldIndex, currentEditorContent) {
         // storedEditorContent is formated to 3 part:
         // draftState itself, contentHTML, and contentApidata
         // destructure them and put it into resolvedData's key

@@ -35,33 +35,52 @@ module.exports = {
                 isReadOnly: true,
             },
         },
-        // summary: {
-        //     label: '已更動重點摘要',
-        //     type: HTML,
-        //     adminConfig: {
-        //         isReadOnly: true,
-        //     },
-        // },
-        // brief: {
-        //     label: '已更動前言',
-        //     type: HTML,
-        //     adminConfig: {
-        //         isReadOnly: true,
-        //     },
-        // },
-        // content: {
-        //     label: '已更動內文',
-        //     type: HTML,
-        //     adminConfig: {
-        //         isReadOnly: true,
-        //     },
-        // },
+        summary: {
+            label: '已更動重點摘要',
+            type: HTML,
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        brief: {
+            label: '已更動前言',
+            type: HTML,
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        content: {
+            label: '已更動內文',
+            type: HTML,
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
     },
     plugins: [atTracking({ format: 'MM/DD/YYYY h:mm OOOO' }), byTracking()],
     access: {
         update: allowRoles(admin),
 
         delete: allowRoles(admin),
+    },
+    hooks: {
+        resolveInput: async ({
+            operation,
+            existingItem,
+            originalInput,
+            resolvedData,
+            context,
+            listKey,
+            fieldPath, // Field hooks only
+        }) => {
+            // await controlCharacterFilter(originalInput, existingItem, resolvedData)
+            // await parseResolvedData(existingItem, resolvedData)
+            // console.log('---resolveInput in EditLog---')
+
+            // console.log(resolvedData)
+
+            return resolvedData
+        },
     },
     adminConfig: {
         defaultColumns: 'name, operation, createdAt',

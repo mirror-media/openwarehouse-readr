@@ -154,34 +154,34 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
-        // summaryHtml: {
-        //     type: Text,
-        //     label: 'Content HTML',
-        //     adminConfig: {
-        //         isReadOnly: true,
-        //     },
-        // },
-        // summaryApiData: {
-        //     type: Text,
-        //     label: 'Content API Data',
-        //     adminConfig: {
-        //         isReadOnly: true,
-        //     },
-        // },
-        // briefHtml: {
-        //     type: Text,
-        //     label: 'Content HTML',
-        //     adminConfig: {
-        //         isReadOnly: true,
-        //     },
-        // },
-        // briefApiData: {
-        //     type: Text,
-        //     label: 'Content API Data',
-        //     adminConfig: {
-        //         isReadOnly: true,
-        //     },
-        // },
+        summaryHtml: {
+            type: Text,
+            label: 'Summary HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        summaryApiData: {
+            type: Text,
+            label: 'Summary API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        briefHtml: {
+            type: Text,
+            label: 'Brief HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        briefApiData: {
+            type: Text,
+            label: 'Brief API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
         contentHtml: {
             type: Text,
             label: 'Content HTML',
