@@ -71,10 +71,10 @@ const handleEditLog = async (arg) => {
         variables: variables,
     })
         .then((res) => {
-            console.log(res)
+            console.log('Editlog emit success', res)
         })
         .catch((err) => {
-            console.log(err)
+            console.log('Editlog emit fail', err)
         })
 }
 

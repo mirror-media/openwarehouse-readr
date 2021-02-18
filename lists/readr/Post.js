@@ -9,6 +9,7 @@ const { logging } = require('@keystonejs/list-plugins')
 const { parseResolvedData } = require('../../utils/parseContent')
 const { handleEditLog } = require('../../utils/handleEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
+const { validateIfPostNeedPublishTime } = require('../../utils/validateIfPostNeedPublishTime')
 
 module.exports = {
     fields: {
@@ -223,14 +224,7 @@ module.exports = {
             return resolvedData
         },
         validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
-            let currentState = resolvedData.state || existingItem.state
-            let currentPublishTime = resolvedData.publishTime || resolvedData.publishTime
-
-            if (currentState === 'published' || currentState === 'scheduled') {
-                if (currentPublishTime === null || typeof currentPublishTime === 'undefined') {
-                    addValidationError('若狀態為「Published」、「Scheduled」,則發佈時間不能空白')
-                }
-            }
+            validateIfPostNeedPublishTime(existingItem, resolvedData, addValidationError)
         },
         beforeChange: async ({ existingItem, resolvedData }) => {},
     },
