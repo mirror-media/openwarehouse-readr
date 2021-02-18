@@ -11,6 +11,9 @@ mutation CreateLogList(
   $name: String!
   $operation:String!
   $postId: String!
+  $summary: String!
+  $brief: String!
+  $content: String!
   $changedList: String!
   ) {
   createEditLog(
@@ -18,6 +21,9 @@ mutation CreateLogList(
       name: $name
       operation:$operation
       postId: $postId
+      summary: $summary
+      brief: $brief
+      content: $content
       changedList: $changedList
     }
   ) {
@@ -55,19 +61,18 @@ const handleEditLog = async (arg) => {
     }
 
     editedData = removeUnusedKey(editedData)
-    // editedData = removeHtmlAndApiData(editedData)
+    editedData = removeHtmlAndApiData(editedData)
     const variables = generateVariables(operation, arg, postId, editedData)
 
-    console.log(variables)
     fetch({
         query: CREATE_LOG_LIST,
         variables: variables,
     })
         .then((res) => {
-            console.log('Editlog emit success\n', res)
+            console.log('===Editlog emitted===\n', res, '=====================\n')
         })
         .catch((err) => {
-            console.log('Editlog emit fail\n', err)
+            console.log('Editlog emitted : ===\n', err, '=====================\n')
         })
 }
 
@@ -83,9 +88,10 @@ function removeHtmlAndApiData(editData) {
     ]
 
     fieldsArray.forEach((item) => {
-        if (editData[item]) {
-            delete editData[item]
-        }
+        // if (editData[item]) {
+        //     delete editData[item]
+        // }
+        delete editData[item]
     })
 
     return editData
@@ -117,6 +123,9 @@ function generateVariables(operation, arg, postId, editedData) {
         if (editedData[draftField]) {
             variables[draftField] = editedData[draftField]
             delete editedData[draftField]
+        } else {
+            // empty draft state
+            variables[draftField] = ''
         }
     })
 

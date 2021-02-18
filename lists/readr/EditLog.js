@@ -3,6 +3,8 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { admin, allowRoles } = require('../../helpers/access/mirror-tv')
 const HTML = require('../../fields/HTML')
 
+const { formatChangedList } = require('../../utils/formatChangedList')
+
 module.exports = {
     fields: {
         name: {
@@ -34,6 +36,21 @@ module.exports = {
             adminConfig: {
                 isReadOnly: true,
             },
+            hooks: {
+                resolveInput: async ({
+                    operation,
+                    existingItem,
+                    originalInput,
+                    resolvedData,
+                    context,
+                    listKey,
+                    fieldPath, // Field hooks only
+                }) => {
+                    const changedList = resolvedData[fieldPath] || existingItem[fieldPath]
+                    const formatedChangedList = formatChangedList(changedList)
+                    return formatedChangedList
+                },
+            },
         },
         summary: {
             label: '已更動重點摘要',
@@ -57,31 +74,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking({ format: 'MM/DD/YYYY h:mm OOOO' }), byTracking()],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin),
 
         delete: allowRoles(admin),
     },
-    hooks: {
-        resolveInput: async ({
-            operation,
-            existingItem,
-            originalInput,
-            resolvedData,
-            context,
-            listKey,
-            fieldPath, // Field hooks only
-        }) => {
-            // await controlCharacterFilter(originalInput, existingItem, resolvedData)
-            // await parseResolvedData(existingItem, resolvedData)
-            // console.log('---resolveInput in EditLog---')
 
-            // console.log(resolvedData)
-
-            return resolvedData
-        },
-    },
     adminConfig: {
         defaultColumns: 'name, operation, createdAt',
         defaultSort: '-createdAt',
