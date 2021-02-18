@@ -65,9 +65,6 @@ const handleEditLog = async (arg) => {
         postId: postId,
         changedList: JSON.stringify(parsedEditData),
     }
-    //   upload EditLog
-    console.log('-----variables-----')
-    console.log(variables)
 
     fetch({
         query: CREATE_LOG_LIST,

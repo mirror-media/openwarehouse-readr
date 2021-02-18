@@ -5,9 +5,10 @@ const cacheHint = require('../../helpers/cacheHint')
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
-const { parseResolvedData } = require('../../lib/parseContent')
 const { logging } = require('@keystonejs/list-plugins')
-const { handleEditLog } = require('../../lib/handleEditLog')
+const { parseResolvedData } = require('../../utils/parseContent')
+const { handleEditLog } = require('../../utils/handleEditLog')
+const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 
 module.exports = {
     fields: {
@@ -206,7 +207,7 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: ({
+        resolveInput: async ({
             operation,
             existingItem,
             originalInput,
@@ -217,7 +218,8 @@ module.exports = {
         }) => {
             // Input resolution logic. Object returned is used in place of `resolvedData`.
             console.log('---resolveInput---')
-            parseResolvedData(existingItem, resolvedData)
+            await controlCharacterFilter(originalInput, existingItem, resolvedData)
+            await parseResolvedData(existingItem, resolvedData)
             return resolvedData
         },
         validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
