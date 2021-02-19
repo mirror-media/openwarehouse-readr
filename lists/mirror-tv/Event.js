@@ -5,6 +5,8 @@ const {
     Url,
     Checkbox,
 } = require('@keystonejs/fields')
+const NewDateTime = require('../../fields/NewDateTime/index.js')
+
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const {
     admin,
@@ -15,7 +17,6 @@ const {
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
-const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
@@ -30,7 +31,7 @@ module.exports = {
             options: 'draft, scheduled, published',
             defaultValue: 'draft',
         },
-        publishTime_utc: {
+        publishTime: {
             label: '發佈時間',
             type: NewDateTime,
         },
@@ -45,11 +46,11 @@ module.exports = {
             type: Select,
             options: 'embedded, video, image, logo, mod',
         },
-        startTime_utc: {
+        startTime: {
             label: '開始時間',
             type: NewDateTime,
         },
-        endTime_utc: {
+        endTime: {
             label: '結束時間',
             type: NewDateTime,
         },
@@ -65,6 +66,7 @@ module.exports = {
             label: '圖片',
             type: Relationship,
             ref: 'Image',
+            many: false,
             /*dependsOn: {
                 '$or': [
                     { 'eventType': 'image' },
@@ -97,8 +99,8 @@ module.exports = {
     },
     plugins: [atTracking(), byTracking()],
     access: {
-        update: allowRoles(admin, moderator, editor, owner),
-        create: allowRoles(admin, moderator, editor, contributor),
+        update: allowRoles(admin, moderator),
+        create: allowRoles(admin, moderator),
         delete: allowRoles(admin),
     },
     hooks: {},
@@ -106,5 +108,6 @@ module.exports = {
         defaultColumns: 'name, eventType, state, startTime, endTime',
         defaultSort: '-startTime',
     },
+    labelField: 'name',
     cacheHint: cacheHint,
 }

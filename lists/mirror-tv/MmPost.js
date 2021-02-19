@@ -19,88 +19,6 @@ const {
 const HTML = require('../../fields/HTML')
 const cacheHint = require('../../helpers/cacheHint')
 
-const { createApolloFetch } = require('apollo-fetch')
-const { gql } = require('graphql-tag')
-const { logging } = require('@keystonejs/list-plugins')
-const fetch = createApolloFetch({
-    uri: 'http://localhost:3000/admin/api',
-})
-
-const handleEditLog = async (arg) => {
-    console.log('===I am handleEditLog===')
-    let operation
-    let postId
-    let changedList
-    switch (arg.operation) {
-        case 'create':
-            operation = 'create'
-            postId = arg.createdItem.id
-            changedList = JSON.stringify(arg.createdItem)
-
-            break
-        case 'update':
-            operation = 'update'
-            postId = arg.changedItem.id
-            changedList = JSON.stringify(arg.changedItem)
-
-            break
-        case 'delete':
-            operation = 'delete'
-            postId = arg.deletedItem.id
-            changedList = JSON.stringify(arg.deletedItem)
-
-            break
-
-        default:
-            break
-    }
-    const nowUnixTimestamp = Date.now()
-    const nowISO8601 = new Date(nowUnixTimestamp)
-
-    const CREATE_LOG_LIST = `
-    mutation CreateLogList(
-      $name: String!
-      $operation:String!
-      $editTime: DateTime!
-      $postId: String!
-      $changedList: String!
-    ) {
-      createEditLog(
-        data: {
-          name: $name
-          operation:$operation
-          editTime: $editTime
-          postId: $postId
-          changedList: $changedList
-        }
-      ) {
-        name
-      }
-    }
-  `
-    // fetch origin data(Todo)
-    const variables = {
-        name: arg.authedItem.name,
-        operation: arg.operation,
-        editTime: nowISO8601,
-        postId: postId,
-        changedList: changedList,
-    }
-    //   upload EditLog
-    console.log('creating EditLog!!!!(Todo)')
-    console.log(variables)
-    // fetch({
-    //     query: CREATE_LOG_LIST,
-    //     variables: variables,
-    // })
-    //     .then((res) => {
-    //         //   console.log(res)
-    //     })
-    //     .catch((err) => {
-    //         console.log(err)
-    //     })
-}
-
 module.exports = {
     fields: {
         slug: {
@@ -207,19 +125,16 @@ module.exports = {
             label: '樣式',
             type: Select,
             options:
-                'article, videoNews, wide, projects, photography, script, campaign, readr',
+                'article, wide, projects, photography, script, campaign, readr',
             // defaultValue: 'article'
-            defaultValue: 'article',
         },
         brief: {
             label: '前言',
-            // type: HTML,
-            type: Text,
+            type: HTML,
         },
         content: {
             label: '內文',
-            // type: HTML,
-            type: Text,
+            type: HTML,
         },
         topics: {
             label: '專題',
@@ -237,10 +152,10 @@ module.exports = {
             type: Relationship,
             ref: 'Audio',
         },
-        relatedPosts: {
-            label: '相關文章',
+        relatedMmPosts: {
+            label: '相關鏡文章',
             type: Relationship,
-            ref: 'Post',
+            ref: 'MmPost',
             many: true,
         },
         relatedTopic: {
@@ -291,62 +206,14 @@ module.exports = {
                 isReadOnly: true,
             },
         },
-        contentHtml: {
-            type: Text,
-            label: 'Content HTML',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        contentApiData: {
-            type: Text,
-            label: 'Content API Data',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        source: {
-            type: Text,
-            label: '來源',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
     },
-    plugins: [
-        logging((args) => handleEditLog(args)),
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),
         delete: allowRoles(admin),
     },
-    hooks: {
-        beforeChange: async ({ existingItem, resolvedData }) => {
-            try {
-                const waitingForParse =
-                    resolvedData.content || existingItem.content
-                const content = JSON.parse(waitingForParse)
-
-                console.log(content)
-
-                resolvedData.contentHtml = content.html
-                resolvedData.contentApiData = JSON.stringify(content.apiData)
-                delete content['html']
-                delete content['apiData']
-                resolvedData.content = content
-                return { existingItem, resolvedData }
-            } catch (err) {
-                console.log(err)
-                console.log('EXISTING ITEM')
-                console.log(existingItem)
-                console.log('RESOLVED DATA')
-                console.log(resolvedData)
-            }
-        },
-    },
+    hooks: {},
     adminConfig: {
         defaultColumns:
             'slug, name, state, categories, createdBy, publishTime, updatedAt',

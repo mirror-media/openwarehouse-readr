@@ -1,4 +1,7 @@
 const { Slug, Text, Relationship, Select, Url } = require('@keystonejs/fields')
+const NewDateTime = require('../../fields/NewDateTime/index.js')
+
+const HTML = require('../../fields/HTML')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const {
     admin,
@@ -9,7 +12,6 @@ const {
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
-const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
@@ -24,7 +26,7 @@ module.exports = {
             type: Relationship,
             ref: 'Partner',
         },
-        title: {
+        name: {
             label: '標題',
             type: Text,
             isRequired: true,
@@ -54,12 +56,13 @@ module.exports = {
         },
         brief: {
             label: '前言',
-            type: Text,
+            type: HTML,
             isMultiline: true,
         },
         content: {
             label: '內文',
-            type: Text,
+            // type: Text,
+            type: HTML,
             isMultiline: true,
         },
         source: {
@@ -69,8 +72,8 @@ module.exports = {
     },
     plugins: [atTracking(), byTracking()],
     access: {
-        update: allowRoles(admin, moderator, editor, owner),
-        create: allowRoles(admin, moderator, editor, contributor),
+        update: allowRoles(admin, moderator, editor),
+        create: allowRoles(admin, moderator),
         delete: allowRoles(admin),
     },
     hooks: {},
@@ -78,6 +81,6 @@ module.exports = {
         defaultColumns: 'title, slug, state, createdBy, publishTime',
         defaultSort: '-publishTime',
     },
-    labelField: 'title',
+    labelField: 'name',
     cacheHint: cacheHint,
 }

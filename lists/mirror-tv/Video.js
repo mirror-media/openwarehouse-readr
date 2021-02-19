@@ -6,6 +6,8 @@ const {
     File,
     Url,
 } = require('@keystonejs/fields')
+const NewDateTime = require('../../fields/NewDateTime/index.js')
+
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { GCSAdapter } = require('../../lib/GCSAdapter')
 const {
@@ -17,12 +19,13 @@ const {
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
+
 const gcsDir = 'assets/videos/'
-const NewDateTime = require('../../fields/NewDateTime/index.js')
+const fileAdapter = new GCSAdapter(gcsDir)
 
 module.exports = {
     fields: {
-        title: {
+        name: {
             label: '標題',
             type: Text,
             isRequired: true,
@@ -30,7 +33,7 @@ module.exports = {
         file: {
             label: '檔案',
             type: File,
-            adapter: new GCSAdapter(gcsDir),
+            adapter: fileAdapter,
             isRequired: true,
         },
         categories: {
@@ -94,7 +97,7 @@ module.exports = {
         },
         duration: {
             label: '影片長度（秒）',
-            type: Number,
+            type: Text,
             access: {
                 create: false,
                 update: false,
@@ -103,8 +106,8 @@ module.exports = {
     },
     plugins: [atTracking(), byTracking()],
     access: {
-        update: allowRoles(admin, moderator, editor, owner),
-        create: allowRoles(admin, moderator, editor, contributor),
+        update: allowRoles(admin, moderator, editor),
+        create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin),
     },
     hooks: {},
@@ -126,7 +129,15 @@ module.exports = {
             }
             return resolvedData
         },
+        afterDelete: async ({ existingItem }) => {
+            if (existingItem.file) {
+                await fileAdapter.delete(
+                    existingItem.file.id,
+                    existingItem.file.originalFilename
+                )
+            }
+        },
     },
-    labelField: 'title',
+    labelField: 'name',
     cacheHint: cacheHint,
 }

@@ -1,46 +1,53 @@
-const { Integer, Select, Relationship } = require('@keystonejs/fields')
+const {
+  Text,
+  Select,
+  Relationship,
+  Decimal,
+} = require('@keystonejs/fields')
+const { gql } = require('apollo-server-express');
+
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const {
   admin,
-  allowRoles,
-  bot,
-  contributor,
-  editor,
   moderator,
+  editor,
+  contributor,
   owner,
+  allowRoles,
 } = require('../../helpers/access/mirror-tv')
-const HTML = require('../../fields/HTML')
 const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
   fields: {
-    sortOrder: {
+    order: {
       label: '排序順位',
-      type: Integer,
-      isUnique: true,
+      type: Decimal,
     },
-    choice: {
-      label: '精選文章',
+    videoEditor: {
+      label: '精選影音',
       type: Relationship,
       ref: 'Post',
+      many: false,
     },
     state: {
       label: '狀態',
       type: Select,
-      options: 'draft, published, scheduled, archived, invisible',
+      options: 'draft, published, scheduled',
       defaultValue: 'draft',
     },
   },
   plugins: [atTracking(), byTracking()],
   access: {
-    update: allowRoles(admin, bot, moderator),
+    update: allowRoles(admin, moderator),
     create: allowRoles(admin, moderator),
     delete: allowRoles(admin),
   },
   hooks: {},
   adminConfig: {
-    defaultColumns: 'choice, state, createdAt',
-    defaultSort: '-createdAt',
+    defaultColumns:
+      'order, videoEditor, state',
+    defaultSort: '-updatedAt',
   },
+  labelField: 'id',
   cacheHint: cacheHint,
 }

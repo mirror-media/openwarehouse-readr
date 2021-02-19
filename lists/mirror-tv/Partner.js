@@ -1,7 +1,14 @@
-const { Slug, Text, Url, Checkbox } = require('@keystonejs/fields');
-const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { admin, moderator, editor, contributor, owner, allowRoles } = require('../../helpers/access/mirror-tv');
-const cacheHint = require('../../helpers/cacheHint');
+const { Slug, Text, Url, Checkbox } = require('@keystonejs/fields')
+const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const {
+    admin,
+    moderator,
+    editor,
+    contributor,
+    owner,
+    allowRoles,
+} = require('../../helpers/access/mirror-tv')
+const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
     fields: {
@@ -11,36 +18,32 @@ module.exports = {
             isRequired: true,
             isUnique: true,
         },
-        display: {
+        name: {
             label: '中文名稱',
             type: Text,
-            isRequired: true
+            isRequired: true,
         },
         website: {
             label: 'Website',
             tybel: '網址',
-            type: Url
+            type: Url,
         },
         isPublic: {
             label: '公開',
-            type: Checkbox
+            type: Checkbox,
         },
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [atTracking(), byTracking()],
     access: {
-        update: allowRoles(admin, moderator, editor, owner),
-        create: allowRoles(admin, moderator, editor, contributor),
+        update: allowRoles(admin, moderator),
+        create: allowRoles(admin, moderator),
         delete: allowRoles(admin),
     },
-    hooks: {
-    },
+    hooks: {},
     adminConfig: {
         defaultColumns: 'slug, display, website, isPublic, createdAt',
         defaultSort: '-createdAt',
     },
-    labelField: 'display',
+    labelField: 'name',
     cacheHint: cacheHint,
 }
