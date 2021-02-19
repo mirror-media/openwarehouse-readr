@@ -1,12 +1,12 @@
 const { Integer, Text, Relationship, Select } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { logging } = require('@keystonejs/list-plugins')
 const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
-const { logging } = require('@keystonejs/list-plugins')
-const { parseResolvedData } = require('../../utils/parseContent')
+const { parseResolvedData } = require('../../utils/parseResolvedData')
 const { handleEditLog } = require('../../utils/handleEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 const { validateIfPostNeedPublishTime } = require('../../utils/validateIfPostNeedPublishTime')
@@ -211,13 +211,11 @@ module.exports = {
         resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
             await controlCharacterFilter(originalInput, existingItem, resolvedData)
             await parseResolvedData(existingItem, resolvedData)
-            
             return resolvedData
         },
         validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
             validateIfPostNeedPublishTime(existingItem, resolvedData, addValidationError)
         },
-        beforeChange: async ({ existingItem, resolvedData }) => {},
     },
     labelField: 'name',
     cacheHint: cacheHint,

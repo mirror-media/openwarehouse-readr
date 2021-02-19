@@ -2,7 +2,7 @@ module.exports = {
     app: {
         project: 'readr',
         authList: 'User',
-        applicationName: 'Readrstone',
+        applicationName: 'readr',
         uuid: 'readr-stone-cms',
         dropDatabase: false,
         isGraphQLCached: false,

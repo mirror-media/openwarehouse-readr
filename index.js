@@ -52,7 +52,6 @@ const newRedisClient = (redisConf) => {
 }
 
 const keystone = new Keystone({
-    name: app.applicationName,
     adapter: new Adapter(adapterConfig),
     cookie: {
         // If it's explicitly configured to use insecure cookies, overwrite the default setting.
@@ -128,6 +127,7 @@ let optionalApps = []
 if (!!app.isAdminAppRequired) {
     optionalApps.push(
         new AdminUIApp({
+            name: app.applicationName,
             enableDefaultRoute: true,
             hooks: require.resolve(`./hooks/${app.project}`),
             authStrategy,

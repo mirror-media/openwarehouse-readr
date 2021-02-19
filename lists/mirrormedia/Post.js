@@ -1,4 +1,4 @@
-const { Slug, Text, Checkbox, Select, Relationship } = require('@keystonejs/fields')
+const { Text, Checkbox, Select, Relationship } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { logging } = require('@keystonejs/list-plugins')
 const {
@@ -12,25 +12,24 @@ const {
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
-const { parseResolvedData } = require('../../utils/parseContent')
+const { parseResolvedData } = require('../../utils/parseResolvedData')
 const { handleEditLog } = require('../../utils/handleEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 const { validateIfPostNeedPublishTime } = require('../../utils/validateIfPostNeedPublishTime')
-const publishStateExaminer = require('../../utils/publishStateExaminer')
+const { publishStateExaminer } = require('../../utils/publishStateExaminer')
 
 module.exports = {
     fields: {
         slug: {
-            label: 'Slug',
-            type: Slug,
+            label: 'slug',
+            type: Text,
             isRequired: true,
-            isUnique: true,
         },
         name: {
             label: '標題',
             type: Text,
             isRequired: true,
-            defaultValue: 'untitled',
+            // defaultValue: 'untitled',
         },
         subtitle: {
             label: '副標',
@@ -202,6 +201,34 @@ module.exports = {
             label: 'Google 廣告違規',
             type: Checkbox,
         },
+        summaryHtml: {
+            type: Text,
+            label: 'Summary HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        summaryApiData: {
+            type: Text,
+            label: 'Summary API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        briefHtml: {
+            type: Text,
+            label: 'Brief HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        briefApiData: {
+            type: Text,
+            label: 'Brief API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
         contentHtml: {
             type: Text,
             label: 'Content HTML',
@@ -224,11 +251,10 @@ module.exports = {
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'slug, name, state, categories, createdBy, publishTime, updatedAt',
-        defaultSort: '-publishTime',
+        defaultColumns: 'sortOrder,name, state, publishTime, createdAt',
+        defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: publishStateExaminer,
         resolveInput: async ({ existingItem, originalInput, resolvedData, context, operation }) => {
             await controlCharacterFilter(originalInput, existingItem, resolvedData)
             await parseResolvedData(existingItem, resolvedData)

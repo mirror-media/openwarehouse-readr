@@ -1,4 +1,4 @@
-const publishStateExaminer = async (operation, existingItem, resolvedData, context) => {
+const publishStateExaminer = (operation, existingItem, resolvedData, context) => {
     if (operation === 'update' && resolvedData.state === 'published') {
         const currentUserRole = context.req.user.role
 

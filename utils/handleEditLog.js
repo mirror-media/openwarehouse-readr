@@ -2,7 +2,6 @@ const { createApolloFetch } = require('apollo-fetch')
 const fetch = createApolloFetch({
     uri: 'http://localhost:3000/admin/api',
 })
-
 const CREATE_LOG_LIST = `
 mutation CreateLogList(
   $name: String!
@@ -36,7 +35,6 @@ const handleEditLog = async (arg) => {
     editedData = removeHtmlAndApiData(editedData)
 
     const variables = generateVariablesForGql(operation, arg, postId, editedData)
-
     fetch({
         query: CREATE_LOG_LIST,
         variables: variables,

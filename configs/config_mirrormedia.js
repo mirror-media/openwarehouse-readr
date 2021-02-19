@@ -2,7 +2,7 @@ module.exports = {
     app: {
         project: 'mirrormedia',
         authList: 'User',
-        applicationName: 'Cornerstone',
+        applicationName: 'mirrormedia',
         dropDatabase: false,
         isGraphQLCached: false,
         isAdminAppRequired: true,

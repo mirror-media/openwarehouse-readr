@@ -18,4 +18,5 @@ module.exports = {
     WatchBrand: require('./WatchBrand'),
     WatchStore: require('./WatchStore'),
     WatchFunction: require('./WatchFunction'),
+    EditLog: require('./EditLog'),
 }

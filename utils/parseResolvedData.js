@@ -1,13 +1,3 @@
-/* 
-Every DraftEditor field has 3 corresponding data:
-editorState,html and api data
-three of them are packaged in content (in Controller)
-
-before save post,
-need to get html and api data in content
-and put them to resolvedData
-*/
-
 /*
 resolveData:
     edited fields in list (created data, updated new data)
@@ -18,9 +8,20 @@ existingItem:
     when updated, it represent the old data
 */
 
+/* 
+Every DraftEditor field has 3 corresponding data:
+editorState,html and api data
+three of them are packaged in content (in Controller)
+
+before save post,
+need to get html and api data in content
+and put them to resolvedData
+*/
+const { app } = require('../configs/config.js')
+
 const parseResolvedData = (existingItem, resolvedData) => {
     // get every draft field's storedEditorContent
-    const fieldsArray = ['summary', 'brief', 'content']
+    let fieldsArray = _generateDraftFieldsArray()
 
     try {
         /* 
@@ -36,9 +37,6 @@ const parseResolvedData = (existingItem, resolvedData) => {
         })
 
         storedEditorContentsArray.forEach((editorContent, index) => {
-            // for now, only handle content field(Todo)
-            // if (fieldsArray[index] !== 'content') return
-
             let currentEditorContentValve = _getEditorContentValue(editorContent)
             _feedFieldValueToResolvedData(index, currentEditorContentValve)
         })
@@ -77,6 +75,22 @@ const parseResolvedData = (existingItem, resolvedData) => {
         resolvedData[`${currentField}`] = JSON.stringify(currentEditorContent)
         resolvedData[`${currentField}Html`] = html
         resolvedData[`${currentField}ApiData`] = JSON.stringify(apiData)
+    }
+
+    function _generateDraftFieldsArray() {
+        switch (app.project) {
+            case 'readr':
+                return ['summary', 'brief', 'content']
+
+            case 'mirrormedia':
+                return ['brief', 'content']
+
+            case 'mirror-tv':
+                return ['brief', 'content']
+
+            default:
+                return ['brief', 'content']
+        }
     }
 }
 
