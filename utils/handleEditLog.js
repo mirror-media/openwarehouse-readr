@@ -1,6 +1,3 @@
-const filter = require('lodash/filter')
-const _ = { filter }
-
 const { createApolloFetch } = require('apollo-fetch')
 const fetch = createApolloFetch({
     uri: 'http://localhost:3000/admin/api',
@@ -33,36 +30,12 @@ mutation CreateLogList(
 `
 
 const handleEditLog = async (arg) => {
-    let operation
-    let postId
-    let editedData
-    switch (arg.operation) {
-        case 'create':
-            operation = 'create'
-            postId = arg.createdItem.id
-            editedData = arg.createdItem
-
-            break
-        case 'update':
-            operation = 'update'
-            postId = arg.changedItem.id
-            editedData = arg.changedItem
-
-            break
-        case 'delete':
-            operation = 'delete'
-            postId = arg.deletedItem.id
-            editedData = arg.deletedItem
-
-            break
-
-        default:
-            break
-    }
+    let { operation, postId, editedData } = returnPostEditingDetails(arg)
 
     editedData = removeUnusedKey(editedData)
     editedData = removeHtmlAndApiData(editedData)
-    const variables = generateVariables(operation, arg, postId, editedData)
+
+    const variables = generateVariablesForGql(operation, arg, postId, editedData)
 
     fetch({
         query: CREATE_LOG_LIST,
@@ -74,6 +47,31 @@ const handleEditLog = async (arg) => {
         .catch((err) => {
             console.log('Editlog emitted : ===\n', err, '=====================\n')
         })
+}
+
+function returnPostEditingDetails(arg) {
+    switch (arg.operation) {
+        case 'create':
+            return {
+                operation: 'create',
+                postId: arg.createdItem.id,
+                editedData: arg.createdItem,
+            }
+
+        case 'update':
+            return {
+                operation: 'update',
+                postId: arg.changedItem.id,
+                editedData: arg.changedItem,
+            }
+
+        case 'delete':
+            return {
+                operation: 'delete',
+                postId: arg.deletedItem.id,
+                editedData: arg.deletedItem,
+            }
+    }
 }
 
 function removeHtmlAndApiData(editData) {
@@ -96,6 +94,7 @@ function removeHtmlAndApiData(editData) {
 
     return editData
 }
+
 function removeUnusedKey(editData) {
     const fieldsArray = ['createdBy', 'updatedBy', 'createdAt', 'updatedAt']
 
@@ -108,7 +107,7 @@ function removeUnusedKey(editData) {
     return editData
 }
 
-function generateVariables(operation, arg, postId, editedData) {
+function generateVariablesForGql(operation, arg, postId, editedData) {
     const fieldsArray = ['summary', 'brief', 'content']
 
     let variables = {

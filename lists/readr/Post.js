@@ -208,19 +208,10 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: async ({
-            operation,
-            existingItem,
-            originalInput,
-            resolvedData,
-            context,
-            listKey,
-            fieldPath, // Field hooks only
-        }) => {
-            // Input resolution logic. Object returned is used in place of `resolvedData`.
-            console.log('---resolveInput---')
+        resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
             await controlCharacterFilter(originalInput, existingItem, resolvedData)
             await parseResolvedData(existingItem, resolvedData)
+            
             return resolvedData
         },
         validateInput: async ({ existingItem, resolvedData, addValidationError }) => {

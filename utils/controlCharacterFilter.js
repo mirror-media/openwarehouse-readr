@@ -3,9 +3,10 @@ const controlCharacterFilter = (originalInput, existingItem, resolvedData) => {
 
     const rules = /[\u0000-\u001F\u007F-\u009F]/g
     modifiedList.forEach((modifiedKey) => {
-        console.log(`checking for ${modifiedKey}'s contorl character...`)
+        // if this key is null, it means no needed to handle it, just return
         if (!resolvedData[modifiedKey]) return
 
+        console.log(`checking for ${modifiedKey}'s contorl character...`)
         resolvedData[modifiedKey] = resolvedData[modifiedKey].replace(rules, '')
     })
 }
