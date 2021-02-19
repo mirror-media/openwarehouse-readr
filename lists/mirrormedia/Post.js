@@ -1,6 +1,6 @@
 const { Slug, Text, Checkbox, Select, Relationship } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
-
+const { logging } = require('@keystonejs/list-plugins')
 const {
     admin,
     moderator,
@@ -9,10 +9,14 @@ const {
     owner,
     allowRoles,
 } = require('../../helpers/access/mirrormedia')
-
-const publishStateExaminer = require('../../hooks/publishStateExaminer')
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
+
+const { parseResolvedData } = require('../../utils/parseContent')
+const { handleEditLog } = require('../../utils/handleEditLog')
+const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
+const { validateIfPostNeedPublishTime } = require('../../utils/validateIfPostNeedPublishTime')
+const publishStateExaminer = require('../../utils/publishStateExaminer')
 
 module.exports = {
     fields: {
@@ -213,38 +217,30 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [atTracking(), byTracking(), logging((args) => handleEditLog(args))],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),
         delete: allowRoles(admin),
     },
-    hooks: {
-        resolveInput: publishStateExaminer,
-        beforeChange: async ({ existingItem, resolvedData }) => {
-            try {
-                content = JSON.parse(resolvedData.content || existingItem.content)
-                resolvedData.contentHtml = JSON.parse(resolvedData.content).html
-                resolvedData.contentApiData = JSON.stringify(
-                    JSON.parse(resolvedData.content).apiData
-                )
-                console.log(typeof content.apiData)
-                delete content['html']
-                delete content['apiData']
-                resolvedData.content = content
-                return { existingItem, resolvedData }
-            } catch (err) {
-                console.log(err)
-                console.log('EXISTING ITEM')
-                console.log(existingItem)
-                console.log('RESOLVED DATA')
-                console.log(resolvedData)
-            }
-        },
-    },
     adminConfig: {
         defaultColumns: 'slug, name, state, categories, createdBy, publishTime, updatedAt',
         defaultSort: '-publishTime',
     },
+    hooks: {
+        resolveInput: publishStateExaminer,
+        resolveInput: async ({ existingItem, originalInput, resolvedData, context, operation }) => {
+            await controlCharacterFilter(originalInput, existingItem, resolvedData)
+            await parseResolvedData(existingItem, resolvedData)
+            await publishStateExaminer(operation, existingItem, resolvedData, context)
+
+            return resolvedData
+        },
+        validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
+            validateIfPostNeedPublishTime(existingItem, resolvedData, addValidationError)
+        },
+        beforeChange: async ({ existingItem, resolvedData }) => {},
+    },
+
     labelField: 'name',
 }
