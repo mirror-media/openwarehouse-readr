@@ -77,7 +77,6 @@ module.exports = {
     plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin),
-
         delete: allowRoles(admin),
     },
 

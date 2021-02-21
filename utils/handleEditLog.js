@@ -2,31 +2,7 @@ const { createApolloFetch } = require('apollo-fetch')
 const fetch = createApolloFetch({
     uri: 'http://localhost:3000/admin/api',
 })
-const CREATE_LOG_LIST = `
-mutation CreateLogList(
-  $name: String!
-  $operation:String!
-  $postId: String!
-  $summary: String!
-  $brief: String!
-  $content: String!
-  $changedList: String!
-  ) {
-  createEditLog(
-    data: {
-      name: $name
-      operation:$operation
-      postId: $postId
-      summary: $summary
-      brief: $brief
-      content: $content
-      changedList: $changedList
-    }
-  ) {
-    name
-  }
-}
-`
+const { app } = require('../configs/config.js')
 
 const handleEditLog = async (arg) => {
     let { operation, postId, editedData } = returnPostEditingDetails(arg)
@@ -36,7 +12,7 @@ const handleEditLog = async (arg) => {
 
     const variables = generateVariablesForGql(operation, arg, postId, editedData)
     fetch({
-        query: CREATE_LOG_LIST,
+        query: generateGqlQueryByCMS(),
         variables: variables,
     })
         .then((res) => {
@@ -130,6 +106,111 @@ function generateVariablesForGql(operation, arg, postId, editedData) {
     variables.changedList = JSON.stringify(editedData)
 
     return variables
+}
+
+function generateGqlQueryByCMS() {
+    switch (app.project) {
+        case 'readr':
+            return `
+            mutation CreateLogList(
+              $name: String!
+              $operation:String!
+              $postId: String!
+              $summary: String!
+              $brief: String!
+              $content: String!
+              $changedList: String!
+              ) {
+              createEditLog(
+                data: {
+                  name: $name
+                  operation:$operation
+                  postId: $postId
+                  summary: $summary
+                  brief: $brief
+                  content: $content
+                  changedList: $changedList
+                }
+              ) {
+                name
+              }
+            }
+            `
+
+        case 'mirrormedia':
+            ;`
+            mutation CreateLogList(
+              $name: String!
+              $operation:String!
+              $postId: String!
+              $brief: String!
+              $content: String!
+              $changedList: String!
+              ) {
+              createEditLog(
+                data: {
+                  name: $name
+                  operation:$operation
+                  postId: $postId
+                  brief: $brief
+                  content: $content
+                  changedList: $changedList
+                }
+              ) {
+                name
+              }
+            }
+            `
+
+        case 'mirror-tv':
+            return `
+            mutation CreateLogList(
+              $name: String!
+              $operation:String!
+              $postId: String!
+              $brief: String!
+              $content: String!
+              $changedList: String!
+              ) {
+              createEditLog(
+                data: {
+                  name: $name
+                  operation:$operation
+                  postId: $postId
+                  brief: $brief
+                  content: $content
+                  changedList: $changedList
+                }
+              ) {
+                name
+              }
+            }
+            `
+        default:
+            return `
+            mutation CreateLogList(
+              $name: String!
+              $operation:String!
+              $postId: String!
+              $brief: String!
+              $content: String!
+              $changedList: String!
+              ) {
+              createEditLog(
+                data: {
+                  name: $name
+                  operation:$operation
+                  postId: $postId
+                  brief: $brief
+                  content: $content
+                  changedList: $changedList
+                }
+              ) {
+                name
+              }
+            }
+            `
+    }
 }
 
 module.exports = { handleEditLog }

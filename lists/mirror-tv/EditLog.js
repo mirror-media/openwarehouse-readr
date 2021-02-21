@@ -2,35 +2,74 @@ const { Text, DateTime } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { admin, allowRoles } = require('../../helpers/access/mirror-tv')
 
+const { formatChangedList } = require('../../utils/formatChangedList')
+const HTML = require('../../fields/HTML')
+
 module.exports = {
     fields: {
         name: {
             label: '編輯者',
             type: Text,
             isRequired: true,
+            adminConfig: {
+                isReadOnly: true,
+            },
         },
         operation: {
             label: '動作',
             type: Text,
-        },
-        editTime: {
-            label: '編輯時間',
-            type: DateTime,
-            format: 'dd/MM/yyyy HH:mm O',
+            adminConfig: {
+                isReadOnly: true,
+            },
         },
         postId: {
             label: '文章ID',
             type: Text,
+            adminConfig: {
+                isReadOnly: true,
+            },
         },
         changedList: {
-            label: '更動內容',
+            label: '欄位更動內容',
             type: Text,
+            isMultiline: true,
+            adminConfig: {
+                isReadOnly: true,
+            },
+            hooks: {
+                resolveInput: async ({
+                    operation,
+                    existingItem,
+                    originalInput,
+                    resolvedData,
+                    context,
+                    listKey,
+                    fieldPath, // Field hooks only
+                }) => {
+                    const changedList = resolvedData[fieldPath] || existingItem[fieldPath]
+                    const formatedChangedList = formatChangedList(changedList)
+                    return formatedChangedList
+                },
+            },
+        },
+        brief: {
+            label: '已更動前言',
+            type: HTML,
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        content: {
+            label: '已更動內文',
+            type: HTML,
+            adminConfig: {
+                isReadOnly: true,
+            },
         },
     },
     plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin),
-        create: allowRoles(admin),
         delete: allowRoles(admin),
     },
     adminConfig: {
