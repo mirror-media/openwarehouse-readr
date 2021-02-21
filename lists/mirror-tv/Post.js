@@ -1,7 +1,6 @@
 const { Slug, Text, Checkbox, Select, Relationship } = require('@keystonejs/fields')
-const NewDateTime = require('../../fields/NewDateTime/index.js')
-
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { logging } = require('@keystonejs/list-plugins')
 const {
     admin,
     moderator,
@@ -11,89 +10,14 @@ const {
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const HTML = require('../../fields/HTML')
+const NewDateTime = require('../../fields/NewDateTime/index.js')
 const cacheHint = require('../../helpers/cacheHint')
 
-const { createApolloFetch } = require('apollo-fetch')
-const { gql } = require('graphql-tag')
-const { logging } = require('@keystonejs/list-plugins')
-const fetch = createApolloFetch({
-    uri: 'http://localhost:3000/admin/api',
-})
-
-const handleEditLog = async (arg) => {
-    console.log('===I am handleEditLog===')
-    let operation
-    let postId
-    let changedList
-    switch (arg.operation) {
-        case 'create':
-            operation = 'create'
-            postId = arg.createdItem.id
-            changedList = JSON.stringify(arg.createdItem)
-
-            break
-        case 'update':
-            operation = 'update'
-            postId = arg.changedItem.id
-            changedList = JSON.stringify(arg.changedItem)
-
-            break
-        case 'delete':
-            operation = 'delete'
-            postId = arg.deletedItem.id
-            changedList = JSON.stringify(arg.deletedItem)
-
-            break
-
-        default:
-            break
-    }
-    const nowUnixTimestamp = Date.now()
-    const nowISO8601 = new Date(nowUnixTimestamp)
-
-    const CREATE_LOG_LIST = `
-    mutation CreateLogList(
-      $name: String!
-      $operation:String!
-      $editTime: DateTime!
-      $postId: String!
-      $changedList: String!
-    ) {
-      createEditLog(
-        data: {
-          name: $name
-          operation:$operation
-          editTime: $editTime
-          postId: $postId
-          changedList: $changedList
-        }
-      ) {
-        name
-      }
-    }
-  `
-    // fetch origin data(Todo)
-    const variables = {
-        name: arg.authedItem.name,
-        operation: arg.operation,
-        editTime: nowISO8601,
-        postId: postId,
-        changedList: changedList,
-    }
-    //   upload EditLog
-    console.log('creating EditLog!!!!(Todo)')
-    console.log(variables)
-    // fetch({
-    //     query: CREATE_LOG_LIST,
-    //     variables: variables,
-    // })
-    //     .then((res) => {
-    //         //   console.log(res)
-    //     })
-    //     .catch((err) => {
-    //         console.log(err)
-    //     })
-}
+const { parseResolvedData } = require('../../utils/parseResolvedData')
+const { handleEditLog } = require('../../utils/handleEditLog')
+const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
+const { validateIfPostNeedPublishTime } = require('../../utils/validateIfPostNeedPublishTime')
+const { publishStateExaminer } = require('../../utils/publishStateExaminer')
 
 module.exports = {
     fields: {
@@ -282,6 +206,20 @@ module.exports = {
                 isReadOnly: true,
             },
         },
+        briefHtml: {
+            type: Text,
+            label: 'Brief HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        briefApiData: {
+            type: Text,
+            label: 'Brief API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
         contentHtml: {
             type: Text,
             label: 'Content HTML',
@@ -311,27 +249,17 @@ module.exports = {
         delete: allowRoles(admin),
     },
     hooks: {
-        beforeChange: async ({ existingItem, resolvedData }) => {
-            try {
-                const waitingForParse = resolvedData.content || existingItem.content
-                const content = JSON.parse(waitingForParse)
+        resolveInput: async ({ existingItem, originalInput, resolvedData, context, operation }) => {
+            await controlCharacterFilter(originalInput, existingItem, resolvedData)
+            await parseResolvedData(existingItem, resolvedData)
+            await publishStateExaminer(operation, existingItem, resolvedData, context)
 
-                console.log(content)
-
-                resolvedData.contentHtml = content.html
-                resolvedData.contentApiData = JSON.stringify(content.apiData)
-                delete content['html']
-                delete content['apiData']
-                resolvedData.content = content
-                return { existingItem, resolvedData }
-            } catch (err) {
-                console.log(err)
-                console.log('EXISTING ITEM')
-                console.log(existingItem)
-                console.log('RESOLVED DATA')
-                console.log(resolvedData)
-            }
+            return resolvedData
         },
+        validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
+            validateIfPostNeedPublishTime(existingItem, resolvedData, addValidationError)
+        },
+        beforeChange: async ({ existingItem, resolvedData }) => {},
     },
     adminConfig: {
         defaultColumns: 'slug, name, state, categories, createdBy, publishTime, updatedAt',
