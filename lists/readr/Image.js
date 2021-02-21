@@ -127,9 +127,6 @@ module.exports = {
                 }
 
                 var stream = fs.createReadStream(`./public/images/${fullFileName}`)
-                // upload image to gcs,and generate corespond meta data(url )
-                const imageAdapter = new ImageAdapter(fullFileName)
-                await imageAdapter.uploadImages(stream)
 
                 // upload image to gcs,and generate corespond meta data(url )
                 const image_adapter = new ImageAdapter(gcsDir)
