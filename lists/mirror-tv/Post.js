@@ -1,10 +1,4 @@
-const {
-    Slug,
-    Text,
-    Checkbox,
-    Select,
-    Relationship,
-} = require('@keystonejs/fields')
+const { Slug, Text, Checkbox, Select, Relationship } = require('@keystonejs/fields')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
@@ -206,20 +200,17 @@ module.exports = {
         style: {
             label: '樣式',
             type: Select,
-            options:
-                'article, videoNews, wide, projects, photography, script, campaign, readr',
+            options: 'article, videoNews, wide, projects, photography, script, campaign, readr',
             // defaultValue: 'article'
             defaultValue: 'article',
         },
         brief: {
             label: '前言',
-            // type: HTML,
-            type: Text,
+            type: HTML,
         },
         content: {
             label: '內文',
-            // type: HTML,
-            type: Text,
+            type: HTML,
         },
         topics: {
             label: '專題',
@@ -313,11 +304,7 @@ module.exports = {
             },
         },
     },
-    plugins: [
-        logging((args) => handleEditLog(args)),
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [logging((args) => handleEditLog(args)), atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),
@@ -326,8 +313,7 @@ module.exports = {
     hooks: {
         beforeChange: async ({ existingItem, resolvedData }) => {
             try {
-                const waitingForParse =
-                    resolvedData.content || existingItem.content
+                const waitingForParse = resolvedData.content || existingItem.content
                 const content = JSON.parse(waitingForParse)
 
                 console.log(content)
@@ -348,8 +334,7 @@ module.exports = {
         },
     },
     adminConfig: {
-        defaultColumns:
-            'slug, name, state, categories, createdBy, publishTime, updatedAt',
+        defaultColumns: 'slug, name, state, categories, createdBy, publishTime, updatedAt',
         defaultSort: '-publishTime',
     },
     labelField: 'name',

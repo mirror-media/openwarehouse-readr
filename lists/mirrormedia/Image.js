@@ -104,20 +104,16 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        beforeChange: async ({ existingItem, resolvedData }) => {
-            console.log('BEFORE CHANGE')
-            console.log('EXISTING ITEM', existingItem)
-            console.log('RESOLVED DATA', resolvedData)
-            var origFilename
+        // Hooks for create and update operations
 
-            // resolvedData = true
-            // when create or update newer image
+        beforeChange: async ({ existingItem, resolvedData }) => {
+            var origFilename
             if (typeof resolvedData.file !== 'undefined') {
-                var stream = fs.createReadStream(
-                    `./public/images/${resolvedData.file.id}-${resolvedData.file.originalFilename}`
-                )
+                // resolvedData = true
+                // when create or update newer image
+                let fullFileName = resolvedData.file.filename
+                let origFilename = resolvedData.file.originalFilename
                 var id = resolvedData.file.id
-                origFilename = resolvedData.file.originalFilename
 
                 // add needWatermark to image (Todo)
                 if (resolvedData.needWatermark) {
@@ -127,6 +123,8 @@ module.exports = {
                     //     resolvedData.file.originalFilename
                     // )
                 }
+
+                var stream = fs.createReadStream(`./public/images/${fullFileName}`)
 
                 // upload image to gcs,and generate corespond meta data(url )
                 const image_adapter = new ImageAdapter(gcsDir)
@@ -188,6 +186,20 @@ module.exports = {
                 console.log('deleted old one')
             }
         },
+        /*
+        resolveInput: ({ operation, existingItem, resolvedData, originalInput }) => {
+            if (resolvedData.file) {
+                resolvedData.urlOriginal = resolvedData.file._meta.url.urlOriginal
+                resolvedData.urlDesktopSized = resolvedData.file._meta.url.urlDesktopSized
+                resolvedData.urlMobileSized = resolvedData.file._meta.url.urlMobileSized
+                resolvedData.urlTabletSized = resolvedData.file._meta.url.urlTabletSized
+                resolvedData.urlTinySized = resolvedData.file._meta.url.urlTinySized
+            }
+
+            console.log("resolveInput RESOLVED DATA", resolvedData)
+            return resolvedData
+        },
+		*/
     },
     labelField: 'name',
 }
