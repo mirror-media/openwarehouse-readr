@@ -4,22 +4,29 @@ const fetch = createApolloFetch({
 })
 const { app } = require('../configs/config.js')
 
-const handleEditLog = async (arg) => {
+const emitEditLog = async (arg) => {
     let { operation, postId, editedData } = returnPostEditingDetails(arg)
 
     editedData = removeUnusedKey(editedData)
     editedData = removeHtmlAndApiData(editedData)
 
-    const variables = generateVariablesForGql(operation, arg, postId, editedData)
+    const variables = generateVariablesForGql(
+        operation,
+        arg,
+        postId,
+        editedData
+    )
     fetch({
         query: generateGqlQueryByCMS(),
         variables: variables,
     })
-        .then((res) => {
-            console.log('===Editlog emitted===\n', res, '=====================\n')
+        .then((result) => {
+            // const { data, errors, extensions } = result;
+            // GraphQL errors and extensions are optional
+            console.log('===Editlog emitted===\n')
         })
-        .catch((err) => {
-            console.log('Editlog emitted : ===\n', err, '=====================\n')
+        .catch((error) => {
+            // respond to a network error
         })
 }
 
@@ -213,4 +220,4 @@ function generateGqlQueryByCMS() {
     }
 }
 
-module.exports = { handleEditLog }
+module.exports = { emitEditLog }

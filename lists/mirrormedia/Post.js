@@ -13,9 +13,11 @@ const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 const { parseResolvedData } = require('../../utils/parseResolvedData')
-const { handleEditLog } = require('../../utils/handleEditLog')
+const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
-const { validateIfPostNeedPublishTime } = require('../../utils/validateIfPostNeedPublishTime')
+const {
+    validateIfPostNeedPublishTime,
+} = require('../../utils/validateIfPostNeedPublishTime')
 const { publishStateExaminer } = require('../../utils/publishStateExaminer')
 
 module.exports = {
@@ -125,7 +127,8 @@ module.exports = {
         style: {
             label: '樣式',
             type: Select,
-            options: 'article, wide, projects, photography, script, campaign, readr',
+            options:
+                'article, wide, projects, photography, script, campaign, readr',
             defaultValue: 'article',
         },
         brief: {
@@ -244,7 +247,7 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking(), logging((args) => handleEditLog(args))],
+    plugins: [atTracking(), byTracking(), logging((args) => emitEditLog(args))],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),
@@ -255,15 +258,38 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: async ({ existingItem, originalInput, resolvedData, context, operation }) => {
-            await controlCharacterFilter(originalInput, existingItem, resolvedData)
+        resolveInput: async ({
+            existingItem,
+            originalInput,
+            resolvedData,
+            context,
+            operation,
+        }) => {
+            await controlCharacterFilter(
+                originalInput,
+                existingItem,
+                resolvedData
+            )
             await parseResolvedData(existingItem, resolvedData)
-            await publishStateExaminer(operation, existingItem, resolvedData, context)
+            await publishStateExaminer(
+                operation,
+                existingItem,
+                resolvedData,
+                context
+            )
 
             return resolvedData
         },
-        validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
-            validateIfPostNeedPublishTime(existingItem, resolvedData, addValidationError)
+        validateInput: async ({
+            existingItem,
+            resolvedData,
+            addValidationError,
+        }) => {
+            validateIfPostNeedPublishTime(
+                existingItem,
+                resolvedData,
+                addValidationError
+            )
         },
         beforeChange: async ({ existingItem, resolvedData }) => {},
     },

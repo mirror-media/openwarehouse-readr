@@ -7,9 +7,11 @@ const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 const { parseResolvedData } = require('../../utils/parseResolvedData')
-const { handleEditLog } = require('../../utils/handleEditLog')
+const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
-const { validateIfPostNeedPublishTime } = require('../../utils/validateIfPostNeedPublishTime')
+const {
+    validateIfPostNeedPublishTime,
+} = require('../../utils/validateIfPostNeedPublishTime')
 
 module.exports = {
     fields: {
@@ -197,7 +199,7 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking(), logging((args) => handleEditLog(args))],
+    plugins: [atTracking(), byTracking(), logging((args) => emitEditLog(args))],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),
@@ -209,12 +211,24 @@ module.exports = {
     },
     hooks: {
         resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
-            await controlCharacterFilter(originalInput, existingItem, resolvedData)
+            await controlCharacterFilter(
+                originalInput,
+                existingItem,
+                resolvedData
+            )
             await parseResolvedData(existingItem, resolvedData)
             return resolvedData
         },
-        validateInput: async ({ existingItem, resolvedData, addValidationError }) => {
-            validateIfPostNeedPublishTime(existingItem, resolvedData, addValidationError)
+        validateInput: async ({
+            existingItem,
+            resolvedData,
+            addValidationError,
+        }) => {
+            validateIfPostNeedPublishTime(
+                existingItem,
+                resolvedData,
+                addValidationError
+            )
         },
     },
     labelField: 'name',

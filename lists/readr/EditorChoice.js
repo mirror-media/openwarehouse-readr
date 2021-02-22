@@ -1,8 +1,18 @@
-const { Integer, Text, Select, Relationship, Url } = require('@keystonejs/fields')
+const {
+    Integer,
+    Text,
+    Select,
+    Relationship,
+    Url,
+} = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
+
+const {
+    validateIfPostIsPublished,
+} = require('../../utils/validateIfPostIsPublished')
 
 module.exports = {
     fields: {
@@ -54,6 +64,19 @@ module.exports = {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),
         delete: allowRoles(admin),
+    },
+    hooks: {
+        validateInput: async ({
+            existingItem,
+            resolvedData,
+            addValidationError,
+        }) => {
+            await validateIfPostIsPublished(
+                resolvedData,
+                existingItem,
+                addValidationError
+            )
+        },
     },
     adminConfig: {
         defaultColumns: 'choice, state, createdAt',
