@@ -11,7 +11,9 @@ const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 const {
     validateIfPostNeedPublishTime,
-} = require('../../utils/validateIfPostNeedPublishTime')
+    validateIfPublishTimeIsFutureTime,
+} = require('../../utils/publishTimeHandler')
+const { publishStateExaminer } = require('../../utils/publishStateExaminer')
 
 module.exports = {
     fields: {
@@ -210,13 +212,26 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
+        resolveInput: async ({
+            existingItem,
+            originalInput,
+            resolvedData,
+            context,
+            operation,
+        }) => {
             await controlCharacterFilter(
                 originalInput,
                 existingItem,
                 resolvedData
             )
             await parseResolvedData(existingItem, resolvedData)
+            await publishStateExaminer(
+                operation,
+                existingItem,
+                resolvedData,
+                context
+            )
+
             return resolvedData
         },
         validateInput: async ({
@@ -229,7 +244,13 @@ module.exports = {
                 resolvedData,
                 addValidationError
             )
+            validateIfPublishTimeIsFutureTime(
+                existingItem,
+                resolvedData,
+                addValidationError
+            )
         },
+        beforeChange: async ({ existingItem, resolvedData }) => {},
     },
     labelField: 'name',
     cacheHint: cacheHint,

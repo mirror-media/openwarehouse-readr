@@ -9,11 +9,8 @@ const {
     moderator,
     owner,
 } = require('../../helpers/access/mirror-tv')
+const HTML = require('../../fields/HTML')
 const cacheHint = require('../../helpers/cacheHint')
-
-const {
-    validateIfPostIsPublished,
-} = require('../../utils/validateIfPostIsPublished')
 
 module.exports = {
     fields: {
@@ -40,19 +37,7 @@ module.exports = {
         create: allowRoles(admin, moderator),
         delete: allowRoles(admin),
     },
-    hooks: {
-        validateInput: async ({
-            existingItem,
-            resolvedData,
-            addValidationError,
-        }) => {
-            await validateIfPostIsPublished(
-                resolvedData,
-                existingItem,
-                addValidationError
-            )
-        },
-    },
+    hooks: {},
     adminConfig: {
         defaultColumns: 'choice, state, createdAt',
         defaultSort: '-createdAt',

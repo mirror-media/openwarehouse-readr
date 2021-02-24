@@ -24,7 +24,8 @@ const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 const {
     validateIfPostNeedPublishTime,
-} = require('../../utils/validateIfPostNeedPublishTime')
+    validateIfPublishTimeIsFutureTime,
+} = require('../../utils/publishTimeHandler')
 const { publishStateExaminer } = require('../../utils/publishStateExaminer')
 
 module.exports = {
@@ -286,6 +287,11 @@ module.exports = {
             addValidationError,
         }) => {
             validateIfPostNeedPublishTime(
+                existingItem,
+                resolvedData,
+                addValidationError
+            )
+            validateIfPublishTimeIsFutureTime(
                 existingItem,
                 resolvedData,
                 addValidationError

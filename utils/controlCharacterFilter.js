@@ -5,6 +5,7 @@ const controlCharacterFilter = (originalInput, existingItem, resolvedData) => {
     modifiedList.forEach((modifiedKey) => {
         // if this key is null, it means no needed to handle it, just return
         if (!resolvedData[modifiedKey]) return
+        if (typeof resolvedData[modifiedKey] !== 'string') return
 
         console.log(`checking for ${modifiedKey}'s contorl character...`)
         resolvedData[modifiedKey] = resolvedData[modifiedKey].replace(rules, '')

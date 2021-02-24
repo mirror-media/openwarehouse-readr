@@ -41,11 +41,11 @@ module.exports = {
             resolvedData,
             addValidationError,
         }) => {
-            await validateIfPostIsPublished(
-                resolvedData,
-                existingItem,
-                addValidationError
-            )
+            // await validateIfPostIsPublished(
+            //     resolvedData,
+            //     existingItem,
+            //     addValidationError
+            // )
         },
     },
     adminConfig: {
