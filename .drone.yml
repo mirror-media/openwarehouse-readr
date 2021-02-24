@@ -12,7 +12,7 @@ pipeline:
       Someone gave *{{build.branch}}* a little push.
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   restoreCache:
     image: drillster/drone-volume-cache
@@ -24,7 +24,7 @@ pipeline:
       - /tmp/cache:/cache
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   getCmsDevConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -35,7 +35,7 @@ pipeline:
       - cp ../configs/openwarehouse/dev/gcskeyfile.json ./configs/gcskeyfile.json
     when:
       event: [push]
-      branch: [master, dev]
+      branch: [dev, stag, master]
 
   buildCmsThenPublish:
     image: plugins/gcr
@@ -46,7 +46,7 @@ pipeline:
     secrets: [google_credentials]
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   deployCmsDev:
     image: nytimes/drone-gke
@@ -63,7 +63,7 @@ pipeline:
       tier: backend
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   getGraphQLDevConfig:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
@@ -74,7 +74,7 @@ pipeline:
       - cp ../configs/openwarehouse/dev/gcskeyfile.json ./configs/gcskeyfile.json
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   buildGraphQLThenPublish:
     image: plugins/gcr
@@ -85,7 +85,7 @@ pipeline:
     secrets: [google_credentials]
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   deployGraphQLDev:
     image: nytimes/drone-gke
@@ -102,7 +102,7 @@ pipeline:
       tier: backend
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   deployExternalGraphQLDev:
     image: nytimes/drone-gke
@@ -119,7 +119,7 @@ pipeline:
       tier: backend
     when:
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   rebuildCache:
     image: drillster/drone-volume-cache
@@ -130,7 +130,7 @@ pipeline:
     volumes:
       - /tmp/cache:/cache
     when:
-      branch: [dev, master]
+      branch: [dev, stag, master]
 
   finishSlack:
     image: plugins/slack
@@ -141,7 +141,7 @@ pipeline:
     when:
       status: [success, failure]
       event: [push]
-      branch: [dev, master]
+      branch: [dev, stag, master]
     template: >
       {{#success build.status}}
         *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
