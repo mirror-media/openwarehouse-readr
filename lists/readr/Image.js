@@ -3,10 +3,15 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { ImageAdapter } = require('../../lib/ImageAdapter')
 const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const fs = require('fs')
-const { admin, moderator, editor, allowRoles } = require('../../helpers/access/readr')
+const {
+    admin,
+    moderator,
+    editor,
+    allowRoles,
+} = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
-const addWatermark = require('../../helpers/watermark')
+const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
 
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
@@ -117,20 +122,19 @@ module.exports = {
                 let origFilename = resolvedData.file.originalFilename
                 var id = resolvedData.file.id
 
-                // add needWatermark to image (Todo)
-                if (resolvedData.needWatermark) {
-                    // stream = await addWatermark(
-                    //     stream,
-                    //     resolvedData.file.id,
-                    //     resolvedData.file.originalFilename
-                    // )
-                }
+                await addWatermarkIfNeeded(resolvedData, existingItem)
 
-                var stream = fs.createReadStream(`./public/images/${fullFileName}`)
+                var stream = fs.createReadStream(
+                    `./public/images/${fullFileName}`
+                )
 
                 // upload image to gcs,and generate corespond meta data(url )
                 const image_adapter = new ImageAdapter(gcsDir)
-                let _meta = await image_adapter.sync_save(stream, id, origFilename)
+                let _meta = await image_adapter.sync_save(
+                    stream,
+                    id,
+                    origFilename
+                )
 
                 resolvedData.urlOriginal = _meta.url.urlOriginal
                 resolvedData.urlDesktopSized = _meta.url.urlDesktopSized
@@ -184,7 +188,10 @@ module.exports = {
             const image_adapter = new ImageAdapter(gcsDir)
 
             if (existingItem && typeof existingItem.file !== 'undefined') {
-                await image_adapter.delete(existingItem.file.id, existingItem.file.originalFilename)
+                await image_adapter.delete(
+                    existingItem.file.id,
+                    existingItem.file.originalFilename
+                )
                 console.log('deleted old one')
             }
         },

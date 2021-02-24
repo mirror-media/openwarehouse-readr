@@ -18,8 +18,7 @@ const {
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
-const { addWatermark } = require('../../helpers/watermark.js')
-const { checkIfNeedWatermark } = require('../../utils/checkIfNeedWatermark')
+const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
 
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
@@ -143,14 +142,7 @@ module.exports = {
                 let origFilename = resolvedData.file.originalFilename
                 var id = resolvedData.file.id
 
-                const isNeedWatermark = checkIfNeedWatermark(
-                    resolvedData,
-                    existingItem
-                )
-                // add needWatermark to image (Todo)
-                if (isNeedWatermark) {
-                    // stream = await addWatermark(stream, id, origFilename)
-                }
+                await addWatermarkIfNeeded(resolvedData, existingItem)
 
                 var stream = fs.createReadStream(
                     `./public/images/${fullFileName}`
