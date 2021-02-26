@@ -2,7 +2,7 @@ const {
     returnExistedKeyValueBetweenObjects,
 } = require('./returnExistedKeyValueBetweenObjects')
 
-const validateIfPostNeedPublishTime = (
+const validateIfPostNeedPublishTime = async (
     existingItem,
     resolvedData,
     addValidationError
@@ -29,16 +29,14 @@ const validateIfPostNeedPublishTime = (
     }
 }
 
-const validateIfPublishTimeIsFutureTime = (
+const validateIfPublishTimeIsFutureTime = async (
     existingItem,
     resolvedData,
     addValidationError
 ) => {
-    const currentPostState = returnExistedKeyValueBetweenObjects(
-        'state',
-        resolvedData,
-        existingItem
-    )
+    // validate post state only when post state updated( which means resolvedData has state key)
+    const updatedPostState = resolvedData?.state
+
     const postPublishTime = returnExistedKeyValueBetweenObjects(
         'publishTime',
         resolvedData,
@@ -46,7 +44,7 @@ const validateIfPublishTimeIsFutureTime = (
     )
 
     const needValidatePublishTime =
-        currentPostState === 'published' || currentPostState === 'scheduled'
+        updatedPostState === 'published' || updatedPostState === 'scheduled'
 
     if (needValidatePublishTime) {
         const nowTime = new Date(Date.now())

@@ -2,6 +2,7 @@ const {
     returnExistedKeyValueBetweenObjects,
 } = require('./returnExistedKeyValueBetweenObjects')
 const Jimp = require('jimp')
+const { app } = require('../configs/config.js')
 
 const addWatermarkIfNeeded = async (resolvedData, existingItem) => {
     const isNeedWatermark = checkIfNeedWatermark(resolvedData, existingItem)
@@ -29,11 +30,12 @@ async function addWatermark(fullFileName) {
     const image = await Jimp.read(
         `./public/images/${fullFileName}`
     ).then((image) => image.rotate(180))
+    const watermarkOpacity = app.project === 'mirror-tv' ? 1 : 0.5
 
     await image.composite(watermark, 0, 0, {
         mode: Jimp.BLEND_SOURCE_OVER,
         opacityDest: 1,
-        opacitySource: 0.5,
+        opacitySource: watermarkOpacity,
     })
 
     await image.rotate(180)
