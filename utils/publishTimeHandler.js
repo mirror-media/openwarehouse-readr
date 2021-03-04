@@ -35,7 +35,7 @@ const validateIfPublishTimeIsFutureTime = async (
     addValidationError
 ) => {
     // validate post state only when post state updated( which means resolvedData has state key)
-    const updatedPostState = resolvedData?.state
+    const updatedPostState = resolvedData ? resolvedData.state : null
 
     const postPublishTime = returnExistedKeyValueBetweenObjects(
         'publishTime',
