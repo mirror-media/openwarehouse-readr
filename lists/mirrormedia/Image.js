@@ -16,9 +16,10 @@ const {
     editor,
     allowRoles,
 } = require('../../helpers/access/mirrormedia')
-const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
+const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
+const { getNewFilename } = require('../../utils/getNewFilename')
 
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
@@ -167,8 +168,7 @@ module.exports = {
                 // update stored filename
                 // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
 
-                const newFilename = formatImagePath(resolvedData)
-                resolvedData.file.filename = newFilename
+                resolvedData.file.filename = getNewFilename(resolvedData)
 
                 // resolvedData.file.filename = newFilename
 
@@ -179,8 +179,7 @@ module.exports = {
                 console.log('no need to update stream')
 
                 resolvedData.file = existingItem.file
-                const newFilename = formatImagePath(existingItem)
-                resolvedData.file.filename = newFilename
+                resolvedData.file.filename = getNewFilename(existingItem)
 
                 console.log('EXISTING ITEM', existingItem)
                 console.log('RESOLVED DATA', resolvedData)

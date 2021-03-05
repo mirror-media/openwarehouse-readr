@@ -19,27 +19,13 @@ const {
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
 const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
+const { getNewFilename } = require('../../utils/getNewFilename')
 
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
     path: 'https://storage.googleapis.com/static-mnews-tw-dev/assets/images', //function({id, }){}
     // path: 'https://www.readr.tw/assets/images', //function({id, }){}
 })
-
-const formatImagePath = (data) => {
-    // check whether file has contained folder path in filename
-    // 5ff2779.jpg ==> need to format
-    // 5ff2779/5ff2779.jpg ==> return original filename
-    const { filename } = data.file
-    let id = filename.split('.')[0].split('-')[0]
-    let ext = filename.split('.')[1]
-
-    // No matter what the path or name is, just return this format's filename
-    const newFilename = `${id}.${ext}`
-    console.log('newFilename')
-    console.log(newFilename)
-    return newFilename
-}
 
 module.exports = {
     fields: {
@@ -181,8 +167,7 @@ module.exports = {
                 // update stored filename
                 // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
 
-                const newFilename = formatImagePath(resolvedData)
-                resolvedData.file.filename = newFilename
+                resolvedData.file.filename = getNewFilename(resolvedData)
 
                 // resolvedData.file.filename = newFilename
 
@@ -193,11 +178,7 @@ module.exports = {
                 console.log('no need to update stream')
 
                 resolvedData.file = existingItem.file
-                const newFilename = formatImagePath(existingItem)
-                resolvedData.file.filename = newFilename
-
-                console.log('EXISTING ITEM', existingItem)
-                console.log('RESOLVED DATA', resolvedData)
+                resolvedData.file.filename = getNewFilename(existingItem)
 
                 return { existingItem, resolvedData }
             }

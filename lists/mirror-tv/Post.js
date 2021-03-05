@@ -286,12 +286,12 @@ module.exports = {
             resolvedData,
             addValidationError,
         }) => {
-            validateIfPostNeedPublishTime(
+            await validateIfPostNeedPublishTime(
                 existingItem,
                 resolvedData,
                 addValidationError
             )
-            validateIfPublishTimeIsFutureTime(
+            await validateIfPublishTimeIsFutureTime(
                 existingItem,
                 resolvedData,
                 addValidationError
