@@ -1,6 +1,12 @@
 const { Text, Checkbox, Password, Select } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
-const { admin, moderator, editor, owner, allowRoles } = require('../../helpers/access/readr')
+const {
+    admin,
+    moderator,
+    editor,
+    owner,
+    allowRoles,
+} = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
@@ -40,22 +46,38 @@ module.exports = {
         },
     },
     plugins: [atTracking(), byTracking()],
-    // access: {
-    //     read: allowRoles(admin, moderator, editor, owner),
-    //     update: allowRoles(admin, moderator, owner),
-    //     create: allowRoles(admin, moderator),
-    //     delete: allowRoles(admin),
-    //     auth: true,
-    // },
+    access: {
+        read: allowRoles(admin, moderator, editor, owner),
+        update: allowRoles(admin, moderator, owner),
+        create: allowRoles(admin, moderator),
+        delete: allowRoles(admin),
+        auth: true,
+    },
     hooks: {
-        resolveInput: async ({ operation, existingItem, resolvedData }) => {
+        validateInput: async ({
+            operation,
+            existingItem,
+            resolvedData,
+            addValidationError,
+        }) => {
             if (operation === 'update' && existingItem.isProtected) {
                 const protectedFields = ['name', 'email', 'role']
+                const changedFields = []
                 protectedFields.forEach((field) => {
-                    resolvedData[field] = existingItem[field]
+                    if (
+                        resolvedData[field] &&
+                        resolvedData[field] !== existingItem[field]
+                    ) {
+                        changedFields.push(field)
+                    }
                 })
+
+                addValidationError(
+                    `此帳號已啟動「受保護」，${changedFields.join(
+                        '、'
+                    )}欄位不能被更動。如需更動，需先取消選取「受保護」再執行。`
+                )
             }
-            return resolvedData
         },
     },
     adminConfig: {
