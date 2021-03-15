@@ -146,6 +146,21 @@
     react-pseudo-state "^2.2.2"
     react-router-dom "5.2.0"
 
+"@arch-ui/button@^0.0.23":
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/@arch-ui/button/-/button-0.0.23.tgz#63cf032f00819d98d1982dac340f2a2a0612c9b0"
+  integrity sha512-EfPjFAvXUAXw0B2b7k0rJxIG2QasI13LUjVh/oy30i00nnF6RAb5F1O3PY611DJ9IOmdYSS7Qp6lXTAsNhcRAg==
+  dependencies:
+    "@arch-ui/color-utils" "^0.0.3"
+    "@arch-ui/common" "^0.0.13"
+    "@arch-ui/loading" "^0.0.19"
+    "@arch-ui/theme" "^0.0.12"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
+    "@emotion/styled" "^10.0.27"
+    react-pseudo-state "^2.2.2"
+    react-router-dom "5.2.0"
+
 "@arch-ui/card@^0.0.15":
   version "0.0.15"
   resolved "https://registry.yarnpkg.com/@arch-ui/card/-/card-0.0.15.tgz#e2da371c6d2781dec9d44d175d477f83a01159ab"
@@ -160,12 +175,24 @@
   resolved "https://registry.yarnpkg.com/@arch-ui/color-utils/-/color-utils-0.0.2.tgz#43189951896867bf75f232a7d7dc7fdf99760b2a"
   integrity sha512-bFzzak13UWSjkoojKoatSgyj5t4p6HTOIvRu+L6PfGhwgugaNcVhu1XCBJnt3v/ilQX8OXFWecN0e55QI4sVCQ==
 
+"@arch-ui/color-utils@0.0.3", "@arch-ui/color-utils@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@arch-ui/color-utils/-/color-utils-0.0.3.tgz#d4468d672ca42e872689aa39090480b170b536b9"
+  integrity sha512-A9WRKt5dcSMaFR1yuSKqn1Kmw1c4vYcUc1cOvMeZ7EoQvKsDRdXgSjcV20NDUYstSFyDMbcgrgT185iYHopDVg==
+
 "@arch-ui/common@0.0.12", "@arch-ui/common@^0.0.12":
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@arch-ui/common/-/common-0.0.12.tgz#008629a85ffebbdbea51bcdd1428fb86138865d4"
   integrity sha512-1ixk/ubNqJup6fMHPOxApqgKkLJ2IFlQE7s+bXTIBzokx4ogPX+jMb5qYh7NGuzN5UfZnXS6etxZ9nDdoMoIvA==
   dependencies:
     "@arch-ui/theme" "^0.0.11"
+
+"@arch-ui/common@0.0.13", "@arch-ui/common@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@arch-ui/common/-/common-0.0.13.tgz#234ae7fa36ebd4d34d1c8d49d72763448c4c6059"
+  integrity sha512-dcW7aOCn6z+iaUPtTQvieyOmnruXvj1rFyAR+7ttS+0roiiVceodimC3Cr6PZxs5gTw3RqqACaRIcENV+Y2a9A==
+  dependencies:
+    "@arch-ui/theme" "^0.0.12"
 
 "@arch-ui/confirm@^0.0.23":
   version "0.0.23"
@@ -225,6 +252,21 @@
     "@emotion/core" "^10.1.1"
     "@emotion/styled" "^10.0.27"
     focus-trap-react "^8.3.0"
+    react-scrolllock "^5.0.1"
+
+"@arch-ui/dialog@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@arch-ui/dialog/-/dialog-0.0.26.tgz#0090b8fc62c33f23ce15a77e2c928d66b80dadb1"
+  integrity sha512-oTyhvV/N0iZsTTRTflSPPBVX1a7Pb0ZMGWtCltIfJpHC0nX3Xs6C3+fThux1Y4rRC6ZHNjkyhfA+Pfqp03vebg==
+  dependencies:
+    "@arch-ui/color-utils" "^0.0.3"
+    "@arch-ui/modal-utils" "^1.0.14"
+    "@arch-ui/theme" "^0.0.12"
+    "@arch-ui/typography" "^0.0.19"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
+    "@emotion/styled" "^10.0.27"
+    focus-trap-react "^8.4.2"
     react-scrolllock "^5.0.1"
 
 "@arch-ui/drawer@^0.0.25":
@@ -298,6 +340,17 @@
     "@babel/runtime" "^7.11.2"
     "@emotion/core" "^10.0.35"
 
+"@arch-ui/input@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@arch-ui/input/-/input-0.1.12.tgz#fea0e9d5e16aba15021ec997b73d6cb1b98c3409"
+  integrity sha512-XdHMbdEOuAhQtF/0VF+bR0qFrDDSoG4K2nnnW7AEfu4ZiH6dVlZJo299X3Wf0FyGxUNWd+s65/dWCMQYQ0MDTQ==
+  dependencies:
+    "@arch-ui/color-utils" "0.0.3"
+    "@arch-ui/common" "0.0.13"
+    "@arch-ui/theme" "0.0.12"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
+
 "@arch-ui/layout@^0.2.14":
   version "0.2.14"
   resolved "https://registry.yarnpkg.com/@arch-ui/layout/-/layout-0.2.14.tgz#6534a7f517b447a550bb7a6a640a73c72387bd85"
@@ -309,6 +362,17 @@
     "@emotion/core" "^10.0.35"
     "@emotion/styled" "^10.0.27"
 
+"@arch-ui/layout@^0.2.15":
+  version "0.2.15"
+  resolved "https://registry.yarnpkg.com/@arch-ui/layout/-/layout-0.2.15.tgz#cc22be5d2c7842db4018f158fbc7ee78d22ac01c"
+  integrity sha512-qsiT7tBrk8RKPqIMfeiF2ZEXWUekP+8UghrmULQduKKIPrYzU9BuazweesUOHAMmW37sOxQEqWfcCqawv5SgiA==
+  dependencies:
+    "@arch-ui/common" "0.0.13"
+    "@arch-ui/theme" "0.0.12"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
+    "@emotion/styled" "^10.0.27"
+
 "@arch-ui/loading@^0.0.18":
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/@arch-ui/loading/-/loading-0.0.18.tgz#584120bfc002ca539a6b59a2f8dcf96de9db09db"
@@ -318,6 +382,17 @@
     "@arch-ui/typography" "0.0.18"
     "@babel/runtime" "^7.11.2"
     "@emotion/core" "^10.0.35"
+    "@emotion/styled" "^10.0.27"
+
+"@arch-ui/loading@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@arch-ui/loading/-/loading-0.0.19.tgz#cedf08a18b191bd65edbbd3ae31645c7584e1a74"
+  integrity sha512-31GevIY8NgNoUNeSmT6yq5qKY3YIsmUV760m3NNvqROjaTOIX0ptTagAU19vZdT//ZNAfK4wULSphMxc8WsvQA==
+  dependencies:
+    "@arch-ui/theme" "0.0.12"
+    "@arch-ui/typography" "0.0.19"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
     "@emotion/styled" "^10.0.27"
 
 "@arch-ui/lozenge@^0.0.17":
@@ -339,6 +414,19 @@
     "@arch-ui/theme" "^0.0.11"
     "@babel/runtime" "^7.11.2"
     "@emotion/core" "^10.0.35"
+    "@emotion/styled" "^10.0.27"
+    react-scrolllock "^5.0.1"
+    react-transition-group "^4.4.1"
+
+"@arch-ui/modal-utils@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@arch-ui/modal-utils/-/modal-utils-1.0.14.tgz#2fb3301d2b2211d2a9d90b1dbd59b89e6ead9d36"
+  integrity sha512-JjHgqBLyTxcv9/zo4Z3xIlEG08rBU1xTLMHw+/aI2djCuBhqfiHJcZ5sqfDNWYAQ1/VGiwUHqcDKcwn2cAGcdA==
+  dependencies:
+    "@arch-ui/color-utils" "^0.0.3"
+    "@arch-ui/theme" "^0.0.12"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
     "@emotion/styled" "^10.0.27"
     react-scrolllock "^5.0.1"
     react-transition-group "^4.4.1"
@@ -380,6 +468,21 @@
     "@emotion/core" "^10.0.35"
     "@emotion/styled" "^10.0.27"
     "@primer/octicons-react" "^11.0.0"
+    react-router-dom "5.2.0"
+
+"@arch-ui/pagination@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@arch-ui/pagination/-/pagination-0.0.27.tgz#53b5cc4559e52e076cddca3a8f80e9be7fee525a"
+  integrity sha512-2SXdm5ao/PrWd6EhhmoTPnlFRdHhB/ydH7WrR1ui83dh6FwocgLy8rts4u6d9YM3a3paNkp+qqqPJDmf3xFGtw==
+  dependencies:
+    "@arch-ui/button" "^0.0.23"
+    "@arch-ui/layout" "^0.2.15"
+    "@arch-ui/loading" "^0.0.19"
+    "@arch-ui/theme" "^0.0.12"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
+    "@emotion/styled" "^10.0.27"
+    "@primer/octicons-react" "^11.3.0"
     react-router-dom "5.2.0"
 
 "@arch-ui/pill@^0.1.18":
@@ -426,6 +529,14 @@
     "@arch-ui/color-utils" "0.0.2"
     "@babel/runtime" "^7.11.2"
 
+"@arch-ui/theme@0.0.12", "@arch-ui/theme@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@arch-ui/theme/-/theme-0.0.12.tgz#0eec87360a4cf8955d5b7298c77a43513415a397"
+  integrity sha512-n2TI+GBtuCHjGsV3gSMxo6pC05N9HQVU2UNoO8NpuMThxOEnfzpQck8kJcdIkYjQYyjZ4qjQw70iQiXhOse5ew==
+  dependencies:
+    "@arch-ui/color-utils" "0.0.3"
+    "@babel/runtime" "^7.12.13"
+
 "@arch-ui/tooltip@^0.1.14":
   version "0.1.14"
   resolved "https://registry.yarnpkg.com/@arch-ui/tooltip/-/tooltip-0.1.14.tgz#8258a91a2a5a2adf1ba8f68458303d30377b28bb"
@@ -448,6 +559,16 @@
     "@arch-ui/theme" "0.0.11"
     "@babel/runtime" "^7.11.2"
     "@emotion/core" "^10.0.35"
+    "@emotion/styled" "^10.0.27"
+
+"@arch-ui/typography@0.0.19", "@arch-ui/typography@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@arch-ui/typography/-/typography-0.0.19.tgz#c5a4dc0d075b3fdcaaa2a111b32c87872ae2cc3a"
+  integrity sha512-KLHNqRKXZ9sdIu3diD/hxCpNlndS53V7rkubIjUDHsVjc0bN9cbFn3bdp9cpK1/5WLFn1QX7t0DgxOE3elcXFw==
+  dependencies:
+    "@arch-ui/theme" "0.0.12"
+    "@babel/runtime" "^7.12.13"
+    "@emotion/core" "^10.1.1"
     "@emotion/styled" "^10.0.27"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13":
@@ -1426,6 +1547,13 @@
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.13.tgz#0a21452352b02542db0ffb928ac2d3ca7cb6d66d"
   integrity sha512-8+3UMPBrjFa/6TtKi/7sehPKqfAm4g6K+YQjyyFOLUTxzOngcRZTlAVY8sc2CORJYqdHQY8gRPHmn+qo15rCBw==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.12.13":
+  version "7.13.10"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
+  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -2456,11 +2584,15 @@
     p-reflect "^2.1.0"
     semver "^7.3.4"
 
-"@liyibass/html-draft-editor@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@liyibass/html-draft-editor/-/html-draft-editor-0.2.3.tgz#570fe1bbddae0a9327637a45beba4cd8712af19e"
-  integrity sha512-0MDA4pG/EW66UpT/FfKrwdVX5YoVqoTWx+Etub8tVm4+3fWU1c8iiIXkK5gSy37uVlwh/TGSpIrK2dEsxFa8ZQ==
+"@liyibass/html-draft-editor@^0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@liyibass/html-draft-editor/-/html-draft-editor-0.3.5.tgz#42e235fc30f40168d956ebb39f4bab458d8e9d18"
+  integrity sha512-bPRBEKADcYmGPErLTS41E2OpwtjbBi6CYzVnBeKQrkIBdNeoVkTzMwhf+sdyoegjAqZ3umqa+wAs2cLXrNe3ag==
   dependencies:
+    "@arch-ui/button" "^0.0.23"
+    "@arch-ui/dialog" "^0.0.26"
+    "@arch-ui/input" "^0.1.12"
+    "@arch-ui/pagination" "^0.0.27"
     "@fortawesome/fontawesome-free" "^5.15.1"
     apollo-fetch "^0.7.0"
     babel-helpers "^6.24.1"
@@ -2469,7 +2601,6 @@
     core-js "2"
     draft-js "^0.11.6"
     draftjs-to-html "^0.9.1"
-    element-react "^1.4.34"
     element-theme-default "^1.4.13"
     file-loader "^6.2.0"
     graphql "^15.4.0"
@@ -2477,6 +2608,7 @@
     html-react-parser "^1.0.0"
     htmlparser2 "^6.0.0"
     immutability-helper "^3.1.1"
+    raf "^3.4.1"
     react "^17.0.1"
     react-dnd "^11.1.3"
     react-dnd-html5-backend "^11.1.3"
@@ -2525,7 +2657,7 @@
     pirates "^4.0.1"
     source-map-support "^0.5.13"
 
-"@primer/octicons-react@^11.0.0", "@primer/octicons-react@^11.1.0", "@primer/octicons-react@^11.2.0":
+"@primer/octicons-react@^11.0.0", "@primer/octicons-react@^11.1.0", "@primer/octicons-react@^11.2.0", "@primer/octicons-react@^11.3.0":
   version "11.3.0"
   resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-11.3.0.tgz#794641d95ff5749a9438a2e0c201956b2a377b60"
   integrity sha512-4sVhkrBKuj3h+PFw69yOyO/l3nQB/mm95V+Kz7LRSlIrbZr6hZarZD5Ft4ewdONPROkIHQM/6KSK90+OAimxsQ==
@@ -3888,11 +4020,6 @@ async-retry@^1.2.1, async-retry@^1.3.1:
   integrity sha512-aiieFW/7h3hY0Bq5d+ktDBejxuwR78vRu9hDUdR8rNhSaQ29VzPL4AoIRG7D/c7tdenwOcKvgPM6tIxB3cB6HA==
   dependencies:
     retry "0.12.0"
-
-async-validator@^1.10.1:
-  version "1.12.2"
-  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-1.12.2.tgz#beae671e7174d2938b7b4b69d2fb7e722b7fd72c"
-  integrity sha512-57EETfCPFiB7M4QscvQzWSGNsmtkjjzZv318SK1CBlstk+hycV72ocjriMOOM48HjvmoAoJGpJNjC7Z76RlnZA==
 
 async@^3.2.0:
   version "3.2.0"
@@ -5658,20 +5785,6 @@ electron-to-chromium@^1.3.649:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.652.tgz#9465d884d609acffd131ba71096de7bfabd63670"
   integrity sha512-85J5D0Ksxjq2MIHfgwOURRej72UMlexbaa7t+oKTJan3Pa/RBE8vJ4/JzwaQjLCElPvd0XeLWi7+xYTVrq96aA==
 
-element-react@^1.4.34:
-  version "1.4.34"
-  resolved "https://registry.yarnpkg.com/element-react/-/element-react-1.4.34.tgz#e27cc0ca31f86fed46fe46fbc8fd330c156c383c"
-  integrity sha512-O9OlLAhlRmfC5s2AQTB99gOn/DZICs0nHdEB96IKvl/OA84ZVHtsUdD7b0lo8nL8S7h9/gDJ+0TPZV02QzwZQw==
-  dependencies:
-    async-validator "^1.10.1"
-    classnames "^2.2.6"
-    popper.js "^1.14.7"
-    prop-types "^15.6.2"
-    raf "^3.4.1"
-    react-click-outside "^3.0.1"
-    react-transition-group "^2.5.3"
-    throttle-debounce "^2.1.0"
-
 element-theme-default@^1.4.13:
   version "1.4.13"
   resolved "https://registry.yarnpkg.com/element-theme-default/-/element-theme-default-1.4.13.tgz#70f9b754f9a1059d20c3225fe12eb55cc1e8abf9"
@@ -6345,6 +6458,13 @@ focus-trap-react@^8.3.0:
   dependencies:
     focus-trap "^6.3.0"
 
+focus-trap-react@^8.4.2:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/focus-trap-react/-/focus-trap-react-8.4.2.tgz#5b313605e0789a7beee1467785e455dc63388a98"
+  integrity sha512-yuItOIwgriOBMrbHDqbWMpQjGVs9SbtugYrT0vs0yPjHiPKja3NZ9dBMxDQrV1JhyojGK5d6j7ayqBS7Kcm9xQ==
+  dependencies:
+    focus-trap "^6.3.0"
+
 focus-trap@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-6.3.0.tgz#31c08f0b6099705f71f6e0a16d88fbcc4c012586"
@@ -6961,7 +7081,7 @@ hoek@6.x.x:
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-6.1.3.tgz#73b7d33952e01fe27a38b0457294b79dd8da242c"
   integrity sha512-YXXAAhmF9zpQbC7LEcREFtXfGq5K1fmd+4PHkBq8NUqmzW3G+Dq10bI/i0KucLRwss3YYFQ0fSfoxBZYiGUqtQ==
 
-hoist-non-react-statics@^2.1.1, hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
@@ -9343,11 +9463,6 @@ pngjs@^3.0.0, pngjs@^3.3.3:
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
 
-popper.js@^1.14.7:
-  version "1.16.1"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
-  integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
-
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -9698,13 +9813,6 @@ react-adopt@^0.6.0:
     react "^16.3.2"
     react-display-name "^0.2.4"
 
-react-click-outside@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/react-click-outside/-/react-click-outside-3.0.1.tgz#6e77e84d2f17afaaac26dbad743cbbf909f5e24c"
-  integrity sha512-d0KWFvBt+esoZUF15rL2UBB7jkeAqLU8L/Ny35oLK6fW6mIbOv/ChD+ExF4sR9PD26kVx+9hNfD0FTIqRZEyRQ==
-  dependencies:
-    hoist-non-react-statics "^2.1.1"
-
 react-codemirror2@^7.2.1:
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-7.2.1.tgz#38dab492fcbe5fb8ebf5630e5bb7922db8d3a10c"
@@ -10017,7 +10125,7 @@ react-toast-notifications@^2.4.0:
     "@emotion/core" "^10.0.14"
     react-transition-group "^4.3.0"
 
-react-transition-group@^2.2.1, react-transition-group@^2.5.3:
+react-transition-group@^2.2.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
   integrity sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==
@@ -11371,11 +11479,6 @@ terser@^4.1.2, terser@^4.6.3:
     commander "^2.20.0"
     source-map "~0.6.1"
     source-map-support "~0.5.12"
-
-throttle-debounce@^2.1.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-2.3.0.tgz#fd31865e66502071e411817e241465b3e9c372e2"
-  integrity sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==
 
 through2@^2.0.0:
   version "2.0.5"
