@@ -5,6 +5,7 @@ const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
+const ImageRelationship = require('../../fields/ImageRelationship')
 
 const { parseResolvedData } = require('../../utils/parseResolvedData')
 const { emitEditLog } = require('../../utils/emitEditLog')
@@ -99,7 +100,7 @@ module.exports = {
         },
         heroImage: {
             label: '首圖',
-            type: Relationship,
+            type: ImageRelationship,
             ref: 'Image',
         },
         heroCaption: {

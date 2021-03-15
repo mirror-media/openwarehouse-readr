@@ -17,6 +17,7 @@ const {
 } = require('../../helpers/access/mirror-tv')
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
+const ImageRelationship = require('../../fields/ImageRelationship')
 const cacheHint = require('../../helpers/cacheHint')
 
 const { parseResolvedData } = require('../../utils/parseResolvedData')
@@ -111,7 +112,8 @@ module.exports = {
         },
         heroImage: {
             label: '首圖',
-            type: Relationship,
+            // type: Relationship,
+            type: ImageRelationship,
             ref: 'Image',
         },
         heroCaption: {
@@ -141,10 +143,12 @@ module.exports = {
         brief: {
             label: '前言',
             type: HTML,
+            // type: Text,
         },
         content: {
             label: '內文',
             type: HTML,
+            // type: Text,
         },
         topics: {
             label: '專題',
@@ -252,7 +256,8 @@ module.exports = {
             },
         },
     },
-    plugins: [logging((args) => emitEditLog(args)), atTracking(), byTracking()],
+    // plugins: [logging((args) => emitEditLog(args)), atTracking(), byTracking()],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),
@@ -266,11 +271,17 @@ module.exports = {
             context,
             operation,
         }) => {
+            // console.log('=====resolveInput=====')
+            // console.log(originalInput?.brief)
+            // console.log(existingItem?.brief)
+            // console.log(resolvedData?.brief)
+
             await controlCharacterFilter(
                 originalInput,
                 existingItem,
                 resolvedData
             )
+
             await parseResolvedData(existingItem, resolvedData)
             await publishStateExaminer(
                 operation,
