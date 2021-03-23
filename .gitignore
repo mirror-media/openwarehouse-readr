@@ -1,4 +1,7 @@
 configs/config.js
+configs/config_mirror_tv.js
+configs/config_mirrormedia.js
+configs/config_readr.js
 node_modules
 .idea
 dist/

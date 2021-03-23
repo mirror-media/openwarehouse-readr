@@ -22,7 +22,6 @@ const { app } = require('../configs/config.js')
 const parseResolvedData = (existingItem, resolvedData) => {
     // get every draft field's storedEditorContent
     let fieldsArray = _generateDraftFieldsArray()
-
     try {
         /* 
         because we use A.content || B.content below
@@ -37,7 +36,9 @@ const parseResolvedData = (existingItem, resolvedData) => {
         })
 
         storedEditorContentsArray.forEach((editorContent, index) => {
-            let currentEditorContentValve = _getEditorContentValue(editorContent)
+            let currentEditorContentValve = _getEditorContentValue(
+                editorContent
+            )
             _feedFieldValueToResolvedData(index, currentEditorContentValve)
         })
     } catch (err) {
@@ -61,7 +62,10 @@ const parseResolvedData = (existingItem, resolvedData) => {
         }
     }
 
-    function _feedFieldValueToResolvedData(currentFieldIndex, currentEditorContent) {
+    function _feedFieldValueToResolvedData(
+        currentFieldIndex,
+        currentEditorContent
+    ) {
         // storedEditorContent is formated to 3 part:
         // draftState itself, contentHTML, and contentApidata
         // destructure them and put it into resolvedData's key
@@ -75,6 +79,7 @@ const parseResolvedData = (existingItem, resolvedData) => {
         resolvedData[`${currentField}`] = JSON.stringify(currentEditorContent)
         resolvedData[`${currentField}Html`] = html
         resolvedData[`${currentField}ApiData`] = JSON.stringify(apiData)
+        console.log(apiData)
     }
 
     function _generateDraftFieldsArray() {
