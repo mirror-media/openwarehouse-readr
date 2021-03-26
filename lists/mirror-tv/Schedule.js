@@ -15,7 +15,7 @@ const cacheHint = require('../../helpers/cacheHint')
 module.exports = {
     fields: {
         name: {
-            label: '節目名稱',
+            label: '時段名稱',
             type: Text,
             isRequired: true,
         },
@@ -80,7 +80,7 @@ module.exports = {
             type: Checkbox,
         },
         showUrl: {
-            label: '關聯節目',
+            label: '節目連結',
             type: Relationship,
             ref: 'Show',
             many: false,

@@ -13,6 +13,7 @@ const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
 const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
 const { getNewFilename } = require('../../utils/getNewFilename')
+const { generateImageSizeList } = require('../../utils/imageSizeHandler')
 
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
@@ -85,6 +86,13 @@ module.exports = {
                 update: false,
             },
         },
+        variousImageSizeList: {
+            type: Text,
+            access: {
+                create: false,
+                update: false,
+            },
+        },
     },
     plugins: [atTracking(), byTracking()],
     access: {
@@ -147,22 +155,20 @@ module.exports = {
 
                 // update stored filename
                 // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
-
                 resolvedData.file.filename = getNewFilename(resolvedData)
-
-                // resolvedData.file.filename = newFilename
-
-                return { existingItem, resolvedData }
             } else {
                 // resolvedData = false
                 // image is no needed to update
                 console.log('no need to update stream')
-
-                resolvedData.file = existingItem.file
-                resolvedData.file.filename = getNewFilename(existingItem)
-
-                return { existingItem, resolvedData }
             }
+
+            // generate variusImageSizeList to resolvedData
+            resolvedData.variousImageSizeList = await generateImageSizeList(
+                resolvedData,
+                existingItem
+            )
+
+            return { existingItem, resolvedData }
         },
         // When delete image, delete image in gcs as well
         beforeDelete: async ({ existingItem }) => {

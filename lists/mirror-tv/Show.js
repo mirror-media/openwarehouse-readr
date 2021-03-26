@@ -1,4 +1,11 @@
-const { Relationship, Slug, Text, Url, Virtual } = require('@keystonejs/fields')
+const {
+    Relationship,
+    Slug,
+    Text,
+    Url,
+    Virtual,
+    Integer,
+} = require('@keystonejs/fields')
 const { gql } = require('apollo-server-express')
 
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
@@ -10,6 +17,8 @@ const {
     owner,
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
+const ImageRelationship = require('../../fields/ImageRelationship')
+
 const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
@@ -20,64 +29,30 @@ module.exports = {
             isRequired: true,
             isUnique: true,
         },
-        schedule: {
+        name: {
             label: '節目名稱',
-            type: Relationship,
-            ref: 'Schedule',
-            many: false,
+            type: Text,
             isRequired: true,
         },
         bannerImg: {
             label: 'banner',
-            type: Relationship,
+            type: ImageRelationship,
             ref: 'Image',
             many: false,
             isRequired: true,
         },
         picture: {
             label: '圖片',
-            type: Relationship,
+            type: ImageRelationship,
             ref: 'Image',
             many: false,
         },
-        time: {
-            label: '播放時間',
-            type: Virtual,
-            resolver: async (item, args, context) => {
-                const { data, errors } = await context.executeGraphQL({
-                    query: gql`
-                    {
-                        Schedule(where: {id: ${item.schedule}}) {
-                            monday
-                            tuesday
-                            wednesday
-                            thursday
-                            friday
-                            saturday
-                            sunday
-                            hour
-                            minute
-                        }
-                    }`,
-                })
-                const weekdays = Object.keys(data.Schedule)
-                    .filter(
-                        (key) =>
-                            key != 'hour' &&
-                            key != 'minute' &&
-                            !!data.Schedule[key]
-                    )
-                    .map(
-                        (weekday) =>
-                            weekday.charAt(0).toUpperCase() + weekday.slice(1)
-                    )
-                const timeString =
-                    ('0' + data.Schedule.hour).slice(-2) +
-                    ':' +
-                    ('0' + data.Schedule.minute).slice(-2)
-                return `${[weekdays.join(', '), timeString].join(' ')}`
-            },
+        sortOrder: {
+            label: '排序順位',
+            type: Integer,
+            isUnique: true,
         },
+
         introduction: {
             label: '簡介',
             type: Text,
@@ -93,14 +68,22 @@ module.exports = {
             label: 'facebook 粉專連結',
             type: Url,
         },
-        trailerUrl: {
-            label: '預告片連結',
+        // trailerUrl: {
+        //     label: '預告片連結',
+        //     type: Url,
+        // },
+        // youtubePlaylistUrl: {
+        //     label: 'Youtube 節目播放清單連結',
+        //     type: Url,
+        //     isRequired: true,
+        // },
+        playList01: {
+            label: 'Youtube播放清單1',
             type: Url,
         },
-        youtubePlaylistUrl: {
-            label: 'Youtube 節目播放清單連結',
+        playList02: {
+            label: 'Youtube播放清單2',
             type: Url,
-            isRequired: true,
         },
     },
     plugins: [atTracking(), byTracking()],
