@@ -19,9 +19,7 @@ RUN yarn migrate
 
 # Runtime container
 FROM node:${NODE_VERSION}-alpine
-RUN apk update \
-    && apk add imagemagick graphicsmagick ffmpeg curl \
-    && apk cache clean
+RUN apk add imagemagick graphicsmagick ffmpeg curl --no-cache
 WORKDIR /app
 COPY ./public /build/public
 COPY --from=build /build /app
