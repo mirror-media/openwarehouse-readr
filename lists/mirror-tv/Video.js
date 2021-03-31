@@ -12,6 +12,7 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { GCSAdapter } = require('../../lib/GCSAdapter')
 const {
     admin,
+    bot,
     moderator,
     editor,
     contributor,
@@ -122,7 +123,7 @@ module.exports = {
     plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator, editor),
-        create: allowRoles(admin, moderator, editor),
+        create: allowRoles(admin, bot, moderator, editor),
         delete: allowRoles(admin),
     },
     hooks: {},

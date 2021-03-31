@@ -9,6 +9,7 @@ const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { logging } = require('@keystonejs/list-plugins')
 const {
     admin,
+    bot,
     moderator,
     editor,
     contributor,
@@ -260,7 +261,7 @@ module.exports = {
     plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
-        create: allowRoles(admin, moderator, editor, contributor),
+        create: allowRoles(admin, bot, moderator, editor, contributor),
         delete: allowRoles(admin),
     },
     hooks: {

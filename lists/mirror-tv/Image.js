@@ -20,7 +20,6 @@ const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
 const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
 const { getNewFilename } = require('../../utils/getNewFilename')
-const { generateImageSizeList } = require('../../utils/imageSizeHandler')
 
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
@@ -85,14 +84,14 @@ module.exports = {
                 update: false,
             },
         },
-        urlMobileSized: {
+        urlTabletSized: {
             type: Url,
             access: {
                 create: false,
                 update: false,
             },
         },
-        urlTabletSized: {
+        urlMobileSized: {
             type: Url,
             access: {
                 create: false,
@@ -106,7 +105,7 @@ module.exports = {
                 update: false,
             },
         },
-        variousImageSizeList: {
+        imageApiData: {
             type: Text,
             access: {
                 create: false,
@@ -128,66 +127,58 @@ module.exports = {
         // Hooks for create and update operations
 
         beforeChange: async ({ existingItem, resolvedData }) => {
-            var origFilename
-            if (typeof resolvedData.file !== 'undefined') {
-                // resolvedData = true
-                // when create or update newer image
-                let fullFileName = resolvedData.file.filename
-                let origFilename = resolvedData.file.originalFilename
-                var id = resolvedData.file.id
+            try {
+                if (typeof resolvedData.file !== 'undefined') {
+                    // resolvedData = true
+                    // when create or update newer image
+                    const originalFileName = resolvedData.file.filename //image's name format: id-orgName.ext
+                    const newFileName = getNewFilename(resolvedData)
+                    const id = resolvedData.file.id
 
-                await addWatermarkIfNeeded(resolvedData, existingItem)
+                    await addWatermarkIfNeeded(resolvedData, existingItem)
 
-                var stream = fs.createReadStream(
-                    `./public/images/${fullFileName}`
-                )
-                // upload image to gcs,and generate corespond meta data(url )
-                const image_adapter = new ImageAdapter(gcsDir)
-                let _meta = await image_adapter.sync_save(
-                    stream,
-                    id,
-                    origFilename
-                )
-
-                resolvedData.urlOriginal = _meta.url.urlOriginal
-                resolvedData.urlDesktopSized = _meta.url.urlDesktopSized
-                resolvedData.urlMobileSized = _meta.url.urlMobileSized
-                resolvedData.urlTabletSized = _meta.url.urlTabletSized
-                resolvedData.urlTinySized = _meta.url.urlTinySized
-
-                // existingItem = null
-                // create image
-                if (typeof existingItem === 'undefined') {
-                    console.log('---create image---')
-                } else {
-                    console.log('---update image---')
+                    // upload image to gcs,and generate corespond meta data(url )
+                    const image_adapter = new ImageAdapter(
+                        originalFileName,
+                        newFileName,
+                        id
+                    )
+                    let _meta = await image_adapter.sync_save()
 
                     // existingItem = true
                     // update image
                     // need to delete old image in gcs
-                    await image_adapter.delete(
-                        existingItem.file.id,
-                        existingItem.file.originalFilename
-                    )
-                    console.log('deleted old one')
+                    if (typeof existingItem !== 'undefined') {
+                        console.log('---update image---')
+
+                        await image_adapter.delete(
+                            existingItem.file.id,
+                            existingItem.file.originalFilename
+                        )
+                        console.log('deleted old one')
+                    }
+
+                    // import each url into resolvedData
+                    resolvedData.urlOriginal = _meta.apiData.original.url
+                    resolvedData.urlDesktopSized = _meta.apiData.desktop.url
+                    resolvedData.urlTabletSized = _meta.apiData.tablet.url
+                    resolvedData.urlMobileSized = _meta.apiData.mobile.url
+                    resolvedData.urlTinySized = _meta.apiData.tiny.url
+                    // generate imageApiData to resolvedData
+                    resolvedData.imageApiData = JSON.stringify(_meta.apiData)
+                    // update stored filename
+                    // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
+                    resolvedData.file.filename = getNewFilename(resolvedData)
+                } else {
+                    // resolvedData = false
+                    // image is no needed to update
+                    console.log('no need to update stream')
                 }
 
-                // update stored filename
-                // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
-                resolvedData.file.filename = getNewFilename(resolvedData)
-            } else {
-                // resolvedData = false
-                // image is no needed to update
-                console.log('no need to update stream')
+                return { existingItem, resolvedData }
+            } catch (err) {
+                console.log(err)
             }
-
-            // generate variusImageSizeList to resolvedData
-            resolvedData.variousImageSizeList = await generateImageSizeList(
-                resolvedData,
-                existingItem
-            )
-
-            return { existingItem, resolvedData }
         },
         // When delete image, delete image in gcs as well
         beforeDelete: async ({ existingItem }) => {

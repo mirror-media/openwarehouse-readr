@@ -79,7 +79,6 @@ const parseResolvedData = (existingItem, resolvedData) => {
         resolvedData[`${currentField}`] = JSON.stringify(currentEditorContent)
         resolvedData[`${currentField}Html`] = html
         resolvedData[`${currentField}ApiData`] = JSON.stringify(apiData)
-        console.log(apiData)
     }
 
     function _generateDraftFieldsArray() {
