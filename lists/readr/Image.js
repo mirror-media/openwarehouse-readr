@@ -12,8 +12,10 @@ const {
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
 const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
-const { getNewFilename } = require('../../utils/getNewFilename')
-
+const {
+    getNewFilename,
+    getFileDetail,
+} = require('../../utils/fileDetailHandler')
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
     path: 'https://storage.googleapis.com/static-readr-tw-dev/assets/images', //function({id, }){}
@@ -64,14 +66,14 @@ module.exports = {
                 update: false,
             },
         },
-        urlMobileSized: {
+        urlTabletSized: {
             type: Url,
             access: {
                 create: false,
                 update: false,
             },
         },
-        urlTabletSized: {
+        urlMobileSized: {
             type: Url,
             access: {
                 create: false,
@@ -94,11 +96,11 @@ module.exports = {
         },
     },
     plugins: [atTracking(), byTracking()],
-    access: {
-        update: allowRoles(admin, moderator, editor),
-        create: allowRoles(admin, moderator, editor),
-        delete: allowRoles(admin),
-    },
+    // access: {
+    //     update: allowRoles(admin, moderator, editor),
+    //     create: allowRoles(admin, moderator, editor),
+    //     delete: allowRoles(admin),
+    // },
     adminConfig: {
         defaultColumns: 'name, image, createdAt',
         defaultSort: '-createdAt',
@@ -153,6 +155,17 @@ module.exports = {
                     // resolvedData = false
                     // image is no needed to update
                     console.log('no need to update stream')
+
+                    // if there's no image api data, fetch it
+                    if (!existingItem.imageApiData) {
+                        const id = existingItem.id
+                        const image_adapter = new ImageAdapter(id)
+
+                        const apiData = await image_adapter.generateNewImageApiData(
+                            existingItem
+                        )
+                        resolvedData.imageApiData = apiData
+                    }
                 }
 
                 return { existingItem, resolvedData }

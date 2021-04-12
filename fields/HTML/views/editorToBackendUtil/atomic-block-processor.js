@@ -11,6 +11,9 @@ const processor = {
         let content
         let entityRange = block.entityRanges[0]
         let styles = {}
+        // current block's entity data
+        // ex:
+        // entity.type = IMAGE, entity.data={id,name,url...}
         const entity = entityMap[entityRange.key]
 
         let type = _.get(entity, 'type', '')

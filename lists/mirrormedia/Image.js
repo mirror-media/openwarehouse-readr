@@ -19,7 +19,10 @@ const {
 const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/images/'
 const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
-const { getNewFilename } = require('../../utils/getNewFilename')
+const {
+    getNewFilename,
+    getFileDetail,
+} = require('../../utils/fileDetailHandler')
 
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',

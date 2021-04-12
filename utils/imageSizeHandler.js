@@ -1,6 +1,7 @@
 const probe = require('probe-image-size')
 const sharp = require('sharp')
 const fs = require('fs')
+const { ImageAdapter } = require('../lib/ImageAdapter')
 
 const resizeTarget = {
     desktop: { width: 1268, height: 713 },
@@ -45,7 +46,27 @@ function getOriginalImageDimentionInLocal(originalFileName) {
     })
 }
 
+function generateImageApiDataFromExistingItem(existingItem) {
+    console.log(ImageAdapter)
+    const originalFileName = existingItem.file.filename
+    const id = existingItem.file.id
+    const image_adapter = new ImageAdapter(originalFileName, '', id)
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            const apiData = await image_adapter.generateNewImageApiData(
+                existingItem
+            )
+
+            resolve(JSON.stringify(apiData))
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
+
 module.exports = {
     getUrlImageDimentions,
     getOriginalImageDimentionInLocal,
+    generateImageApiDataFromExistingItem,
 }

@@ -24,7 +24,10 @@ const cacheHint = require('../../helpers/cacheHint')
 const gcsDir = 'assets/videos/'
 const fileAdapter = new GCSAdapter(gcsDir)
 
-const { getNewFilename } = require('../../utils/getNewFilename')
+const {
+    getNewFilename,
+    getFileDetail,
+} = require('../../utils/fileDetailHandler')
 const {
     deleteOldVideoFileInGCS,
     feedNewVideoData,

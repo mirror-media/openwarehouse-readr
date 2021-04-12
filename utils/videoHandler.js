@@ -1,4 +1,4 @@
-const { getNewFilename } = require('./getNewFilename')
+const { getNewFilename, getFileDetail } = require('./fileDetailHandler')
 const {
     returnExistedKeyValueBetweenObjects,
 } = require('./returnExistedKeyValueBetweenObjects')

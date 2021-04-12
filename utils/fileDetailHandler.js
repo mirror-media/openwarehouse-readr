@@ -12,4 +12,11 @@ const getNewFilename = (data) => {
     return newFilename
 }
 
-module.exports = { getNewFilename }
+function getFileDetail(resolvedData) {
+    const originalFileName = resolvedData.file.filename //image's name format: id-orgName.ext
+    const newFileName = getNewFilename(resolvedData)
+    const id = resolvedData.file.id
+    return { id, newFileName, originalFileName }
+}
+
+module.exports = { getNewFilename, getFileDetail }
