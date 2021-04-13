@@ -23,6 +23,7 @@ RUN apk add imagemagick graphicsmagick ffmpeg curl --no-cache
 WORKDIR /app
 COPY ./public /build/public
 COPY --from=build /build /app
+RUN yarn build
 
 EXPOSE 3000
 CMD ["./dumb-init", "yarn", "start"]
