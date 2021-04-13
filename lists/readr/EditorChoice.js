@@ -54,10 +54,6 @@ module.exports = {
             label: '發佈時間',
             type: NewDateTime,
         },
-        test: {
-            label: 'test',
-            type: Text,
-        },
     },
     plugins: [atTracking(), byTracking()],
     access: {

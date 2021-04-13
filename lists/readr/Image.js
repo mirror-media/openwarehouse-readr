@@ -96,11 +96,11 @@ module.exports = {
         },
     },
     plugins: [atTracking(), byTracking()],
-    // access: {
-    //     update: allowRoles(admin, moderator, editor),
-    //     create: allowRoles(admin, moderator, editor),
-    //     delete: allowRoles(admin),
-    // },
+    access: {
+        update: allowRoles(admin, moderator, editor),
+        create: allowRoles(admin, moderator, editor),
+        delete: allowRoles(admin),
+    },
     adminConfig: {
         defaultColumns: 'name, image, createdAt',
         defaultSort: '-createdAt',
